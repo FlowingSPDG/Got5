@@ -55,7 +55,7 @@ func OnEventHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnEvent(p)
+		return ctrl.HandleOnEvent(c.Context(), p)
 	})
 }
 
@@ -66,7 +66,7 @@ func OnGameStateChangedHandler(ctrl controller.Controller) func(c *fiber.Ctx) er
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnGameStateChanged(p)
+		return ctrl.HandleOnGameStateChanged(c.Context(), p)
 	})
 }
 
@@ -76,7 +76,7 @@ func OnPreLoadMatchConfigHandler(ctrl controller.Controller) func(c *fiber.Ctx) 
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnPreLoadMatchConfig(p)
+		return ctrl.HandleOnPreLoadMatchConfig(c.Context(), p)
 	})
 }
 
@@ -86,7 +86,7 @@ func OnLoadMatchConfigFailedHandler(ctrl controller.Controller) func(c *fiber.Ct
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnLoadMatchConfigFailed(p)
+		return ctrl.HandleOnLoadMatchConfigFailed(c.Context(), p)
 	})
 }
 
@@ -96,7 +96,7 @@ func OnSeriesInitHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnSeriesInit(p)
+		return ctrl.HandleOnSeriesInit(c.Context(), p)
 	})
 }
 
@@ -106,7 +106,7 @@ func OnMapResultHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnMapResult(p)
+		return ctrl.HandleOnMapResult(c.Context(), p)
 	})
 }
 
@@ -116,7 +116,7 @@ func OnSeriesResultHandler(ctrl controller.Controller) func(c *fiber.Ctx) error 
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnSeriesResult(p)
+		return ctrl.HandleOnSeriesResult(c.Context(), p)
 	})
 }
 
@@ -126,7 +126,7 @@ func OnSidePickedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnSidePicked(p)
+		return ctrl.HandleOnSidePicked(c.Context(), p)
 	})
 }
 
@@ -136,7 +136,7 @@ func OnMapPickedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnMapPicked(p)
+		return ctrl.HandleOnMapPicked(c.Context(), p)
 	})
 }
 
@@ -146,7 +146,7 @@ func OnMapVetoedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnMapVetoed(p)
+		return ctrl.HandleOnMapVetoed(c.Context(), p)
 	})
 }
 
@@ -156,7 +156,7 @@ func OnBackupRestoreHandler(ctrl controller.Controller) func(c *fiber.Ctx) error
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnBackupRestore(p)
+		return ctrl.HandleOnBackupRestore(c.Context(), p)
 	})
 }
 
@@ -166,7 +166,7 @@ func OnDemoFinishedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error 
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnDemoFinished(p)
+		return ctrl.HandleOnDemoFinished(c.Context(), p)
 	})
 }
 
@@ -176,7 +176,7 @@ func OnDemoUploadEndedHandler(ctrl controller.Controller) func(c *fiber.Ctx) err
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnDemoUploadEnded(p)
+		return ctrl.HandleOnDemoUploadEnded(c.Context(), p)
 	})
 }
 
@@ -186,7 +186,7 @@ func OnMatchPausedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnMatchPaused(p)
+		return ctrl.HandleOnMatchPaused(c.Context(), p)
 	})
 }
 
@@ -196,7 +196,7 @@ func OnMatchUnpausedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnMatchUnpaused(p)
+		return ctrl.HandleOnMatchUnpaused(c.Context(), p)
 	})
 }
 
@@ -206,7 +206,7 @@ func OnKnifeRoundStartedHandler(ctrl controller.Controller) func(c *fiber.Ctx) e
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnKnifeRoundStarted(p)
+		return ctrl.HandleOnKnifeRoundStarted(c.Context(), p)
 	})
 }
 
@@ -216,7 +216,7 @@ func OnKnifeRoundWonHandler(ctrl controller.Controller) func(c *fiber.Ctx) error
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnKnifeRoundWon(p)
+		return ctrl.HandleOnKnifeRoundWon(c.Context(), p)
 	})
 }
 
@@ -226,7 +226,7 @@ func OnTeamReadyStatusChanngeHandler(ctrl controller.Controller) func(c *fiber.C
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnTeamReadyStatusChanged(p)
+		return ctrl.HandleOnTeamReadyStatusChanged(c.Context(), p)
 	})
 }
 
@@ -236,7 +236,7 @@ func OnGoingLiveHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnGoingLive(p)
+		return ctrl.HandleOnGoingLive(c.Context(), p)
 	})
 }
 
@@ -246,7 +246,7 @@ func OnRoundStartHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnRoundStart(p)
+		return ctrl.HandleOnRoundStart(c.Context(), p)
 	})
 }
 
@@ -256,7 +256,7 @@ func OnRoundEndHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnRoundEnd(p)
+		return ctrl.HandleOnRoundEnd(c.Context(), p)
 	})
 }
 
@@ -266,7 +266,7 @@ func OnRoundStatusUpdatedHandler(ctrl controller.Controller) func(c *fiber.Ctx) 
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnRoundStatsUpdated(p)
+		return ctrl.HandleOnRoundStatsUpdated(c.Context(), p)
 	})
 }
 
@@ -276,7 +276,7 @@ func OnPlayerBecameMVPHandler(ctrl controller.Controller) func(c *fiber.Ctx) err
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnPlayerBecameMVP(p)
+		return ctrl.HandleOnPlayerBecameMVP(c.Context(), p)
 	})
 }
 
@@ -286,7 +286,7 @@ func OnGrenadeThrownHandler(ctrl controller.Controller) func(c *fiber.Ctx) error
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnGrenadeThrown(p)
+		return ctrl.HandleOnGrenadeThrown(c.Context(), p)
 	})
 }
 
@@ -296,7 +296,7 @@ func OnPlayerDeathHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnPlayerDeath(p)
+		return ctrl.HandleOnPlayerDeath(c.Context(), p)
 	})
 }
 
@@ -306,7 +306,7 @@ func OnHEGrenadeDetonatedHandler(ctrl controller.Controller) func(c *fiber.Ctx) 
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnHEGrenadeDetonated(p)
+		return ctrl.HandleOnHEGrenadeDetonated(c.Context(), p)
 	})
 }
 
@@ -316,7 +316,7 @@ func OnMolotovDetonatedHandler(ctrl controller.Controller) func(c *fiber.Ctx) er
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnMolotovDetonated(p)
+		return ctrl.HandleOnMolotovDetonated(c.Context(), p)
 	})
 }
 
@@ -326,7 +326,7 @@ func OnFlashbangDetonatedHandler(ctrl controller.Controller) func(c *fiber.Ctx) 
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnFlashbangDetonated(p)
+		return ctrl.HandleOnFlashbangDetonated(c.Context(), p)
 	})
 }
 
@@ -336,7 +336,7 @@ func OnSmokeGrenadeDetonatedHandler(ctrl controller.Controller) func(c *fiber.Ct
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnSmokeGrenadeDetonated(p)
+		return ctrl.HandleOnSmokeGrenadeDetonated(c.Context(), p)
 	})
 }
 
@@ -346,7 +346,7 @@ func OnDecoyStartedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error 
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnDecoyStarted(p)
+		return ctrl.HandleOnDecoyStarted(c.Context(), p)
 	})
 }
 
@@ -356,7 +356,7 @@ func OnBombPlantedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnBombPlanted(p)
+		return ctrl.HandleOnBombPlanted(c.Context(), p)
 	})
 }
 
@@ -366,7 +366,7 @@ func OnBombDefusedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnBombDefused(p)
+		return ctrl.HandleOnBombDefused(c.Context(), p)
 	})
 }
 
@@ -376,7 +376,7 @@ func OnBombExpodedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnBombExploded(p)
+		return ctrl.HandleOnBombExploded(c.Context(), p)
 	})
 }
 
@@ -386,7 +386,7 @@ func OnPlayerConnectedHandler(ctrl controller.Controller) func(c *fiber.Ctx) err
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnPlayerConnected(p)
+		return ctrl.HandleOnPlayerConnected(c.Context(), p)
 	})
 }
 
@@ -396,7 +396,7 @@ func OnPlayerDisconnectedHandler(ctrl controller.Controller) func(c *fiber.Ctx) 
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnPlayerDisconnected(p)
+		return ctrl.HandleOnPlayerDisconnected(c.Context(), p)
 	})
 }
 
@@ -407,6 +407,6 @@ func OnPlayerSayHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnPlayerSay(p)
+		return ctrl.HandleOnPlayerSay(c.Context(), p)
 	})
 }

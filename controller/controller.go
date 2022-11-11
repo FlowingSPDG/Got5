@@ -1,43 +1,47 @@
 package controller
 
-import "github.com/FlowingSPDG/Got5/models"
+import (
+	"context"
+
+	"github.com/FlowingSPDG/Got5/models"
+)
 
 // Controller Controller interface operates write operation for e.g. Databases.
 type Controller interface {
-	HandleOnEvent(p models.OnEventPayload) error
-	HandleOnGameStateChanged(p models.OnGameStateChangedPayload) error
-	HandleOnPreLoadMatchConfig(p models.OnPreLoadMatchConfigPayload) error
-	HandleOnLoadMatchConfigFailed(p models.OnLoadMatchConfigFailedPayload) error
-	HandleOnSeriesInit(p models.OnSeriesInitPayload) error
-	HandleOnMapResult(p models.OnMapResultPayload) error
-	HandleOnSeriesResult(p models.OnSeriesResultPayload) error
-	HandleOnSidePicked(p models.OnSidePickedPayload) error
-	HandleOnMapPicked(p models.OnMapPickedPayload) error
-	HandleOnMapVetoed(p models.OnMapVetoedPayload) error
-	HandleOnBackupRestore(p models.OnBackupRestorePayload) error
-	HandleOnDemoFinished(p models.OnDemoFinishedPayload) error
-	HandleOnDemoUploadEnded(p models.OnDemoUploadEndedPayload) error
-	HandleOnMatchPaused(p models.OnMatchPausedPayload) error
-	HandleOnMatchUnpaused(p models.OnMatchUnpausedPayload) error
-	HandleOnKnifeRoundStarted(p models.OnKnifeRoundStartedPayload) error
-	HandleOnKnifeRoundWon(p models.OnKnifeRoundWonPayload) error
-	HandleOnTeamReadyStatusChanged(p models.OnTeamReadyStatusChangedPayload) error
-	HandleOnGoingLive(p models.OnGoingLivePayload) error
-	HandleOnRoundStart(p models.OnRoundStartPayload) error
-	HandleOnRoundEnd(p models.OnRoundEndPayload) error
-	HandleOnRoundStatsUpdated(p models.OnRoundStatsUpdatedPayload) error
-	HandleOnPlayerBecameMVP(p models.OnPlayerBecameMVPPayload) error
-	HandleOnGrenadeThrown(p models.OnGrenadeThrownPayload) error
-	HandleOnPlayerDeath(p models.OnPlayerDeathPayload) error
-	HandleOnHEGrenadeDetonated(p models.OnHEGrenadeDetonatedPayload) error
-	HandleOnMolotovDetonated(p models.OnMolotovDetonatedPayload) error
-	HandleOnFlashbangDetonated(p models.OnFlashbangDetonatedPayload) error
-	HandleOnSmokeGrenadeDetonated(p models.OnSmokeGrenadeDetonatedPayload) error
-	HandleOnDecoyStarted(p models.OnDecoyStartedPayload) error
-	HandleOnBombPlanted(p models.OnBombPlantedPayload) error
-	HandleOnBombDefused(p models.OnBombDefusedPayload) error
-	HandleOnBombExploded(p models.OnBombExplodedPayload) error
-	HandleOnPlayerConnected(p models.OnPlayerConnectedPayload) error
-	HandleOnPlayerDisconnected(p models.OnPlayerDisconnectedPayload) error
-	HandleOnPlayerSay(p models.OnPlayerSayPayload) error
+	HandleOnEvent(ctx context.Context, p models.OnEventPayload) error
+	HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error
+	HandleOnPreLoadMatchConfig(ctx context.Context, p models.OnPreLoadMatchConfigPayload) error
+	HandleOnLoadMatchConfigFailed(ctx context.Context, p models.OnLoadMatchConfigFailedPayload) error
+	HandleOnSeriesInit(ctx context.Context, p models.OnSeriesInitPayload) error
+	HandleOnMapResult(ctx context.Context, p models.OnMapResultPayload) error
+	HandleOnSeriesResult(ctx context.Context, p models.OnSeriesResultPayload) error
+	HandleOnSidePicked(ctx context.Context, p models.OnSidePickedPayload) error
+	HandleOnMapPicked(ctx context.Context, p models.OnMapPickedPayload) error
+	HandleOnMapVetoed(ctx context.Context, p models.OnMapVetoedPayload) error
+	HandleOnBackupRestore(ctx context.Context, p models.OnBackupRestorePayload) error
+	HandleOnDemoFinished(ctx context.Context, p models.OnDemoFinishedPayload) error
+	HandleOnDemoUploadEnded(ctx context.Context, p models.OnDemoUploadEndedPayload) error
+	HandleOnMatchPaused(ctx context.Context, p models.OnMatchPausedPayload) error
+	HandleOnMatchUnpaused(ctx context.Context, p models.OnMatchUnpausedPayload) error
+	HandleOnKnifeRoundStarted(ctx context.Context, p models.OnKnifeRoundStartedPayload) error
+	HandleOnKnifeRoundWon(ctx context.Context, p models.OnKnifeRoundWonPayload) error
+	HandleOnTeamReadyStatusChanged(ctx context.Context, p models.OnTeamReadyStatusChangedPayload) error
+	HandleOnGoingLive(ctx context.Context, p models.OnGoingLivePayload) error
+	HandleOnRoundStart(ctx context.Context, p models.OnRoundStartPayload) error
+	HandleOnRoundEnd(ctx context.Context, p models.OnRoundEndPayload) error
+	HandleOnRoundStatsUpdated(ctx context.Context, p models.OnRoundStatsUpdatedPayload) error
+	HandleOnPlayerBecameMVP(ctx context.Context, p models.OnPlayerBecameMVPPayload) error
+	HandleOnGrenadeThrown(ctx context.Context, p models.OnGrenadeThrownPayload) error
+	HandleOnPlayerDeath(ctx context.Context, p models.OnPlayerDeathPayload) error
+	HandleOnHEGrenadeDetonated(ctx context.Context, p models.OnHEGrenadeDetonatedPayload) error
+	HandleOnMolotovDetonated(ctx context.Context, p models.OnMolotovDetonatedPayload) error
+	HandleOnFlashbangDetonated(ctx context.Context, p models.OnFlashbangDetonatedPayload) error
+	HandleOnSmokeGrenadeDetonated(ctx context.Context, p models.OnSmokeGrenadeDetonatedPayload) error
+	HandleOnDecoyStarted(ctx context.Context, p models.OnDecoyStartedPayload) error
+	HandleOnBombPlanted(ctx context.Context, p models.OnBombPlantedPayload) error
+	HandleOnBombDefused(ctx context.Context, p models.OnBombDefusedPayload) error
+	HandleOnBombExploded(ctx context.Context, p models.OnBombExplodedPayload) error
+	HandleOnPlayerConnected(ctx context.Context, p models.OnPlayerConnectedPayload) error
+	HandleOnPlayerDisconnected(ctx context.Context, p models.OnPlayerDisconnectedPayload) error
+	HandleOnPlayerSay(ctx context.Context, p models.OnPlayerSayPayload) error
 }
