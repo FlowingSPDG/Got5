@@ -29,8 +29,7 @@ func (f *f) Close() error {
 
 // RegisterDemoFile implements controller.Controller
 func (f *f) RegisterDemoFile(ctx context.Context, bucket string, mid string, filename string, b []byte) error {
-	// midを撮る形にしているので、Firestore上のMatchにdemoのURLを記載しても良い
-	// デフォルト以外のBucketを使用しても問題ないが、詳しい仕様について理解し切れていないので一旦DefaultBucket() を使用する
+	// MatchIDを取得しているので、Firestore上のMatchにdemoのURLを記載しても良い(TODO)
 	bh, err := f.s.Bucket(bucket)
 	if err != nil {
 		return err

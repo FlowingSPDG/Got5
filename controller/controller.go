@@ -10,7 +10,8 @@ import (
 type Controller interface {
 	Close() error
 
-	// TODO: イベントハンドラーは別のinterfaecとして再定義する
+	// TODO: イベントハンドラーの部分のinterfaceとし、CRUDオペレーションに関連したオペレーション部分を別のinterfaceとして再定義する
+
 	// GET5 Events
 	HandleOnEvent(ctx context.Context, p models.OnEventPayload) error
 	HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error
@@ -54,6 +55,6 @@ type Controller interface {
 	// GetMap etc
 
 	// Create Operation
-	RegisterMatch(ctx context.Context, m models.Match) error
-	RegisterDemoFile(ctx context.Context, bucket string, mid string, filename string, b []byte) error
+	RegisterMatch(ctx context.Context, m models.Match) error                                          // 外部からマッチ作成リクエストが発生した際に実行されるハンドラ
+	RegisterDemoFile(ctx context.Context, bucket string, mid string, filename string, b []byte) error // demoファイルの登録処理
 }

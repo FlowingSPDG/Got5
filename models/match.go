@@ -23,6 +23,33 @@ type Match struct {
 	Cvars                map[string]string `json:"cvars"`
 }
 
+func (m Match) ToG5Format() Match {
+	return m
+}
+
+func GetDefaultMatchBO1() Match {
+	return Match{
+		MatchTitle:           "",
+		MatchID:              "",
+		ClinchSeries:         true,
+		NumMaps:              1,
+		PlayersPerTeam:       5,
+		CoachesPerTeam:       0,
+		CoachesMustReady:     false,
+		MinPlayersToReady:    1,
+		MinSpectatorsToReady: 0,
+		SkipVeto:             false,
+		VetoFirst:            "team1",
+		SideType:             "standard",
+		Spectators:           Spectators{},
+		Maplist:              []string{"de_dust2", "de_nuke", "de_inferno", "de_mirage", "de_vertigo", "de_ancient", "de_overpass"},
+		MapSides:             []string{"knife"},
+		Team1:                Team{},
+		Team2:                Team{},
+		Cvars:                map[string]string{},
+	}
+}
+
 type Spectators struct {
 	Name    string            `json:"name"`
 	Players map[string]string `json:"players"`
@@ -36,7 +63,7 @@ type Team struct {
 	Coaches map[string]string `json:"coaches"`
 }
 
-// G5Match 別の構造体にG5Matchインターフェースを実装すれば型が違っても変換してGet5に渡してくれレウ
+// G5Match 別の構造体にG5Matchインターフェースを実装すれば型が違っても変換してGet5に渡してくれる
 type G5Match interface {
 	ToG5Format() Match
 }
