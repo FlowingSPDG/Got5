@@ -1,10 +1,14 @@
-package fsc
+package fb
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
+	"io"
 
 	"cloud.google.com/go/firestore"
+	firebase "firebase.google.com/go"
+	storage "firebase.google.com/go/storage"
 
 	"github.com/FlowingSPDG/Got5/controller"
 	"github.com/FlowingSPDG/Got5/models"
@@ -13,6 +17,36 @@ import (
 // fs is Get5 API Database on firestore
 type f struct {
 	fs *firestore.Client
+	s  *storage.Client
+}
+
+func (f *f) Close() error {
+	if err := f.fs.Close(); err != nil {
+		return err
+	}
+	return nil
+}
+
+// RegisterDemoFile implements controller.Controller
+func (f *f) RegisterDemoFile(ctx context.Context, bucket string, mid string, filename string, b []byte) error {
+	// midを撮る形にしているので、Firestore上のMatchにdemoのURLを記載しても良い
+	// デフォルト以外のBucketを使用しても問題ないが、詳しい仕様について理解し切れていないので一旦DefaultBucket() を使用する
+	bh, err := f.s.Bucket(bucket)
+	if err != nil {
+		return err
+	}
+
+	writer := bh.Object(filename).NewWriter(ctx)
+	defer writer.Close()
+
+	writer.ObjectAttrs.ContentType = "application/octet-stream"
+	writer.ObjectAttrs.CacheControl = "public,max-age=86400"
+	// 必要であれば権限設定を実施
+
+	if _, err := io.Copy(writer, bytes.NewReader(b)); err != nil {
+		return err
+	}
+	return nil
 }
 
 // RegisterMatch implements controller.Controller
@@ -256,8 +290,21 @@ func (f *f) HandleOnTeamReadyStatusChanged(ctx context.Context, p models.OnTeamR
 }
 
 // NewFirestoreController Get Firestore controller
-func NewFirestoreController(c *firestore.Client) controller.Controller {
-	return &f{
-		fs: c,
+func NewFirebaseController(ctx context.Context, c *firebase.App) (controller.Controller, error) {
+	// Firestore
+	fs, err := c.Firestore(ctx)
+	if err != nil {
+		return nil, err
 	}
+
+	// Firebase Storage
+	s, err := c.Storage(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &f{
+		fs: fs,
+		s:  s,
+	}, nil
 }

@@ -11,6 +11,15 @@ import (
 // logger is simply prints what happend.
 type logger struct{}
 
+func (*logger) Close() error {
+	return nil
+}
+
+// RegisterDemoFile implements controller.Controller
+func (*logger) RegisterDemoFile(ctx context.Context, bucket string, mid string, filename string, b []byte) error {
+	panic("unimplemented")
+}
+
 // RegisterMatch implements controller.Controller
 func (*logger) RegisterMatch(ctx context.Context, m models.Match) error {
 	panic("unimplemented")

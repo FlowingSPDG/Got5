@@ -1,8 +1,9 @@
 package route
 
 import (
-	"github.com/FlowingSPDG/Got5/controller"
 	"github.com/gofiber/fiber/v2"
+
+	"github.com/FlowingSPDG/Got5/controller"
 )
 
 // LoadMatchHandler GET on get5_loadmatch_url "https://example.com/match_config.json" "Authorization" "Bearer <token>"

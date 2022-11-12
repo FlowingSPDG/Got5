@@ -1,4 +1,4 @@
-package fsc
+package fb
 
 const (
 	CollectionChat  = "chat"

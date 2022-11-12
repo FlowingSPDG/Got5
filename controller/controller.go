@@ -8,6 +8,9 @@ import (
 
 // Controller Controller interface operates CRUD operation for e.g. Databases.
 type Controller interface {
+	Close() error
+
+	// TODO: イベントハンドラーは別のinterfaecとして再定義する
 	// GET5 Events
 	HandleOnEvent(ctx context.Context, p models.OnEventPayload) error
 	HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error
@@ -52,4 +55,5 @@ type Controller interface {
 
 	// Create Operation
 	RegisterMatch(ctx context.Context, m models.Match) error
+	RegisterDemoFile(ctx context.Context, bucket string, mid string, filename string, b []byte) error
 }

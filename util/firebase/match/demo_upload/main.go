@@ -6,10 +6,8 @@ import (
 	"log"
 
 	firebase "firebase.google.com/go"
-	"github.com/gofiber/fiber/v2"
 
 	fsc "github.com/FlowingSPDG/Got5/controller/firebase"
-	"github.com/FlowingSPDG/Got5/route"
 )
 
 var (
@@ -38,17 +36,8 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer ctrl.Close()
 
-	// Setup fiber
-	app := fiber.New()
-	g5 := app.Group("/get5") // /get5
-	if err := route.SetupAllGet5Handlers(ctrl, g5, bucket); err != nil {
-		panic(err)
-	}
-
-	// Start server
-	if err := app.Listen(":3000"); err != nil {
-		panic(err)
+	if err := ctrl.RegisterDemoFile(ctx, bucket, "UNJR7KfmIC1heVjHNyLD", "test_file_name.dem", []byte("Invalid dem data")); err != nil {
+		log.Fatalln(err)
 	}
 }

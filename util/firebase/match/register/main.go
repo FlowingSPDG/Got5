@@ -7,7 +7,7 @@ import (
 
 	firebase "firebase.google.com/go"
 
-	fsc "github.com/FlowingSPDG/Got5/controller/firestore"
+	fsc "github.com/FlowingSPDG/Got5/controller/firebase"
 	"github.com/FlowingSPDG/Got5/models"
 )
 
@@ -30,15 +30,11 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	// Get firestore
-	client, err := fb.Firestore(ctx)
+	// Get Controller connected to firestore
+	ctrl, err := fsc.NewFirebaseController(ctx, fb)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer client.Close()
-
-	// Get Controller connected to firestore
-	ctrl := fsc.NewFirestoreController(client)
 
 	m := models.Match{
 		MatchTitle: "[TEST] Astralis vs. NaVi",

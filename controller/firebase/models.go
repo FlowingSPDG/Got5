@@ -1,4 +1,4 @@
-package fsc
+package fb
 
 import "github.com/FlowingSPDG/Got5/models"
 
@@ -23,6 +23,8 @@ type Match struct {
 	Team1                Team              `firestore:"team1"`
 	Team2                Team              `firestore:"team2"`
 	Cvars                map[string]string `firestore:"cvars"`
+
+	// Firetore向けに追加したいフィールドがあればここで追記する
 }
 
 func (m Match) ToG5Format() models.Match {

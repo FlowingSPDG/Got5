@@ -1,9 +1,10 @@
 package route
 
 import (
+	"github.com/gofiber/fiber/v2"
+
 	"github.com/FlowingSPDG/Got5/controller"
 	"github.com/FlowingSPDG/Got5/models"
-	"github.com/gofiber/fiber/v2"
 )
 
 // OnEventHandler POST on /Get5_OnEvent
