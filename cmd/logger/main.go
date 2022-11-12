@@ -12,7 +12,7 @@ func main() {
 	app := fiber.New()
 
 	g5 := app.Group("/get5") // /get5
-	if err := route.SetupRouter(ctrl, g5); err != nil {
+	if err := route.SetupAllGet5Handlers(ctrl, g5); err != nil {
 		panic(err)
 	}
 

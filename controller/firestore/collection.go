@@ -1,5 +1,6 @@
 package fsc
 
 const (
-	CollectionChat = "chat"
+	CollectionChat  = "chat"
+	CollectionMatch = "match"
 )

@@ -6,8 +6,9 @@ import (
 	"github.com/FlowingSPDG/Got5/models"
 )
 
-// Controller Controller interface operates write operation for e.g. Databases.
+// Controller Controller interface operates CRUD operation for e.g. Databases.
 type Controller interface {
+	// GET5 Events
 	HandleOnEvent(ctx context.Context, p models.OnEventPayload) error
 	HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error
 	HandleOnPreLoadMatchConfig(ctx context.Context, p models.OnPreLoadMatchConfigPayload) error
@@ -44,4 +45,11 @@ type Controller interface {
 	HandleOnPlayerConnected(ctx context.Context, p models.OnPlayerConnectedPayload) error
 	HandleOnPlayerDisconnected(ctx context.Context, p models.OnPlayerDisconnectedPayload) error
 	HandleOnPlayerSay(ctx context.Context, p models.OnPlayerSayPayload) error
+
+	// Read Operation
+	GetMatch(ctx context.Context, mid string) (models.G5Match, error)
+	// GetMap etc
+
+	// Create Operation
+	RegisterMatch(ctx context.Context, m models.Match) error
 }

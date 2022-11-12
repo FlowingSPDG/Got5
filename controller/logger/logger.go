@@ -11,6 +11,16 @@ import (
 // logger is simply prints what happend.
 type logger struct{}
 
+// RegisterMatch implements controller.Controller
+func (*logger) RegisterMatch(ctx context.Context, m models.Match) error {
+	panic("unimplemented")
+}
+
+// GetMatch implements controller.Controller
+func (*logger) GetMatch(ctx context.Context, mid string) (models.G5Match, error) {
+	panic("unimplemented")
+}
+
 // HandleOnBackupRestore implements controller.Controller
 func (*logger) HandleOnBackupRestore(ctx context.Context, p models.OnBackupRestorePayload) error {
 	log.Println(p)

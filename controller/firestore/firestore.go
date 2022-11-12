@@ -15,6 +15,32 @@ type f struct {
 	fs *firestore.Client
 }
 
+// RegisterMatch implements controller.Controller
+func (f *f) RegisterMatch(ctx context.Context, m models.Match) error {
+	// models.G5Match を使った方が汎用性が高いか？
+	fm := toFirestoreMatch(m)
+	ref := f.fs.Collection(CollectionMatch).NewDoc()
+	fm.MatchID = ref.ID // MatchIDを上書きする
+	_, err := ref.Set(ctx, fm)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// GetMatch implements controller.Controller
+func (f *f) GetMatch(ctx context.Context, mid string) (models.G5Match, error) {
+	ret := Match{}
+	dsnap, err := f.fs.Collection(CollectionMatch).Doc(mid).Get(ctx)
+	if err != nil {
+		return ret, err
+	}
+	if err := dsnap.DataTo(&ret); err != nil {
+		return ret, err
+	}
+	return ret, nil
+}
+
 // HandleOnBackupRestore implements controller.Controller
 func (f *f) HandleOnBackupRestore(ctx context.Context, p models.OnBackupRestorePayload) error {
 	panic("unimplemented")
