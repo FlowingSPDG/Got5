@@ -227,7 +227,7 @@ func (d *discord) HandleOnSeriesResult(ctx context.Context, p models.OnSeriesRes
 	if !ok {
 		return fmt.Errorf("Invalid Match ID")
 	}
-	msg := fmt.Sprintf(`🎉チーム %s がゲームに勝利しました！GGWP！`, p.Winner.Team)
+	msg := fmt.Sprintf("🎉チーム %s がゲームに勝利しました！GGWP！\n最終スコア: %s[%d]:[%d]%s", p.Winner.Team, m.match.Team1.Name, p.Team1SeriesScore, p.Team2SeriesScore, m.match.Team2.Name)
 	if _, err := d.s.ChannelMessageSend(m.interaction.ChannelID, msg); err != nil {
 		return err
 	}
