@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/FlowingSPDG/Got5/models"
-	"github.com/bwmarrin/discordgo"
 )
 
 // RegisterDemoFile implements controller.Controller
@@ -17,15 +16,11 @@ func (d *discord) RegisterDemoFile(ctx context.Context, bucket string, mid strin
 func (d *discord) RegisterMatch(ctx context.Context, m models.Match) error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
-	d.matches[m.MatchID] = struct {
-		iid    string
-		member *discordgo.Member
-		match  models.Match
-	}{
-		member: nil,
-		match:  m,
+	if ms, ok := d.matches[m.MatchID]; ok {
+		ms.match = m
+		return nil
 	}
-	return nil
+	return fmt.Errorf("Match not found")
 }
 
 // GetMatch implements controller.Controller
@@ -91,19 +86,15 @@ func (d *discord) HandleOnGameStateChanged(ctx context.Context, p models.OnGameS
 
 // HandleOnGoingLive implements controller.Controller
 func (d *discord) HandleOnGoingLive(ctx context.Context, p models.OnGoingLivePayload) error {
-	// 代わりにチャンネルIDを保持する？
-
-	/*
-			d.mu.RLock()
-			defer d.mu.RUnlock()
-			m := d.matches[p.Matchid]
-			msg := fmt.Sprintf(`🔫ゲーム %s がまもなく開始します！
-		[G]ood [L]uck [H]ave [F]un!`, m.match.MatchTitle)
-			/_, err := d.s.ChannelMessageSend(m.msg.ChannelID, msg)
-			if err != nil {
-				return err
-			}
-	*/
+	// 一度Interactionに返事をするとそれ以上の返信はできず、メッセージを編集するかFollow Up Meesageのみとなる
+	// しかしInteraction token自体が15分しか持続しないため、それ以降は個別にメッセージを送信する必要がある
+	d.mu.RLock()
+	defer d.mu.RUnlock()
+	m := d.matches[p.Matchid]
+	msg := fmt.Sprintf("🔫ゲーム %s がまもなく開始します！\n[G]ood [L]uck [H]ave [F]un!", m.match.MatchTitle)
+	if _, err := d.s.ChannelMessageSend(m.interaction.ChannelID, msg); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -119,31 +110,26 @@ func (d *discord) HandleOnHEGrenadeDetonated(ctx context.Context, p models.OnHEG
 
 // HandleOnKnifeRoundStarted implements controller.Controller
 func (d *discord) HandleOnKnifeRoundStarted(ctx context.Context, p models.OnKnifeRoundStartedPayload) error {
-	/*
-		d.mu.RLock()
-		defer d.mu.RUnlock()
-		m := d.matches[p.Matchid]
-		msg := fmt.Sprintf(`🔪ゲーム %s ナイフラウンドがまもなく開始します！`, m.match.MatchTitle)
-		_, err := d.s.ChannelMessageSend(m.msg.ChannelID, msg)
-		if err != nil {
-			return err
-		}
-	*/
+	d.mu.RLock()
+	defer d.mu.RUnlock()
+	m := d.matches[p.Matchid]
+	msg := fmt.Sprintf("🔪ゲーム ``%s``\nナイフラウンドがまもなく開始します！🔪🔪", m.match.MatchTitle)
+
+	if _, err := d.s.ChannelMessageSend(m.interaction.ChannelID, msg); err != nil {
+		return err
+	}
 	return nil
 }
 
 // HandleOnKnifeRoundWon implements controller.Controller
 func (d *discord) HandleOnKnifeRoundWon(ctx context.Context, p models.OnKnifeRoundWonPayload) error {
-	/*
-		d.mu.RLock()
-		defer d.mu.RUnlock()
-		m := d.matches[p.Matchid]
-		msg := fmt.Sprintf(`🔪チーム %s がナイフラウンドに勝利しました！`, p.Team)
-		_, err := d.s.ChannelMessageSend(m.msg.ChannelID, msg)
-		if err != nil {
-			return err
-		}
-	*/
+	d.mu.RLock()
+	defer d.mu.RUnlock()
+	m := d.matches[p.Matchid]
+	msg := fmt.Sprintf("🔪ゲーム ``%s``\nチーム%sがナイフラウンドに勝利しました！🔪🔪", m.match.MatchTitle, p.Team)
+	if _, err := d.s.ChannelMessageSend(m.interaction.ChannelID, msg); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -235,17 +221,18 @@ func (d *discord) HandleOnSeriesInit(ctx context.Context, p models.OnSeriesInitP
 
 // HandleOnSeriesResult implements controller.Controller
 func (d *discord) HandleOnSeriesResult(ctx context.Context, p models.OnSeriesResultPayload) error {
-	/*
-		d.mu.RLock()
-		defer d.mu.RUnlock()
-		m := d.matches[p.Matchid]
-		msg := fmt.Sprintf(`🎉チーム %s がゲームに勝利しました！GGWP！`, p.Winner.Team)
-		_, err := d.s.ChannelMessageSend(m.msg.ChannelID, msg)
-		if err != nil {
-			return err
-		}
-		// mapの容量が無限に増えちゃうので適当なタイミングでdeleteをかける
-	*/
+	d.mu.RLock()
+	defer d.mu.RUnlock()
+	m, ok := d.matches[p.Matchid]
+	if !ok {
+		return fmt.Errorf("Invalid Match ID")
+	}
+	msg := fmt.Sprintf(`🎉チーム %s がゲームに勝利しました！GGWP！`, p.Winner.Team)
+	if _, err := d.s.ChannelMessageSend(m.interaction.ChannelID, msg); err != nil {
+		return err
+	}
+	// mapの容量が無限に増えちゃうのでdeleteをかける
+	delete(d.matches, p.Matchid)
 	return nil
 }
 
@@ -256,7 +243,6 @@ func (d *discord) HandleOnSidePicked(ctx context.Context, p models.OnSidePickedP
 
 // HandleOnSmokeGrenadeDetonated implements controller.Controller
 func (d *discord) HandleOnSmokeGrenadeDetonated(ctx context.Context, p models.OnSmokeGrenadeDetonatedPayload) error {
-
 	return nil
 }
 

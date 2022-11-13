@@ -19,9 +19,9 @@ type discord struct {
 	s       *discordgo.Session // Session本体
 	mu      sync.RWMutex
 	matches map[string]struct {
-		iid    string            // Interaction ID
-		member *discordgo.Member // マッチ作成を実行したユーザー
-		match  models.Match      // GET5自体のマッチ情報
+		interaction *discordgo.Interaction // Interaction
+		member      *discordgo.Member      // マッチ作成を実行したユーザー
+		match       models.Match           // GET5自体のマッチ情報
 	} // GET5のマッチID(=interactionID))に対応したマッチ情報
 }
 
@@ -59,9 +59,9 @@ func NewDiscordController(ctx context.Context, token string) (controller.Control
 		s:  d,
 		mu: sync.RWMutex{},
 		matches: make(map[string]struct {
-			iid    string
-			member *discordgo.Member
-			match  models.Match
+			interaction *discordgo.Interaction
+			member      *discordgo.Member
+			match       models.Match
 		}),
 	}
 
@@ -174,11 +174,9 @@ func NewDiscordController(ctx context.Context, token string) (controller.Control
 			mf := getModalFormBySubmitted(data)
 			match := models.GetDefaultMatchBO1()
 			match.MatchTitle = fmt.Sprintf("%s : Created by %s", mf.MatchTitle, m.Member.Nick)
-			// match.MatchID = m.Interaction.Member.User.ID
 			match.MatchID = m.Interaction.ID
 			match.Team1.Name = mf.Team1Name
 			// プレイヤーネームは仮で一旦SteamIDのみにする
-			match.Team1.Players = map[string]string{}
 			for _, v := range mf.Team1SteamIDs {
 				match.Team1.Players[v] = v
 			}
@@ -188,12 +186,13 @@ func NewDiscordController(ctx context.Context, token string) (controller.Control
 			}
 			c.mu.Lock()
 			c.matches[m.Interaction.ID] = struct {
-				iid    string
-				member *discordgo.Member
-				match  models.Match
+				interaction *discordgo.Interaction
+				member      *discordgo.Member
+				match       models.Match
 			}{
-				member: m.Member,
-				match:  match,
+				interaction: m.Interaction,
+				member:      m.Member,
+				match:       match,
 			}
 			c.mu.Unlock()
 
