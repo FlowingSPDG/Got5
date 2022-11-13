@@ -224,6 +224,7 @@ func NewDiscordController(ctx context.Context, token string) (controller.Control
 							},
 						},
 					},
+				}); err != nil {
 					fmt.Println("err:", err)
 				}
 			}
@@ -275,18 +276,18 @@ func NewDiscordController(ctx context.Context, token string) (controller.Control
 				defer c.mu.Unlock()
 				match, ok := c.matches[f.MatchID]
 				if !ok {
-					fmt.Println("err:", err) // 作成に失敗した旨を発言する
+					fmt.Println("No match found") // 作成に失敗した旨を発言する
 					return
 				}
 				switch f.Team {
 				case "team1":
 					match.match.Team1.Players[f.SteamID64] = f.Name
-				case "teams":
+				case "team2":
 					match.match.Team2.Players[f.SteamID64] = f.Name
 				case "spectator":
 					match.match.Spectators.Players[f.SteamID64] = f.Name
 				default:
-					fmt.Println("err:", err) // 作成に失敗した旨を発言する
+					fmt.Println("Please specify team to add:") // 作成に失敗した旨を発言する
 					return
 				}
 
