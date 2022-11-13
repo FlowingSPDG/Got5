@@ -15,6 +15,7 @@ import (
 // Discord Interaction(POST) の実装をしてもいいかもしれない
 
 // discord is Automated CS:GO/get5 BOT.
+// 外部のDBなどを使わずに動くため、永続化したいのであればFirebaseなどのクライアントへ保存することを推奨
 type discord struct {
 	s       *discordgo.Session // Session本体
 	mu      sync.RWMutex
@@ -29,24 +30,37 @@ func (d *discord) Close() error {
 	return d.s.Close()
 }
 
-type modalForm struct {
-	MatchTitle    string
-	Team1Name     string
-	Team1SteamIDs []string
-	Team2Name     string
-	Team2SteamIDs []string
+type modalCreateMatchForm struct {
+	MatchTitle string
+	Team1Name  string
+	Team2Name  string
 }
 
-func getModalFormBySubmitted(d discordgo.ModalSubmitInteractionData) modalForm {
-	t1steamids := strings.Split(d.Components[2].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value, "\n")
-	t2steamids := strings.Split(d.Components[4].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value, "\n")
-	return modalForm{
-		MatchTitle:    d.Components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
-		Team1Name:     d.Components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
-		Team1SteamIDs: t1steamids,
-		Team2Name:     d.Components[3].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
-		Team2SteamIDs: t2steamids,
+func getCreateMatchModalFormBySubmitted(d discordgo.ModalSubmitInteractionData) modalCreateMatchForm {
+	return modalCreateMatchForm{
+		MatchTitle: d.Components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
+		Team1Name:  d.Components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
 	}
+}
+
+type modalAddPlayerForm struct {
+	MatchID   string
+	Team      string
+	Name      string
+	SteamID64 string
+}
+
+func getAddPlayerModalFormBySubmitted(d discordgo.ModalSubmitInteractionData) modalAddPlayerForm {
+	return modalAddPlayerForm{
+		MatchID:   d.Components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
+		Team:      d.Components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
+		Name:      d.Components[2].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
+		SteamID64: d.Components[3].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
+	}
+}
+
+func getInteractionIDByAddModal(d discordgo.ModalSubmitInteractionData) string {
+	return d.Components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
 }
 
 // NewDiscordController Get discord pointer
@@ -77,6 +91,11 @@ func NewDiscordController(ctx context.Context, token string) (controller.Control
 	if err != nil {
 		return nil, err
 	}
+
+	cmd, err = c.s.ApplicationCommandCreate(c.s.State.User.ID, "", &discordgo.ApplicationCommand{
+		Name:        "get5_addplayer", // TODO: Localization
+		Description: "GET5のマッチにプレイヤーを追加します",
+	})
 	_ = cmd // 特に使わないので捨てる
 
 	// TODO: 過去に登録したマッチをリストで表示できるようにする
@@ -88,137 +107,207 @@ func NewDiscordController(ctx context.Context, token string) (controller.Control
 		// マッチデータが無限に増えてしまうので、有効期限を設定して過ぎたらmapから削除でも良いかもしれない
 
 		// Modalの発生コマンドか、Modalから送られてきたイベントかで分岐
+
 		switch m.Type {
 		case discordgo.InteractionApplicationCommand:
-			if err := s.InteractionRespond(m.Interaction, &discordgo.InteractionResponse{
-				Type: discordgo.InteractionResponseModal,
-				Data: &discordgo.InteractionResponseData{
-					CustomID: "get5_create_" + m.Interaction.Member.User.ID,
-					Title:    "GET5 Match Create",
-					Components: []discordgo.MessageComponent{
-						discordgo.ActionsRow{
-							Components: []discordgo.MessageComponent{
-								discordgo.TextInput{
-									CustomID:    "title",
-									Label:       "MATCH TITLE",
-									Style:       discordgo.TextInputShort,
-									Placeholder: m.Member.Nick + "のMatch",
-									Required:    true,
-									MaxLength:   300,
-									MinLength:   5,
+			switch m.ApplicationCommandData().Name {
+			case "get5_create":
+				if err := s.InteractionRespond(m.Interaction, &discordgo.InteractionResponse{
+					Type: discordgo.InteractionResponseModal,
+					Data: &discordgo.InteractionResponseData{
+						CustomID: "get5_create_" + m.Interaction.Member.User.ID,
+						Title:    "GET5 Match Create",
+						Components: []discordgo.MessageComponent{
+							discordgo.ActionsRow{
+								Components: []discordgo.MessageComponent{
+									discordgo.TextInput{
+										CustomID:    "title",
+										Label:       "MATCH TITLE",
+										Style:       discordgo.TextInputShort,
+										Placeholder: m.Member.Nick + "のMatch",
+										Required:    true,
+										MaxLength:   300,
+										MinLength:   5,
+									},
+								},
+							},
+
+							discordgo.ActionsRow{
+								Components: []discordgo.MessageComponent{
+									discordgo.TextInput{
+										CustomID:  "team1name",
+										Label:     "Team1 Name",
+										Style:     discordgo.TextInputShort,
+										Required:  true,
+										MaxLength: 30,
+									},
+								},
+							},
+
+							discordgo.ActionsRow{
+								Components: []discordgo.MessageComponent{
+									discordgo.TextInput{
+										CustomID:  "team2name",
+										Label:     "Team2 Name",
+										Style:     discordgo.TextInputShort,
+										Required:  true,
+										MaxLength: 30,
+									},
 								},
 							},
 						},
-
-						discordgo.ActionsRow{
-							Components: []discordgo.MessageComponent{
-								discordgo.TextInput{
-									CustomID:  "team1name",
-									Label:     "Team1 Name",
-									Style:     discordgo.TextInputShort,
-									Required:  true,
-									MaxLength: 30,
+					}}); err != nil {
+					fmt.Println("err:", err)
+				}
+			case "get5_addplayer":
+				if err := s.InteractionRespond(m.Interaction, &discordgo.InteractionResponse{
+					Type: discordgo.InteractionResponseModal,
+					Data: &discordgo.InteractionResponseData{
+						CustomID: "get5_addplayer_" + m.Interaction.Member.User.ID,
+						Title:    "GET5 Add Player",
+						Components: []discordgo.MessageComponent{
+							discordgo.ActionsRow{
+								Components: []discordgo.MessageComponent{
+									discordgo.TextInput{
+										CustomID:    "match_id",
+										Label:       "Match ID",
+										Style:       discordgo.TextInputShort,
+										Placeholder: "",
+										Required:    true,
+										MaxLength:   300,
+										MinLength:   1,
+									},
 								},
 							},
-						},
 
-						discordgo.ActionsRow{
-							Components: []discordgo.MessageComponent{
-								discordgo.TextInput{
-									CustomID:  "team1steamids",
-									Label:     "Team1 SteamIDs",
-									Style:     discordgo.TextInputParagraph,
-									Required:  true,
-									MaxLength: 500,
+							// 手動入力させるのは美しくないので別の方法を考えたい
+							discordgo.ActionsRow{
+								Components: []discordgo.MessageComponent{
+									discordgo.TextInput{
+										CustomID:    "team",
+										Label:       "Team to add (team1, team2 or spectator)",
+										Style:       discordgo.TextInputShort,
+										Placeholder: "team1",
+										Required:    true,
+										MaxLength:   9,
+										MinLength:   5,
+									},
 								},
 							},
-						},
 
-						discordgo.ActionsRow{
-							Components: []discordgo.MessageComponent{
-								discordgo.TextInput{
-									CustomID:  "team2name",
-									Label:     "Team2 Name",
-									Style:     discordgo.TextInputShort,
-									Required:  true,
-									MaxLength: 30,
+							discordgo.ActionsRow{
+								Components: []discordgo.MessageComponent{
+									discordgo.TextInput{
+										CustomID:    "name",
+										Label:       "Player Name",
+										Style:       discordgo.TextInputShort,
+										Placeholder: "John",
+										Required:    true,
+										MaxLength:   30,
+										MinLength:   2,
+									},
 								},
 							},
-						},
 
-						discordgo.ActionsRow{
-							Components: []discordgo.MessageComponent{
-								discordgo.TextInput{
-									CustomID:  "team2steamids",
-									Label:     "Team2 SteamIDs",
-									Style:     discordgo.TextInputParagraph,
-									Required:  true,
-									MaxLength: 500,
+							discordgo.ActionsRow{
+								Components: []discordgo.MessageComponent{
+									discordgo.TextInput{
+										CustomID:    "steamid",
+										Label:       "Player's SteamID(SteamID64 recommended)",
+										Style:       discordgo.TextInputShort,
+										Placeholder: "",
+										Required:    true,
+										MaxLength:   17,
+										MinLength:   17,
+									},
 								},
 							},
 						},
 					},
-				}}); err != nil {
-				fmt.Println("err:", err)
+					fmt.Println("err:", err)
+				}
 			}
 
 			// Modalの送信実行時
 		case discordgo.InteractionModalSubmit:
 			// データを取得してMatchを作成する
 			data := m.ModalSubmitData()
-			if !strings.HasPrefix(data.CustomID, "get5_create_") {
-				return
-			}
+			// get5_create の場合
+			if strings.HasPrefix(data.CustomID, "get5_create_") {
+				// m.User, m.Message など、nilになる値があるので注意
+				mf := getCreateMatchModalFormBySubmitted(data)
+				match := models.GetDefaultMatchBO1()
+				match.MatchTitle = fmt.Sprintf("%s : Created by %s", mf.MatchTitle, m.Member.Nick)
+				match.MatchID = m.Interaction.ID
+				match.Team1.Name = mf.Team1Name
+				c.mu.Lock()
+				c.matches[m.Interaction.ID] = struct {
+					interaction *discordgo.Interaction
+					member      *discordgo.Member
+					match       models.Match
+				}{
+					interaction: m.Interaction,
+					member:      m.Member,
+					match:       match,
+				}
+				c.mu.Unlock()
 
-			// m.User, m.Message など、nilになる値があるので注意
-			mf := getModalFormBySubmitted(data)
-			match := models.GetDefaultMatchBO1()
-			match.MatchTitle = fmt.Sprintf("%s : Created by %s", mf.MatchTitle, m.Member.Nick)
-			match.MatchID = m.Interaction.ID
-			match.Team1.Name = mf.Team1Name
-			// プレイヤーネームは仮で一旦SteamIDのみにする
-			for _, v := range mf.Team1SteamIDs {
-				match.Team1.Players[v] = v
-			}
-			match.Team2.Name = mf.Team2Name
-			for _, v := range mf.Team2SteamIDs {
-				match.Team2.Players[v] = v
-			}
-			c.mu.Lock()
-			c.matches[m.Interaction.ID] = struct {
-				interaction *discordgo.Interaction
-				member      *discordgo.Member
-				match       models.Match
-			}{
-				interaction: m.Interaction,
-				member:      m.Member,
-				match:       match,
-			}
-			c.mu.Unlock()
+				if err := c.RegisterMatch(ctx, match); err != nil {
+					fmt.Println("err:", err) // 作成に失敗した旨を発言する
+					return
+				}
 
-			if err := c.RegisterMatch(ctx, match); err != nil {
-				fmt.Println("err:", err) // 作成に失敗した旨を発言する
-			}
+				// TODO: 127.0.0.1... の部分を差し替える
+				content := fmt.Sprintf("マッチを作成しました\n ``get5_loadmatch_url \"http://127.0.0.1:3000/get5/match/%s\"``", match.MatchID)
+				err := s.InteractionRespond(m.Interaction, &discordgo.InteractionResponse{
+					Type: discordgo.InteractionResponseChannelMessageWithSource,
+					Data: &discordgo.InteractionResponseData{
+						Content: content,
+						Flags:   discordgo.MessageFlagsEphemeral,
+					},
+				})
+				if err != nil {
+					fmt.Println("err:", err)
+				}
+			} else if strings.HasPrefix(data.CustomID, "get5_addplayer_") {
+				f := getAddPlayerModalFormBySubmitted(data)
+				c.mu.Lock()
+				defer c.mu.Unlock()
+				match, ok := c.matches[f.MatchID]
+				if !ok {
+					fmt.Println("err:", err) // 作成に失敗した旨を発言する
+					return
+				}
+				switch f.Team {
+				case "team1":
+					match.match.Team1.Players[f.SteamID64] = f.Name
+				case "teams":
+					match.match.Team2.Players[f.SteamID64] = f.Name
+				case "spectator":
+					match.match.Spectators.Players[f.SteamID64] = f.Name
+				default:
+					fmt.Println("err:", err) // 作成に失敗した旨を発言する
+					return
+				}
 
-			// TODO: 127.0.0.1... の部分を差し替える
-			content := fmt.Sprintf("マッチを作成しました\n ``get5_loadmatch_url \"http://127.0.0.1:3000/get5/match/%s\"``", match.MatchID)
-			err := s.InteractionRespond(m.Interaction, &discordgo.InteractionResponse{
-				Type: discordgo.InteractionResponseChannelMessageWithSource,
-				Data: &discordgo.InteractionResponseData{
-					Content: content,
-					Flags:   discordgo.MessageFlagsEphemeral,
-				},
-			})
-			if err != nil {
-				fmt.Println("err:", err)
+				content := fmt.Sprintf("プレイヤー``%s``を追加しました", f.Name)
+				err := s.InteractionRespond(m.Interaction, &discordgo.InteractionResponse{
+					Type: discordgo.InteractionResponseChannelMessageWithSource,
+					Data: &discordgo.InteractionResponseData{
+						Content: content,
+						Flags:   discordgo.MessageFlagsEphemeral,
+					},
+				})
+				if err != nil {
+					fmt.Println("err:", err)
+					return
+				}
 			}
-
 		}
 	})
 
 	// In this example, we only care about receiving message events.
 	c.s.Identify.Intents = discordgo.IntentsGuildMessages
-
 	return c, nil
 }
 
