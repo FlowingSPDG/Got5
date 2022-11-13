@@ -19,9 +19,10 @@ type discord struct {
 	s       *discordgo.Session // Session本体
 	mu      sync.RWMutex
 	matches map[string]struct {
+		iid    string            // Interaction ID
 		member *discordgo.Member // マッチ作成を実行したユーザー
 		match  models.Match      // GET5自体のマッチ情報
-	} // GET5のマッチID(=ユーザーID))に対応したマッチ情報
+	} // GET5のマッチID(=interactionID))に対応したマッチ情報
 }
 
 func (d *discord) Close() error {
@@ -37,8 +38,8 @@ type modalForm struct {
 }
 
 func getModalFormBySubmitted(d discordgo.ModalSubmitInteractionData) modalForm {
-	t1steamids := strings.Split(d.Components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value, "\n")
-	t2steamids := strings.Split(d.Components[3].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value, "\n")
+	t1steamids := strings.Split(d.Components[2].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value, "\n")
+	t2steamids := strings.Split(d.Components[4].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value, "\n")
 	return modalForm{
 		MatchTitle:    d.Components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
 		Team1Name:     d.Components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
@@ -55,8 +56,10 @@ func NewDiscordController(ctx context.Context, token string) (controller.Control
 		return nil, err
 	}
 	c := &discord{
-		s: d,
+		s:  d,
+		mu: sync.RWMutex{},
 		matches: make(map[string]struct {
+			iid    string
 			member *discordgo.Member
 			match  models.Match
 		}),
@@ -75,6 +78,8 @@ func NewDiscordController(ctx context.Context, token string) (controller.Control
 		return nil, err
 	}
 	_ = cmd // 特に使わないので捨てる
+
+	// TODO: 過去に登録したマッチをリストで表示できるようにする
 
 	// モーダルからの情報送信時に実行されるイベント
 	c.s.AddHandler(func(s *discordgo.Session, m *discordgo.InteractionCreate) {
@@ -165,10 +170,12 @@ func NewDiscordController(ctx context.Context, token string) (controller.Control
 				return
 			}
 
+			// m.User, m.Message など、nilになる値があるので注意
 			mf := getModalFormBySubmitted(data)
 			match := models.GetDefaultMatchBO1()
-			match.MatchTitle = mf.MatchTitle
-			match.MatchID = m.Interaction.Member.User.ID
+			match.MatchTitle = fmt.Sprintf("%s : Created by %s", mf.MatchTitle, m.Member.Nick)
+			// match.MatchID = m.Interaction.Member.User.ID
+			match.MatchID = m.Interaction.ID
 			match.Team1.Name = mf.Team1Name
 			// プレイヤーネームは仮で一旦SteamIDのみにする
 			match.Team1.Players = map[string]string{}
@@ -180,7 +187,8 @@ func NewDiscordController(ctx context.Context, token string) (controller.Control
 				match.Team2.Players[v] = v
 			}
 			c.mu.Lock()
-			c.matches[m.Member.User.ID] = struct {
+			c.matches[m.Interaction.ID] = struct {
+				iid    string
 				member *discordgo.Member
 				match  models.Match
 			}{

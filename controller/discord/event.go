@@ -18,6 +18,7 @@ func (d *discord) RegisterMatch(ctx context.Context, m models.Match) error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	d.matches[m.MatchID] = struct {
+		iid    string
 		member *discordgo.Member
 		match  models.Match
 	}{
