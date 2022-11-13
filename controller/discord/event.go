@@ -4,9 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/bwmarrin/discordgo"
-
 	"github.com/FlowingSPDG/Got5/models"
+	"github.com/bwmarrin/discordgo"
 )
 
 // RegisterDemoFile implements controller.Controller
@@ -19,10 +18,11 @@ func (d *discord) RegisterMatch(ctx context.Context, m models.Match) error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	d.matches[m.MatchID] = struct {
-		msg   *discordgo.Message
-		match models.Match
+		member *discordgo.Member
+		match  models.Match
 	}{
-		match: m,
+		member: nil,
+		match:  m,
 	}
 	return nil
 }
@@ -90,15 +90,19 @@ func (d *discord) HandleOnGameStateChanged(ctx context.Context, p models.OnGameS
 
 // HandleOnGoingLive implements controller.Controller
 func (d *discord) HandleOnGoingLive(ctx context.Context, p models.OnGoingLivePayload) error {
-	d.mu.RLock()
-	defer d.mu.RUnlock()
-	m := d.matches[p.Matchid]
-	msg := fmt.Sprintf(`🔫ゲーム %s がまもなく開始します！
-[G]ood [L]uck [H]ave [F]un!`, m.match.MatchTitle)
-	_, err := d.s.ChannelMessageSend(m.msg.ChannelID, msg)
-	if err != nil {
-		return err
-	}
+	// 代わりにチャンネルIDを保持する？
+
+	/*
+			d.mu.RLock()
+			defer d.mu.RUnlock()
+			m := d.matches[p.Matchid]
+			msg := fmt.Sprintf(`🔫ゲーム %s がまもなく開始します！
+		[G]ood [L]uck [H]ave [F]un!`, m.match.MatchTitle)
+			/_, err := d.s.ChannelMessageSend(m.msg.ChannelID, msg)
+			if err != nil {
+				return err
+			}
+	*/
 	return nil
 }
 
@@ -114,27 +118,31 @@ func (d *discord) HandleOnHEGrenadeDetonated(ctx context.Context, p models.OnHEG
 
 // HandleOnKnifeRoundStarted implements controller.Controller
 func (d *discord) HandleOnKnifeRoundStarted(ctx context.Context, p models.OnKnifeRoundStartedPayload) error {
-	d.mu.RLock()
-	defer d.mu.RUnlock()
-	m := d.matches[p.Matchid]
-	msg := fmt.Sprintf(`🔪ゲーム %s ナイフラウンドがまもなく開始します！`, m.match.MatchTitle)
-	_, err := d.s.ChannelMessageSend(m.msg.ChannelID, msg)
-	if err != nil {
-		return err
-	}
+	/*
+		d.mu.RLock()
+		defer d.mu.RUnlock()
+		m := d.matches[p.Matchid]
+		msg := fmt.Sprintf(`🔪ゲーム %s ナイフラウンドがまもなく開始します！`, m.match.MatchTitle)
+		_, err := d.s.ChannelMessageSend(m.msg.ChannelID, msg)
+		if err != nil {
+			return err
+		}
+	*/
 	return nil
 }
 
 // HandleOnKnifeRoundWon implements controller.Controller
 func (d *discord) HandleOnKnifeRoundWon(ctx context.Context, p models.OnKnifeRoundWonPayload) error {
-	d.mu.RLock()
-	defer d.mu.RUnlock()
-	m := d.matches[p.Matchid]
-	msg := fmt.Sprintf(`🔪チーム %s がナイフラウンドに勝利しました！`, p.Team)
-	_, err := d.s.ChannelMessageSend(m.msg.ChannelID, msg)
-	if err != nil {
-		return err
-	}
+	/*
+		d.mu.RLock()
+		defer d.mu.RUnlock()
+		m := d.matches[p.Matchid]
+		msg := fmt.Sprintf(`🔪チーム %s がナイフラウンドに勝利しました！`, p.Team)
+		_, err := d.s.ChannelMessageSend(m.msg.ChannelID, msg)
+		if err != nil {
+			return err
+		}
+	*/
 	return nil
 }
 
@@ -226,15 +234,17 @@ func (d *discord) HandleOnSeriesInit(ctx context.Context, p models.OnSeriesInitP
 
 // HandleOnSeriesResult implements controller.Controller
 func (d *discord) HandleOnSeriesResult(ctx context.Context, p models.OnSeriesResultPayload) error {
-	d.mu.RLock()
-	defer d.mu.RUnlock()
-	m := d.matches[p.Matchid]
-	msg := fmt.Sprintf(`🎉チーム %s がゲームに勝利しました！GGWP！`, p.Winner.Team)
-	_, err := d.s.ChannelMessageSend(m.msg.ChannelID, msg)
-	if err != nil {
-		return err
-	}
-	// mapの容量が無限に増えちゃうので適当なタイミングでdeleteをかける
+	/*
+		d.mu.RLock()
+		defer d.mu.RUnlock()
+		m := d.matches[p.Matchid]
+		msg := fmt.Sprintf(`🎉チーム %s がゲームに勝利しました！GGWP！`, p.Winner.Team)
+		_, err := d.s.ChannelMessageSend(m.msg.ChannelID, msg)
+		if err != nil {
+			return err
+		}
+		// mapの容量が無限に増えちゃうので適当なタイミングでdeleteをかける
+	*/
 	return nil
 }
 

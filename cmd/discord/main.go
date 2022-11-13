@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"log"
 
@@ -20,7 +21,8 @@ func main() {
 	flag.Parse()
 
 	// Get Controller for Discord BOT
-	ctrl, err := discord.NewDiscordController(discordToken)
+	ctx := context.Background()
+	ctrl, err := discord.NewDiscordController(ctx, discordToken)
 	if err != nil {
 		log.Fatalln(err)
 	}

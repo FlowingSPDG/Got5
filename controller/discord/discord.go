@@ -1,10 +1,10 @@
 package discord
 
 import (
-	"math/rand"
+	"context"
+	"fmt"
 	"strings"
 	"sync"
-	"time"
 
 	"github.com/bwmarrin/discordgo"
 
@@ -12,22 +12,44 @@ import (
 	"github.com/FlowingSPDG/Got5/models"
 )
 
+// Discord Interaction(POST) の実装をしてもいいかもしれない
+
 // discord is Automated CS:GO/get5 BOT.
 type discord struct {
 	s       *discordgo.Session // Session本体
 	mu      sync.RWMutex
 	matches map[string]struct {
-		msg   *discordgo.Message // マッチ作成に使ったメッセージ
-		match models.Match       // GET5自体のマッチ情報
-	} // GET5のマッチID(=メッセージID))に対応したマッチ情報
+		member *discordgo.Member // マッチ作成を実行したユーザー
+		match  models.Match      // GET5自体のマッチ情報
+	} // GET5のマッチID(=ユーザーID))に対応したマッチ情報
 }
 
 func (d *discord) Close() error {
 	return d.s.Close()
 }
 
+type modalForm struct {
+	MatchTitle    string
+	Team1Name     string
+	Team1SteamIDs []string
+	Team2Name     string
+	Team2SteamIDs []string
+}
+
+func getModalFormBySubmitted(d discordgo.ModalSubmitInteractionData) modalForm {
+	t1steamids := strings.Split(d.Components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value, "\n")
+	t2steamids := strings.Split(d.Components[3].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value, "\n")
+	return modalForm{
+		MatchTitle:    d.Components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
+		Team1Name:     d.Components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
+		Team1SteamIDs: t1steamids,
+		Team2Name:     d.Components[3].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
+		Team2SteamIDs: t2steamids,
+	}
+}
+
 // NewDiscordController Get discord pointer
-func NewDiscordController(token string) (controller.Controller, error) {
+func NewDiscordController(ctx context.Context, token string) (controller.Controller, error) {
 	d, err := discordgo.New("Bot " + token)
 	if err != nil {
 		return nil, err
@@ -35,8 +57,8 @@ func NewDiscordController(token string) (controller.Controller, error) {
 	c := &discord{
 		s: d,
 		matches: make(map[string]struct {
-			msg   *discordgo.Message
-			match models.Match
+			member *discordgo.Member
+			match  models.Match
 		}),
 	}
 
@@ -44,55 +66,146 @@ func NewDiscordController(token string) (controller.Controller, error) {
 		return nil, err
 	}
 
-	// Register the messageCreate func as a callback for MessageCreate events.
-	c.s.AddHandler(func(s *discordgo.Session, m *discordgo.MessageCreate) {
-		// 自分が発信したメッセージを全て無視する
-		if m.Author.ID == s.State.User.ID {
-			return
-		}
-		// .get5 と打ち込まれた場合にマッチを作成する
-		// 引数でSteamIDを取得して登録、get5_loadmatch_url を発行する
-		if strings.HasPrefix(m.Content, ".get5") {
-			// パース処理を実行
-			ids := strings.Split(m.Content, " ")
-			// IDをシャッフルする
-			rand.Seed(time.Now().UnixNano())
-			rand.Shuffle(len(ids), func(i, j int) { ids[i], ids[j] = ids[j], ids[i] })
+	// コマンドを登録する
+	cmd, err := c.s.ApplicationCommandCreate(c.s.State.User.ID, "", &discordgo.ApplicationCommand{
+		Name:        "get5_create", // TODO: Localization
+		Description: "GET5のマッチを作成します",
+	})
+	if err != nil {
+		return nil, err
+	}
+	_ = cmd // 特に使わないので捨てる
 
-			// チームを分配
-			// steamids := chunkSlice[string](ids, 2)
-			// t1 := steamids[0]
-			// t2 := steamids[1]
+	// モーダルからの情報送信時に実行されるイベント
+	c.s.AddHandler(func(s *discordgo.Session, m *discordgo.InteractionCreate) {
+		// 受け取ったModalからのデータを元にマッチを作成する
+		// SteamIDを取得して登録、get5_loadmatch_url を発行して返す
+		// マッチデータが無限に増えてしまうので、有効期限を設定して過ぎたらmapから削除でも良いかもしれない
 
-			c.mu.Lock()
-			defer c.mu.Unlock()
+		// Modalの発生コマンドか、Modalから送られてきたイベントかで分岐
+		switch m.Type {
+		case discordgo.InteractionApplicationCommand:
+			if err := s.InteractionRespond(m.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseModal,
+				Data: &discordgo.InteractionResponseData{
+					CustomID: "get5_create_" + m.Interaction.Member.User.ID,
+					Title:    "GET5 Match Create",
+					Components: []discordgo.MessageComponent{
+						discordgo.ActionsRow{
+							Components: []discordgo.MessageComponent{
+								discordgo.TextInput{
+									CustomID:    "title",
+									Label:       "MATCH TITLE",
+									Style:       discordgo.TextInputShort,
+									Placeholder: m.Member.Nick + "のMatch",
+									Required:    true,
+									MaxLength:   300,
+									MinLength:   5,
+								},
+							},
+						},
 
+						discordgo.ActionsRow{
+							Components: []discordgo.MessageComponent{
+								discordgo.TextInput{
+									CustomID:  "team1name",
+									Label:     "Team1 Name",
+									Style:     discordgo.TextInputShort,
+									Required:  true,
+									MaxLength: 30,
+								},
+							},
+						},
+
+						discordgo.ActionsRow{
+							Components: []discordgo.MessageComponent{
+								discordgo.TextInput{
+									CustomID:  "team1steamids",
+									Label:     "Team1 SteamIDs",
+									Style:     discordgo.TextInputParagraph,
+									Required:  true,
+									MaxLength: 500,
+								},
+							},
+						},
+
+						discordgo.ActionsRow{
+							Components: []discordgo.MessageComponent{
+								discordgo.TextInput{
+									CustomID:  "team2name",
+									Label:     "Team2 Name",
+									Style:     discordgo.TextInputShort,
+									Required:  true,
+									MaxLength: 30,
+								},
+							},
+						},
+
+						discordgo.ActionsRow{
+							Components: []discordgo.MessageComponent{
+								discordgo.TextInput{
+									CustomID:  "team2steamids",
+									Label:     "Team2 SteamIDs",
+									Style:     discordgo.TextInputParagraph,
+									Required:  true,
+									MaxLength: 500,
+								},
+							},
+						},
+					},
+				}}); err != nil {
+				fmt.Println("err:", err)
+			}
+
+			// Modalの送信実行時
+		case discordgo.InteractionModalSubmit:
+			// データを取得してMatchを作成する
+			data := m.ModalSubmitData()
+			if !strings.HasPrefix(data.CustomID, "get5_create_") {
+				return
+			}
+
+			mf := getModalFormBySubmitted(data)
 			match := models.GetDefaultMatchBO1()
-			match.MatchTitle = m.Author.Username + "の作成した紅白"
-			match.MatchID = m.ID
-
-			// SteamIDなどを使って情報を入れる
-			match.Team1 = models.Team{
-				Name: "",
-				Tag:  "",
-				Flag: "",
-				Logo: "",
-				Players: map[string]string{
-					"": "",
-				},
-				Coaches: map[string]string{
-					"": "",
-				},
+			match.MatchTitle = mf.MatchTitle
+			match.MatchID = m.Interaction.Member.User.ID
+			match.Team1.Name = mf.Team1Name
+			// プレイヤーネームは仮で一旦SteamIDのみにする
+			match.Team1.Players = map[string]string{}
+			for _, v := range mf.Team1SteamIDs {
+				match.Team1.Players[v] = v
 			}
-			match.Team2 = models.Team{}
-
-			c.matches[m.ID] = struct {
-				msg   *discordgo.Message
-				match models.Match
+			match.Team2.Name = mf.Team2Name
+			for _, v := range mf.Team2SteamIDs {
+				match.Team2.Players[v] = v
+			}
+			c.mu.Lock()
+			c.matches[m.Member.User.ID] = struct {
+				member *discordgo.Member
+				match  models.Match
 			}{
-				msg:   m.Message,
-				match: match,
+				member: m.Member,
+				match:  match,
 			}
+			c.mu.Unlock()
+
+			if err := c.RegisterMatch(ctx, match); err != nil {
+				fmt.Println("err:", err) // 作成に失敗した旨を発言する
+			}
+
+			// TODO: 127.0.0.1... の部分を差し替える
+			content := fmt.Sprintf("マッチを作成しました\n ``get5_loadmatch_url \"http://127.0.0.1:3000/get5/match/%s\"``", match.MatchID)
+			err := s.InteractionRespond(m.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseChannelMessageWithSource,
+				Data: &discordgo.InteractionResponseData{
+					Content: content,
+					Flags:   discordgo.MessageFlagsEphemeral,
+				},
+			})
+			if err != nil {
+				fmt.Println("err:", err)
+			}
+
 		}
 	})
 

@@ -41,12 +41,29 @@ func GetDefaultMatchBO1() Match {
 		SkipVeto:             false,
 		VetoFirst:            "team1",
 		SideType:             "standard",
-		Spectators:           Spectators{},
-		Maplist:              []string{"de_dust2", "de_nuke", "de_inferno", "de_mirage", "de_vertigo", "de_ancient", "de_overpass"},
-		MapSides:             []string{"knife"},
-		Team1:                Team{},
-		Team2:                Team{},
-		Cvars:                map[string]string{},
+		Spectators: Spectators{
+			Name:    "",
+			Players: map[string]string{},
+		},
+		Maplist:  []string{"de_dust2", "de_nuke", "de_inferno", "de_mirage", "de_vertigo", "de_ancient", "de_overpass"},
+		MapSides: []string{"knife"},
+		Team1: Team{
+			Name:    "",
+			Tag:     "",
+			Flag:    "",
+			Logo:    "",
+			Players: map[string]string{},
+			Coaches: map[string]string{},
+		},
+		Team2: Team{
+			Name:    "",
+			Tag:     "",
+			Flag:    "",
+			Logo:    "",
+			Players: map[string]string{},
+			Coaches: map[string]string{},
+		},
+		Cvars: map[string]string{},
 	}
 }
 
