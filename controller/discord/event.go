@@ -7,6 +7,11 @@ import (
 	"github.com/FlowingSPDG/Got5/models"
 )
 
+// UpdateMatch implements controller.Controller
+func (*discord) UpdateMatch(ctx context.Context, mid string, m models.Match) error {
+	return nil
+}
+
 // RegisterDemoFile implements controller.Controller
 func (d *discord) RegisterDemoFile(ctx context.Context, bucket string, mid string, filename string, b []byte) error {
 	return nil

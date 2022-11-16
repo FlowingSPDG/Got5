@@ -27,6 +27,14 @@ type f struct {
 	s       *storage.Client
 }
 
+// UpdateMatch implements controller.Controller
+func (f *f) UpdateMatch(ctx context.Context, mid string, m models.Match) error {
+	if _, err := f.fs.Collection(CollectionMatch).Doc(mid).Set(ctx, m, firestore.MergeAll); err != nil {
+		return err
+	}
+	return nil
+}
+
 // Hostname implements controller.Controller
 func (f *f) Hostname() string {
 	return f.setting.Hostname
@@ -75,7 +83,9 @@ func (f *f) RegisterMatch(ctx context.Context, m models.Match) (models.Match, er
 	if err != nil {
 		return ret, err
 	}
-	snap.DataTo(&ret)
+	if err := snap.DataTo(&ret); err != nil {
+		return ret, err
+	}
 	return ret, nil
 }
 

@@ -11,6 +11,11 @@ import (
 // logger is simply prints what happend.
 type logger struct{}
 
+// UpdateMatch implements controller.Controller
+func (*logger) UpdateMatch(ctx context.Context, mid string, m models.Match) error {
+	return nil
+}
+
 // Hostname implements controller.Controller
 func (*logger) Hostname() string {
 	return ""
