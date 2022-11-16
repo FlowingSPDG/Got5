@@ -21,7 +21,7 @@ func SetupAllGet5Handlers(ctrl controller.Controller, r fiber.Router, bucket str
 
 // SetupDemoUploadHandler Setup get5 upload demo handler
 func SetupDemoUploadHandler(ctrl controller.Controller, r fiber.Router, bucket string) error {
-	r.Post("/match/:matchID/demo", DemoUploadHandler(ctrl, bucket))
+	r.Post("/match/demo", DemoUploadHandler(ctrl, bucket))
 	return nil
 }
 
