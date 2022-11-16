@@ -11,23 +11,30 @@ import (
 // logger is simply prints what happend.
 type logger struct{}
 
+// Hostname implements controller.Controller
+func (*logger) Hostname() string {
+	return ""
+}
+
 func (*logger) Close() error {
 	return nil
 }
 
 // RegisterDemoFile implements controller.Controller
 func (*logger) RegisterDemoFile(ctx context.Context, bucket string, mid string, filename string, b []byte) error {
-	panic("unimplemented")
+	return nil
 }
 
 // RegisterMatch implements controller.Controller
-func (*logger) RegisterMatch(ctx context.Context, m models.Match) error {
-	panic("unimplemented")
+func (*logger) RegisterMatch(ctx context.Context, m models.Match) (models.Match, error) {
+	log.Println(m)
+	return models.Match{}, nil
 }
 
 // GetMatch implements controller.Controller
 func (*logger) GetMatch(ctx context.Context, mid string) (models.G5Match, error) {
-	panic("unimplemented")
+	log.Println(mid)
+	return nil, nil
 }
 
 // HandleOnBackupRestore implements controller.Controller

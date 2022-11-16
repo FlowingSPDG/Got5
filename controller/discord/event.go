@@ -13,14 +13,14 @@ func (d *discord) RegisterDemoFile(ctx context.Context, bucket string, mid strin
 }
 
 // RegisterMatch implements controller.Controller
-func (d *discord) RegisterMatch(ctx context.Context, m models.Match) error {
+func (d *discord) RegisterMatch(ctx context.Context, m models.Match) (models.Match, error) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	if ms, ok := d.matches[m.MatchID]; ok {
 		ms.match = m
-		return nil
+		return m, nil
 	}
-	return fmt.Errorf("Match not found")
+	return models.Match{}, fmt.Errorf("Match not found")
 }
 
 // GetMatch implements controller.Controller

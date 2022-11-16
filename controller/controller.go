@@ -8,9 +8,11 @@ import (
 
 // Controller Controller interface operates CRUD operation for e.g. Databases.
 type Controller interface {
+	// TODO: イベントハンドラーの部分のinterfaceとし、CRUDオペレーションに関連したオペレーション部分を別のinterfaceとして再定義する
 	Close() error
 
-	// TODO: イベントハンドラーの部分のinterfaceとし、CRUDオペレーションに関連したオペレーション部分を別のinterfaceとして再定義する
+	// イベントハンドラへの絶対パスURL
+	Hostname() string
 
 	// GET5 Events
 	HandleOnEvent(ctx context.Context, p models.OnEventPayload) error
@@ -55,6 +57,6 @@ type Controller interface {
 	// GetMap etc
 
 	// Create Operation
-	RegisterMatch(ctx context.Context, m models.Match) error                                          // 外部からマッチ作成リクエストが発生した際に実行されるハンドラ
+	RegisterMatch(ctx context.Context, m models.Match) (models.Match, error)                          // 外部からマッチ作成リクエストが発生した際に実行されるハンドラ
 	RegisterDemoFile(ctx context.Context, bucket string, mid string, filename string, b []byte) error // demoファイルの登録処理
 }

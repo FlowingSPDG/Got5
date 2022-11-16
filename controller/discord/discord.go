@@ -14,9 +14,16 @@ import (
 
 // Discord Interaction(POST) の実装をしてもいいかもしれない
 
+// ControllerSetting Settings
+type ControllerSetting struct {
+	Hostname string
+	Port     int
+}
+
 // discord is Automated CS:GO/get5 BOT.
 // 外部のDBなどを使わずに動くため、永続化したいのであればFirebaseなどのクライアントへ保存することを推奨
 type discord struct {
+	setting ControllerSetting
 	s       *discordgo.Session // Session本体
 	mu      sync.RWMutex
 	matches map[string]struct {
@@ -24,6 +31,11 @@ type discord struct {
 		member      *discordgo.Member      // マッチ作成を実行したユーザー
 		match       models.Match           // GET5自体のマッチ情報
 	} // GET5のマッチID(=interactionID))に対応したマッチ情報
+}
+
+// DemoUploadHandlerURL implements controller.Controller
+func (d *discord) Hostname() string {
+	return d.setting.Hostname
 }
 
 func (d *discord) Close() error {
@@ -64,14 +76,15 @@ func getInteractionIDByAddModal(d discordgo.ModalSubmitInteractionData) string {
 }
 
 // NewDiscordController Get discord pointer
-func NewDiscordController(ctx context.Context, token string) (controller.Controller, error) {
+func NewDiscordController(ctx context.Context, token string, setting ControllerSetting) (controller.Controller, error) {
 	d, err := discordgo.New("Bot " + token)
 	if err != nil {
 		return nil, err
 	}
 	c := &discord{
-		s:  d,
-		mu: sync.RWMutex{},
+		setting: setting,
+		s:       d,
+		mu:      sync.RWMutex{},
 		matches: make(map[string]struct {
 			interaction *discordgo.Interaction
 			member      *discordgo.Member
@@ -253,13 +266,12 @@ func NewDiscordController(ctx context.Context, token string) (controller.Control
 				}
 				c.mu.Unlock()
 
-				if err := c.RegisterMatch(ctx, match); err != nil {
+				if _, err := c.RegisterMatch(ctx, match); err != nil {
 					fmt.Println("err:", err) // 作成に失敗した旨を発言する
 					return
 				}
 
-				// TODO: 127.0.0.1... の部分を差し替える
-				content := fmt.Sprintf("マッチを作成しました\n ``get5_loadmatch_url \"http://127.0.0.1:3000/get5/match/%s\"``", match.MatchID)
+				content := fmt.Sprintf("マッチを作成しました\n ``get5_loadmatch_url \"http://%s:%d/get5/match/%s\"``", c.setting.Hostname, c.setting.Port, match.MatchID)
 				err := s.InteractionRespond(m.Interaction, &discordgo.InteractionResponse{
 					Type: discordgo.InteractionResponseChannelMessageWithSource,
 					Data: &discordgo.InteractionResponseData{

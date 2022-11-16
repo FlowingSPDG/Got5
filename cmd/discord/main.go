@@ -4,6 +4,8 @@ import (
 	"context"
 	"flag"
 	"log"
+	"net"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 
@@ -13,16 +15,28 @@ import (
 
 var (
 	discordToken = ""
+	hostName     = "localhost"
+	port         = "8080"
 )
 
 func main() {
 	// Parse -projectID flag
 	flag.StringVar(&discordToken, "token", "", "Discord BOT Token")
+	flag.StringVar(&hostName, "hostname", "", "Web hostname")
+	flag.StringVar(&port, "port", "8080", "Port to listen")
 	flag.Parse()
+
+	portInt, err := strconv.Atoi(port)
+	if err != nil {
+		panic(err)
+	}
 
 	// Get Controller for Discord BOT
 	ctx := context.Background()
-	ctrl, err := discord.NewDiscordController(ctx, discordToken)
+	ctrl, err := discord.NewDiscordController(ctx, discordToken, discord.ControllerSetting{
+		Hostname: hostName,
+		Port:     portInt,
+	})
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -38,8 +52,11 @@ func main() {
 		panic(err)
 	}
 
+	p := net.JoinHostPort(hostName, port)
+
 	// Start server
-	if err := app.Listen(":3000"); err != nil {
+	log.Println("Start listening on:", p)
+	if err := app.Listen(p); err != nil {
 		panic(err)
 	}
 }

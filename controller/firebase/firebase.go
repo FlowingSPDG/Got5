@@ -14,10 +14,22 @@ import (
 	"github.com/FlowingSPDG/Got5/models"
 )
 
+// ControllerSetting Settings
+type ControllerSetting struct {
+	Hostname string
+	Port     int
+}
+
 // fs is Get5 API Database on firestore
 type f struct {
-	fs *firestore.Client
-	s  *storage.Client
+	setting ControllerSetting
+	fs      *firestore.Client
+	s       *storage.Client
+}
+
+// Hostname implements controller.Controller
+func (f *f) Hostname() string {
+	return f.setting.Hostname
 }
 
 func (f *f) Close() error {
@@ -49,16 +61,22 @@ func (f *f) RegisterDemoFile(ctx context.Context, bucket string, mid string, fil
 }
 
 // RegisterMatch implements controller.Controller
-func (f *f) RegisterMatch(ctx context.Context, m models.Match) error {
+func (f *f) RegisterMatch(ctx context.Context, m models.Match) (models.Match, error) {
+	ret := models.Match{}
 	// models.G5Match を使った方が汎用性が高いか？
 	fm := toFirestoreMatch(m)
 	ref := f.fs.Collection(CollectionMatch).NewDoc()
 	fm.MatchID = ref.ID // MatchIDを上書きする
 	_, err := ref.Set(ctx, fm)
 	if err != nil {
-		return err
+		return ret, err
 	}
-	return nil
+	snap, err := ref.Get(ctx)
+	if err != nil {
+		return ret, err
+	}
+	snap.DataTo(&ret)
+	return ret, nil
 }
 
 // GetMatch implements controller.Controller
@@ -288,8 +306,8 @@ func (f *f) HandleOnTeamReadyStatusChanged(ctx context.Context, p models.OnTeamR
 	panic("unimplemented")
 }
 
-// NewFirestoreController Get Firestore controller
-func NewFirebaseController(ctx context.Context, c *firebase.App) (controller.Controller, error) {
+// NewFirebaseController Get Firestore controller
+func NewFirebaseController(ctx context.Context, c *firebase.App, setting ControllerSetting) (controller.Controller, error) {
 	// Firestore
 	fs, err := c.Firestore(ctx)
 	if err != nil {
@@ -303,7 +321,8 @@ func NewFirebaseController(ctx context.Context, c *firebase.App) (controller.Con
 	}
 
 	return &f{
-		fs: fs,
-		s:  s,
+		fs:      fs,
+		s:       s,
+		setting: setting,
 	}, nil
 }

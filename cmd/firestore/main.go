@@ -4,6 +4,8 @@ import (
 	"context"
 	"flag"
 	"log"
+	"net"
+	"strconv"
 
 	firebase "firebase.google.com/go"
 	"github.com/gofiber/fiber/v2"
@@ -15,13 +17,22 @@ import (
 var (
 	projectID = ""
 	bucket    = ""
+	hostName  = "localhost"
+	port      = "8080"
 )
 
 func main() {
 	// Parse -projectID flag
 	flag.StringVar(&projectID, "projectID", "", "Firebase project ID")
 	flag.StringVar(&bucket, "bucket", "", "Firebase Storage Bucket")
+	flag.StringVar(&hostName, "hostname", "localhost", "Web hostname")
+	flag.StringVar(&port, "port", "8080", "Port to listen")
 	flag.Parse()
+
+	portInt, err := strconv.Atoi(port)
+	if err != nil {
+		panic(err)
+	}
 
 	// Get Firebase service
 	ctx := context.Background()
@@ -34,7 +45,10 @@ func main() {
 	}
 
 	// Get Controller connected to firestore
-	ctrl, err := fsc.NewFirebaseController(ctx, fb)
+	ctrl, err := fsc.NewFirebaseController(ctx, fb, fsc.ControllerSetting{
+		Hostname: hostName,
+		Port:     portInt,
+	})
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -47,8 +61,11 @@ func main() {
 		panic(err)
 	}
 
+	p := net.JoinHostPort(hostName, port)
+
 	// Start server
-	if err := app.Listen(":3000"); err != nil {
+	log.Println("Start listening on:", p)
+	if err := app.Listen(p); err != nil {
 		panic(err)
 	}
 }
