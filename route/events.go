@@ -1,371 +1,252 @@
 package route
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/FlowingSPDG/Got5/controller"
 	"github.com/FlowingSPDG/Got5/models"
 )
 
+func reMarshal(m map[string]interface{}, p any) error {
+	b, err := json.Marshal(m)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(b, p); err != nil {
+		return err
+	}
+	return nil
+}
+
 // OnEventHandler POST on /Get5_OnEvent
 func OnEventHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 	return (func(c *fiber.Ctx) error {
-		p := models.OnEventPayload{}
+		// p := models.OnEventPayload{}
+		p := make(map[string]interface{})
 		if err := c.BodyParser(&p); err != nil {
 			return err
 		}
-		return ctrl.HandleOnEvent(c.Context(), p)
-	})
-}
-
-// OnGameStateChangedHandler
-func OnGameStateChangedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnGameStateChangedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
+		ev, ok := (p["event"]).(string)
+		if !ok {
+			return fmt.Errorf("Unsupported JSON Format")
 		}
-		return ctrl.HandleOnGameStateChanged(c.Context(), p)
-	})
-}
-
-func OnPreLoadMatchConfigHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnPreLoadMatchConfigPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
+		switch ev {
+		case "game_state_changed":
+			ret := models.OnGameStateChangedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnGameStateChanged(c.Context(), ret)
+		case "preload_match_config":
+			ret := models.OnPreLoadMatchConfigPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnPreLoadMatchConfig(c.Context(), ret)
+		case "match_config_load_fail":
+			ret := models.OnLoadMatchConfigFailedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnLoadMatchConfigFailed(c.Context(), ret)
+		case "series_start":
+			ret := models.OnSeriesInitPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnSeriesInit(c.Context(), ret)
+		case "map_result":
+			ret := models.OnMapResultPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnMapResult(c.Context(), ret)
+		case "series_end":
+			ret := models.OnSeriesResultPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnSeriesResult(c.Context(), ret)
+		case "side_picked":
+			ret := models.OnSidePickedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnSidePicked(c.Context(), ret)
+		case "map_picked":
+			ret := models.OnMapPickedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnMapPicked(c.Context(), ret)
+		case "map_vetoed":
+			ret := models.OnMapVetoedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnMapVetoed(c.Context(), ret)
+		case "backup_loaded":
+			ret := models.OnBackupRestorePayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnBackupRestore(c.Context(), ret)
+		case "demo_finished":
+			ret := models.OnDemoFinishedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnDemoFinished(c.Context(), ret)
+		case "demo_upload_ended":
+			ret := models.OnDemoUploadEndedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnDemoUploadEnded(c.Context(), ret)
+		case "game_paused":
+			ret := models.OnMatchPausedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnMatchPaused(c.Context(), ret)
+		case "game_unpaused":
+			ret := models.OnMatchUnpausedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnMatchUnpaused(c.Context(), ret)
+		case "knife_start":
+			ret := models.OnKnifeRoundStartedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnKnifeRoundStarted(c.Context(), ret)
+		case "knife_won":
+			ret := models.OnKnifeRoundWonPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnKnifeRoundWon(c.Context(), ret)
+		case "team_ready_status_changed":
+			ret := models.OnTeamReadyStatusChangedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnTeamReadyStatusChanged(c.Context(), ret)
+		case "going_live":
+			ret := models.OnGoingLivePayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnGoingLive(c.Context(), ret)
+		case "round_start":
+			ret := models.OnRoundStartPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnRoundStart(c.Context(), ret)
+		case "round_end":
+			ret := models.OnRoundEndPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnRoundEnd(c.Context(), ret)
+		case "stats_updated":
+			ret := models.OnRoundStatsUpdatedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnRoundStatsUpdated(c.Context(), ret)
+		case "round_mvp":
+			ret := models.OnPlayerBecameMVPPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnPlayerBecameMVP(c.Context(), ret)
+		case "grenade_thrown":
+			ret := models.OnGrenadeThrownPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnGrenadeThrown(c.Context(), ret)
+		case "player_death":
+			ret := models.OnPlayerDeathPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnPlayerDeath(c.Context(), ret)
+		case "hegrenade_detonated":
+			ret := models.OnHEGrenadeDetonatedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnHEGrenadeDetonated(c.Context(), ret)
+		case "molotov_detonated":
+			ret := models.OnMolotovDetonatedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnMolotovDetonated(c.Context(), ret)
+		case "flashbang_detonated":
+			ret := models.OnFlashbangDetonatedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnFlashbangDetonated(c.Context(), ret)
+		case "smokegrenade_detonated":
+			ret := models.OnSmokeGrenadeDetonatedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnSmokeGrenadeDetonated(c.Context(), ret)
+		case "decoygrenade_started":
+			ret := models.OnDecoyStartedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnDecoyStarted(c.Context(), ret)
+		case "bomb_planted":
+			ret := models.OnBombPlantedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnBombPlanted(c.Context(), ret)
+		case "bomb_defused":
+			ret := models.OnBombDefusedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnBombDefused(c.Context(), ret)
+		case "bomb_exploded":
+			ret := models.OnBombExplodedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnBombExploded(c.Context(), ret)
+		case "player_connect":
+			ret := models.OnPlayerConnectedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnPlayerConnected(c.Context(), ret)
+		case "player_disconnect":
+			ret := models.OnPlayerDisconnectedPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnPlayerDisconnected(c.Context(), ret)
+		case "player_say":
+			ret := models.OnPlayerSayPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				return err
+			}
+			ctrl.HandleOnPlayerSay(c.Context(), ret)
+		default:
+			return fmt.Errorf("Event Not found%s", ev)
 		}
-		return ctrl.HandleOnPreLoadMatchConfig(c.Context(), p)
-	})
-}
-
-func OnLoadMatchConfigFailedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnLoadMatchConfigFailedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnLoadMatchConfigFailed(c.Context(), p)
-	})
-}
-
-func OnSeriesInitHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnSeriesInitPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnSeriesInit(c.Context(), p)
-	})
-}
-
-func OnMapResultHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnMapResultPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnMapResult(c.Context(), p)
-	})
-}
-
-func OnSeriesResultHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnSeriesResultPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnSeriesResult(c.Context(), p)
-	})
-}
-
-func OnSidePickedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnSidePickedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnSidePicked(c.Context(), p)
-	})
-}
-
-func OnMapPickedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnMapPickedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnMapPicked(c.Context(), p)
-	})
-}
-
-func OnMapVetoedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnMapVetoedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnMapVetoed(c.Context(), p)
-	})
-}
-
-func OnBackupRestoreHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnBackupRestorePayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnBackupRestore(c.Context(), p)
-	})
-}
-
-func OnDemoFinishedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnDemoFinishedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnDemoFinished(c.Context(), p)
-	})
-}
-
-func OnDemoUploadEndedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnDemoUploadEndedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnDemoUploadEnded(c.Context(), p)
-	})
-}
-
-func OnMatchPausedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnMatchPausedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnMatchPaused(c.Context(), p)
-	})
-}
-
-func OnMatchUnpausedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnMatchUnpausedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnMatchUnpaused(c.Context(), p)
-	})
-}
-
-func OnKnifeRoundStartedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnKnifeRoundStartedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnKnifeRoundStarted(c.Context(), p)
-	})
-}
-
-func OnKnifeRoundWonHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnKnifeRoundWonPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnKnifeRoundWon(c.Context(), p)
-	})
-}
-
-func OnTeamReadyStatusChanngeHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnTeamReadyStatusChangedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnTeamReadyStatusChanged(c.Context(), p)
-	})
-}
-
-func OnGoingLiveHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnGoingLivePayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnGoingLive(c.Context(), p)
-	})
-}
-
-func OnRoundStartHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnRoundStartPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnRoundStart(c.Context(), p)
-	})
-}
-
-func OnRoundEndHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnRoundEndPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnRoundEnd(c.Context(), p)
-	})
-}
-
-func OnRoundStatusUpdatedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnRoundStatsUpdatedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnRoundStatsUpdated(c.Context(), p)
-	})
-}
-
-func OnPlayerBecameMVPHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnPlayerBecameMVPPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnPlayerBecameMVP(c.Context(), p)
-	})
-}
-
-func OnGrenadeThrownHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnGrenadeThrownPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnGrenadeThrown(c.Context(), p)
-	})
-}
-
-func OnPlayerDeathHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnPlayerDeathPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnPlayerDeath(c.Context(), p)
-	})
-}
-
-func OnHEGrenadeDetonatedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnHEGrenadeDetonatedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnHEGrenadeDetonated(c.Context(), p)
-	})
-}
-
-func OnMolotovDetonatedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnMolotovDetonatedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnMolotovDetonated(c.Context(), p)
-	})
-}
-
-func OnFlashbangDetonatedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnFlashbangDetonatedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnFlashbangDetonated(c.Context(), p)
-	})
-}
-
-func OnSmokeGrenadeDetonatedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnSmokeGrenadeDetonatedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnSmokeGrenadeDetonated(c.Context(), p)
-	})
-}
-
-func OnDecoyStartedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnDecoyStartedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnDecoyStarted(c.Context(), p)
-	})
-}
-
-func OnBombPlantedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnBombPlantedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnBombPlanted(c.Context(), p)
-	})
-}
-
-func OnBombDefusedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnBombDefusedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnBombDefused(c.Context(), p)
-	})
-}
-
-func OnBombExpodedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnBombExplodedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnBombExploded(c.Context(), p)
-	})
-}
-
-func OnPlayerConnectedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnPlayerConnectedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnPlayerConnected(c.Context(), p)
-	})
-}
-
-func OnPlayerDisconnectedHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnPlayerDisconnectedPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnPlayerDisconnected(c.Context(), p)
-	})
-}
-
-// OnPlayerSayHandler POST on /Get5_OnPlayerSay
-func OnPlayerSayHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
-	return (func(c *fiber.Ctx) error {
-		p := models.OnPlayerSayPayload{}
-		if err := c.BodyParser(&p); err != nil {
-			return err
-		}
-		return ctrl.HandleOnPlayerSay(c.Context(), p)
+		return nil
 	})
 }

@@ -15,7 +15,6 @@ type Controller interface {
 	Hostname() string
 
 	// GET5 Events
-	HandleOnEvent(ctx context.Context, p models.OnEventPayload) error
 	HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error
 	HandleOnPreLoadMatchConfig(ctx context.Context, p models.OnPreLoadMatchConfigPayload) error
 	HandleOnLoadMatchConfigFailed(ctx context.Context, p models.OnLoadMatchConfigFailedPayload) error
