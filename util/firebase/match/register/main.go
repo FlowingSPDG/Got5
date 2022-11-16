@@ -97,8 +97,9 @@ func main() {
 		},
 	}
 
-	if err := ctrl.RegisterMatch(ctx, m); err != nil {
+	m, err = ctrl.RegisterMatch(ctx, m)
+	if err != nil {
 		log.Fatalln(err)
 	}
-
+	log.Println("Match Registered:", m)
 }

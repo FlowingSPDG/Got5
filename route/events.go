@@ -246,6 +246,5 @@ func OnEventHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		default:
 			return fmt.Errorf("Event Not found%s", ev)
 		}
-		return nil
 	})
 }
