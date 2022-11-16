@@ -5,7 +5,7 @@ package models
 // All Events
 
 // OnEventPayload Called when any event is fired. This forward takes two parameters (while all others take only one); the event object itself and a string representing the encoded JSON object. If you use this forward, you should fetch the event name and switch on it, casting the object to its correct subclass using
-type OnEventPayload map[string]interface{}
+type OnEventPayload map[string]any
 
 // Series Flow
 
