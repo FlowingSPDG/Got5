@@ -22,7 +22,7 @@ func (d *Discord) RegisterMatch(ctx context.Context, m models.Match) (models.Mat
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	if ms, ok := d.matches[m.MatchID]; ok {
-		ms.match = m
+		ms.match = m.ToG5Format()
 		return m, nil
 	}
 	return models.Match{}, fmt.Errorf("Match not found")

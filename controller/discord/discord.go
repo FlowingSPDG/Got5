@@ -13,7 +13,6 @@ import (
 )
 
 var _ controller.EventHandler = (*Discord)(nil)
-var _ controller.Database = (*Discord)(nil)
 var _ controller.MatchLoader = (*Discord)(nil)
 var _ controller.DemoUploader = (*Discord)(nil)
 

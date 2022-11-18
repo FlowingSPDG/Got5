@@ -60,10 +60,3 @@ type MatchLoader interface {
 type DemoUploader interface {
 	Upload(ctx context.Context, mid string, filename string, b []byte) error // demoファイルの登録処理
 }
-
-// Database Write interface
-type Database interface {
-	// Create Operation
-	RegisterMatch(ctx context.Context, m models.Match) (models.Match, error) // 外部からマッチ作成リクエストが発生した際に実行されるハンドラ
-	UpdateMatch(ctx context.Context, mid string, m models.Match) error       // 外部からマッチ変更リクエストが発生した際に実行されるハンドラ
-}

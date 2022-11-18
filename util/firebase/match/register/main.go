@@ -8,7 +8,6 @@ import (
 	firebase "firebase.google.com/go"
 
 	fsc "github.com/FlowingSPDG/Got5/controller/firebase"
-	"github.com/FlowingSPDG/Got5/models"
 )
 
 var (
@@ -36,7 +35,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	m := models.Match{
+	m := fsc.Match{
 		MatchTitle: "[TEST] Astralis vs. NaVi",
 		// MatchID:              "", // 自動生成に任せるので設定しない
 		ClinchSeries:         true,
@@ -49,7 +48,7 @@ func main() {
 		SkipVeto:             false,
 		VetoFirst:            "team1",
 		SideType:             "standard",
-		Spectators: models.Spectators{
+		Spectators: fsc.Spectators{
 			Name: "Blast PRO 2021",
 			Players: map[string]string{
 				"76561197987511774": "Anders Blume",
@@ -57,7 +56,7 @@ func main() {
 		},
 		Maplist:  []string{"de_dust2", "de_nuke", "de_inferno", "de_mirage", "de_vertigo", "de_ancient", "de_overpass"},
 		MapSides: []string{"team1_ct", "team2_ct", "knife"},
-		Team1: models.Team{
+		Team1: fsc.Team{
 			Name: "Natus Vincere",
 			Tag:  "NaVi",
 			Flag: "UA",
@@ -73,7 +72,7 @@ func main() {
 				"76561198013523865": "B1ad3",
 			},
 		},
-		Team2: models.Team{
+		Team2: fsc.Team{
 			Name: "Astralis",
 			Tag:  "Astralis",
 			Flag: "DK",
