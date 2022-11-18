@@ -7,22 +7,22 @@ import (
 )
 
 // SetupAllGet5Handlers Setup All Get5-related handlers
-func SetupAllGet5Handlers(ctrl controller.Controller, r fiber.Router, bucket string) error {
+func SetupAllGet5Handlers(ctrl controller.Controller, r fiber.Router) error {
 	if err := SetupMatchLoadHandler(ctrl, r); err != nil {
 		return err
 	}
 	if err := SetupEventHandlers(ctrl, r); err != nil {
 		return err
 	}
-	if err := SetupDemoUploadHandler(ctrl, r, bucket); err != nil {
+	if err := SetupDemoUploadHandler(ctrl, r); err != nil {
 		return err
 	}
 	return nil
 }
 
 // SetupDemoUploadHandler Setup get5 upload demo handler
-func SetupDemoUploadHandler(ctrl controller.Controller, r fiber.Router, bucket string) error {
-	r.Post("/demo", DemoUploadHandler(ctrl, bucket))
+func SetupDemoUploadHandler(ctrl controller.Controller, r fiber.Router) error {
+	r.Post("/demo", DemoUploadHandler(ctrl))
 	return nil
 }
 

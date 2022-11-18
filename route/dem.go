@@ -8,7 +8,7 @@ import (
 
 // DemoUploadHandler POST CS:GO dem file
 // アップロードされたdemファイルを制御するハンドラ
-func DemoUploadHandler(ctrl controller.Controller, bucket string) func(c *fiber.Ctx) error {
+func DemoUploadHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 	return (func(c *fiber.Ctx) error {
 		// TODO: ヘッダーを検証し不正であれば拒否する
 		// Controllerに渡してアップロードを実施
