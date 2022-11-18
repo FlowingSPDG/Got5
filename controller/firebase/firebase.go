@@ -48,9 +48,9 @@ func (f *f) Close() error {
 }
 
 // RegisterDemoFile implements controller.Controller
-func (f *f) RegisterDemoFile(ctx context.Context, bucket string, mid string, filename string, b []byte) error {
+func (f *f) RegisterDemoFile(ctx context.Context, mid string, filename string, b []byte) error {
 	// MatchIDを取得しているので、Firestore上のMatchにdemoのURLを記載しても良い(TODO)
-	bh, err := f.s.Bucket(bucket)
+	bh, err := f.s.DefaultBucket()
 	if err != nil {
 		return err
 	}

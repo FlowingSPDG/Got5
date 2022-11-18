@@ -26,7 +26,7 @@ func (*logger) Close() error {
 }
 
 // RegisterDemoFile implements controller.Controller
-func (*logger) RegisterDemoFile(ctx context.Context, bucket string, mid string, filename string, b []byte) error {
+func (*logger) RegisterDemoFile(ctx context.Context, mid string, filename string, b []byte) error {
 	return nil
 }
 

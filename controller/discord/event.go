@@ -13,7 +13,7 @@ func (*discord) UpdateMatch(ctx context.Context, mid string, m models.Match) err
 }
 
 // RegisterDemoFile implements controller.Controller
-func (d *discord) RegisterDemoFile(ctx context.Context, bucket string, mid string, filename string, b []byte) error {
+func (d *discord) RegisterDemoFile(ctx context.Context, mid string, filename string, b []byte) error {
 	return nil
 }
 

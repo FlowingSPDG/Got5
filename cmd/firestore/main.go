@@ -37,7 +37,8 @@ func main() {
 	// Get Firebase service
 	ctx := context.Background()
 	conf := &firebase.Config{
-		ProjectID: projectID,
+		ProjectID:     projectID,
+		StorageBucket: bucket,
 	}
 	fb, err := firebase.NewApp(ctx, conf)
 	if err != nil {

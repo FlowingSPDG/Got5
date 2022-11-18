@@ -24,7 +24,8 @@ func main() {
 	// Get Firebase service
 	ctx := context.Background()
 	conf := &firebase.Config{
-		ProjectID: projectID,
+		ProjectID:     projectID,
+		StorageBucket: bucket,
 	}
 	fb, err := firebase.NewApp(ctx, conf)
 	if err != nil {
@@ -37,7 +38,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	if err := ctrl.RegisterDemoFile(ctx, bucket, "UNJR7KfmIC1heVjHNyLD", "test_file_name.dem", []byte("Invalid dem data")); err != nil {
+	if err := ctrl.RegisterDemoFile(ctx, "UNJR7KfmIC1heVjHNyLD", "test_file_name.dem", []byte("Invalid dem data")); err != nil {
 		log.Fatalln(err)
 	}
 }

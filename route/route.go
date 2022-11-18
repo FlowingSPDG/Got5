@@ -6,6 +6,7 @@ import (
 	"github.com/FlowingSPDG/Got5/controller"
 )
 
+// SetupAllGet5Handlers Setup All Get5-related handlers
 func SetupAllGet5Handlers(ctrl controller.Controller, r fiber.Router, bucket string) error {
 	if err := SetupMatchLoadHandler(ctrl, r); err != nil {
 		return err
@@ -21,17 +22,17 @@ func SetupAllGet5Handlers(ctrl controller.Controller, r fiber.Router, bucket str
 
 // SetupDemoUploadHandler Setup get5 upload demo handler
 func SetupDemoUploadHandler(ctrl controller.Controller, r fiber.Router, bucket string) error {
-	r.Post("/match/demo", DemoUploadHandler(ctrl, bucket))
+	r.Post("/demo", DemoUploadHandler(ctrl, bucket))
 	return nil
 }
 
-// SetupMatchLoadHandlers Setup get5 loadmatch handler
+// SetupMatchLoadHandler Setup get5 loadmatch handler
 func SetupMatchLoadHandler(ctrl controller.Controller, r fiber.Router) error {
 	r.Get("/match/:matchID", LoadMatchHandler(ctrl))
 	return nil
 }
 
-// SetupRouter Setup get5 handlers to specified fiber.Router
+// SetupEventHandlers get5 handlers to specified fiber.Router
 func SetupEventHandlers(ctrl controller.Controller, r fiber.Router) error {
 	r.Post("/event", OnEventHandler(ctrl))
 	return nil
