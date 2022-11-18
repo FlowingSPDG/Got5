@@ -245,7 +245,7 @@ type OnPlayerDeathPayload struct {
 	Bomb          bool     `json:"bomb"`
 	Headshot      bool     `json:"headshot"`
 	ThruSmoke     bool     `json:"thru_smoke"`
-	Penetrated    bool     `json:"penetrated"`
+	Penetrated    float64  `json:"penetrated"`
 	AttackerBlind bool     `json:"attacker_blind"`
 	NoScope       bool     `json:"no_scope"`
 	Suicide       bool     `json:"suicide"`
@@ -286,11 +286,11 @@ type OnHEGrenadeDetonatedPayload struct {
 
 // Victim Victim Player
 type Victim struct {
-	Player        Player `json:"player"`
-	FriendlyFire  bool   `json:"friendly_fire"`
-	BlindDuration int    `json:"blind_duration,omitempty"`
-	Damage        int    `json:"damage,omitempty"`
-	Killed        bool   `json:"killed,omitempty"`
+	Player        Player  `json:"player"`
+	FriendlyFire  bool    `json:"friendly_fire"`
+	BlindDuration float64 `json:"blind_duration,omitempty"`
+	Damage        int     `json:"damage,omitempty"`
+	Killed        bool    `json:"killed,omitempty"`
 }
 
 // OnMolotovDetonatedPayload Fired when a molotov grenade expires. player describes who threw the molotov and victims who were affected. weapon is always a molotov grenade. Note that round_time reflects the time at which the grenade detonated (started burning).
