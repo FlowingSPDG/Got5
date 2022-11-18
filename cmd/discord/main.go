@@ -33,7 +33,7 @@ func main() {
 
 	// Get Controller for Discord BOT
 	ctx := context.Background()
-	ctrl, err := discord.NewDiscordController(ctx, discordToken, discord.ControllerSetting{
+	ctrl, err := discord.NewDiscord(ctx, discordToken, discord.ControllerSetting{
 		Hostname: hostName,
 		Port:     portInt,
 	})

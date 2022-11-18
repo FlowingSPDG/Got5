@@ -33,12 +33,12 @@ func main() {
 	}
 
 	// Get Controller connected to firestore
-	ctrl, err := fsc.NewFirebaseController(ctx, fb, fsc.ControllerSetting{})
+	up, err := fsc.NewDemoUploader(ctx, fb)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	if err := ctrl.RegisterDemoFile(ctx, "UNJR7KfmIC1heVjHNyLD", "test_file_name.dem", []byte("Invalid dem data")); err != nil {
+	if err := up.Upload(ctx, "UNJR7KfmIC1heVjHNyLD", "test_file_name.dem", []byte("Invalid dem data")); err != nil {
 		log.Fatalln(err)
 	}
 }

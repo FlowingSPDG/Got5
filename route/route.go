@@ -7,33 +7,33 @@ import (
 )
 
 // SetupAllGet5Handlers Setup All Get5-related handlers
-func SetupAllGet5Handlers(ctrl controller.Controller, r fiber.Router) error {
-	if err := SetupMatchLoadHandler(ctrl, r); err != nil {
+func SetupAllGet5Handlers(evh controller.EventHandler, loader controller.MatchLoader, uploader controller.DemoUploader, r fiber.Router) error {
+	if err := SetupEventHandlers(evh, r); err != nil {
 		return err
 	}
-	if err := SetupEventHandlers(ctrl, r); err != nil {
+	if err := SetupMatchLoadHandler(loader, r); err != nil {
 		return err
 	}
-	if err := SetupDemoUploadHandler(ctrl, r); err != nil {
+	if err := SetupDemoUploadHandler(uploader, r); err != nil {
 		return err
 	}
 	return nil
 }
 
 // SetupDemoUploadHandler Setup get5 upload demo handler
-func SetupDemoUploadHandler(ctrl controller.Controller, r fiber.Router) error {
-	r.Post("/demo", DemoUploadHandler(ctrl))
+func SetupDemoUploadHandler(uploader controller.DemoUploader, r fiber.Router) error {
+	r.Post("/demo", DemoUploadHandler(uploader))
 	return nil
 }
 
 // SetupMatchLoadHandler Setup get5 loadmatch handler
-func SetupMatchLoadHandler(ctrl controller.Controller, r fiber.Router) error {
-	r.Get("/match/:matchID", LoadMatchHandler(ctrl))
+func SetupMatchLoadHandler(loader controller.MatchLoader, r fiber.Router) error {
+	r.Get("/match/:matchID", LoadMatchHandler(loader))
 	return nil
 }
 
 // SetupEventHandlers get5 handlers to specified fiber.Router
-func SetupEventHandlers(ctrl controller.Controller, r fiber.Router) error {
+func SetupEventHandlers(ctrl controller.EventHandler, r fiber.Router) error {
 	r.Post("/event", OnEventHandler(ctrl))
 	return nil
 }

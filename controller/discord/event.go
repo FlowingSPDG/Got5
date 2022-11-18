@@ -7,18 +7,18 @@ import (
 	"github.com/FlowingSPDG/Got5/models"
 )
 
-// UpdateMatch implements controller.Controller
-func (*discord) UpdateMatch(ctx context.Context, mid string, m models.Match) error {
+// UpdateMatch implements controller.EventHandler
+func (*Discord) UpdateMatch(ctx context.Context, mid string, m models.Match) error {
 	return nil
 }
 
-// RegisterDemoFile implements controller.Controller
-func (d *discord) RegisterDemoFile(ctx context.Context, mid string, filename string, b []byte) error {
+// Upload implements controller.DemoUploader
+func (d *Discord) Upload(ctx context.Context, mid string, filename string, b []byte) error {
 	return nil
 }
 
-// RegisterMatch implements controller.Controller
-func (d *discord) RegisterMatch(ctx context.Context, m models.Match) (models.Match, error) {
+// RegisterMatch implements controller.EventHandler
+func (d *Discord) RegisterMatch(ctx context.Context, m models.Match) (models.Match, error) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	if ms, ok := d.matches[m.MatchID]; ok {
@@ -28,8 +28,8 @@ func (d *discord) RegisterMatch(ctx context.Context, m models.Match) (models.Mat
 	return models.Match{}, fmt.Errorf("Match not found")
 }
 
-// GetMatch implements controller.Controller
-func (d *discord) GetMatch(ctx context.Context, mid string) (models.G5Match, error) {
+// Load implements controller.MatchLoader
+func (d *Discord) Load(ctx context.Context, mid string) (models.G5Match, error) {
 	d.mu.RLock()
 	defer d.mu.RUnlock()
 	m, ok := d.matches[mid]
@@ -39,58 +39,58 @@ func (d *discord) GetMatch(ctx context.Context, mid string) (models.G5Match, err
 	return m.match, nil
 }
 
-// HandleOnBackupRestore implements controller.Controller
-func (d *discord) HandleOnBackupRestore(ctx context.Context, p models.OnBackupRestorePayload) error {
+// HandleOnBackupRestore implements controller.EventHandler
+func (d *Discord) HandleOnBackupRestore(ctx context.Context, p models.OnBackupRestorePayload) error {
 	return nil
 }
 
-// HandleOnBombDefused implements controller.Controller
-func (d *discord) HandleOnBombDefused(ctx context.Context, p models.OnBombDefusedPayload) error {
+// HandleOnBombDefused implements controller.EventHandler
+func (d *Discord) HandleOnBombDefused(ctx context.Context, p models.OnBombDefusedPayload) error {
 	return nil
 }
 
-// HandleOnBombExploded implements controller.Controller
-func (d *discord) HandleOnBombExploded(ctx context.Context, p models.OnBombExplodedPayload) error {
+// HandleOnBombExploded implements controller.EventHandler
+func (d *Discord) HandleOnBombExploded(ctx context.Context, p models.OnBombExplodedPayload) error {
 	return nil
 }
 
-// HandleOnBombPlanted implements controller.Controller
-func (d *discord) HandleOnBombPlanted(ctx context.Context, p models.OnBombPlantedPayload) error {
+// HandleOnBombPlanted implements controller.EventHandler
+func (d *Discord) HandleOnBombPlanted(ctx context.Context, p models.OnBombPlantedPayload) error {
 	return nil
 }
 
-// HandleOnDecoyStarted implements controller.Controller
-func (d *discord) HandleOnDecoyStarted(ctx context.Context, p models.OnDecoyStartedPayload) error {
+// HandleOnDecoyStarted implements controller.EventHandler
+func (d *Discord) HandleOnDecoyStarted(ctx context.Context, p models.OnDecoyStartedPayload) error {
 	return nil
 }
 
-// HandleOnDemoFinished implements controller.Controller
-func (d *discord) HandleOnDemoFinished(ctx context.Context, p models.OnDemoFinishedPayload) error {
+// HandleOnDemoFinished implements controller.EventHandler
+func (d *Discord) HandleOnDemoFinished(ctx context.Context, p models.OnDemoFinishedPayload) error {
 	return nil
 }
 
-// HandleOnDemoUploadEnded implements controller.Controller
-func (d *discord) HandleOnDemoUploadEnded(ctx context.Context, p models.OnDemoUploadEndedPayload) error {
+// HandleOnDemoUploadEnded implements controller.EventHandler
+func (d *Discord) HandleOnDemoUploadEnded(ctx context.Context, p models.OnDemoUploadEndedPayload) error {
 	return nil
 }
 
-// HandleOnEvent implements controller.Controller
-func (d *discord) HandleOnEvent(ctx context.Context, p models.OnEventPayload) error {
+// HandleOnEvent implements controller.EventHandler
+func (d *Discord) HandleOnEvent(ctx context.Context, p models.OnEventPayload) error {
 	return nil
 }
 
-// HandleOnFlashbangDetonated implements controller.Controller
-func (d *discord) HandleOnFlashbangDetonated(ctx context.Context, p models.OnFlashbangDetonatedPayload) error {
+// HandleOnFlashbangDetonated implements controller.EventHandler
+func (d *Discord) HandleOnFlashbangDetonated(ctx context.Context, p models.OnFlashbangDetonatedPayload) error {
 	return nil
 }
 
-// HandleOnGameStateChanged implements controller.Controller
-func (d *discord) HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error {
+// HandleOnGameStateChanged implements controller.EventHandler
+func (d *Discord) HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error {
 	return nil
 }
 
-// HandleOnGoingLive implements controller.Controller
-func (d *discord) HandleOnGoingLive(ctx context.Context, p models.OnGoingLivePayload) error {
+// HandleOnGoingLive implements controller.EventHandler
+func (d *Discord) HandleOnGoingLive(ctx context.Context, p models.OnGoingLivePayload) error {
 	// 一度Interactionに返事をするとそれ以上の返信はできず、メッセージを編集するかFollow Up Meesageのみとなる
 	// しかしInteraction token自体が15分しか持続しないため、それ以降は個別にメッセージを送信する必要がある
 	d.mu.RLock()
@@ -103,18 +103,18 @@ func (d *discord) HandleOnGoingLive(ctx context.Context, p models.OnGoingLivePay
 	return nil
 }
 
-// HandleOnGrenadeThrown implements controller.Controller
-func (d *discord) HandleOnGrenadeThrown(ctx context.Context, p models.OnGrenadeThrownPayload) error {
+// HandleOnGrenadeThrown implements controller.EventHandler
+func (d *Discord) HandleOnGrenadeThrown(ctx context.Context, p models.OnGrenadeThrownPayload) error {
 	return nil
 }
 
-// HandleOnHEGrenadeDetonated implements controller.Controller
-func (d *discord) HandleOnHEGrenadeDetonated(ctx context.Context, p models.OnHEGrenadeDetonatedPayload) error {
+// HandleOnHEGrenadeDetonated implements controller.EventHandler
+func (d *Discord) HandleOnHEGrenadeDetonated(ctx context.Context, p models.OnHEGrenadeDetonatedPayload) error {
 	return nil
 }
 
-// HandleOnKnifeRoundStarted implements controller.Controller
-func (d *discord) HandleOnKnifeRoundStarted(ctx context.Context, p models.OnKnifeRoundStartedPayload) error {
+// HandleOnKnifeRoundStarted implements controller.EventHandler
+func (d *Discord) HandleOnKnifeRoundStarted(ctx context.Context, p models.OnKnifeRoundStartedPayload) error {
 	d.mu.RLock()
 	defer d.mu.RUnlock()
 	m := d.matches[p.Matchid]
@@ -126,8 +126,8 @@ func (d *discord) HandleOnKnifeRoundStarted(ctx context.Context, p models.OnKnif
 	return nil
 }
 
-// HandleOnKnifeRoundWon implements controller.Controller
-func (d *discord) HandleOnKnifeRoundWon(ctx context.Context, p models.OnKnifeRoundWonPayload) error {
+// HandleOnKnifeRoundWon implements controller.EventHandler
+func (d *Discord) HandleOnKnifeRoundWon(ctx context.Context, p models.OnKnifeRoundWonPayload) error {
 	d.mu.RLock()
 	defer d.mu.RUnlock()
 	m := d.matches[p.Matchid]
@@ -138,94 +138,94 @@ func (d *discord) HandleOnKnifeRoundWon(ctx context.Context, p models.OnKnifeRou
 	return nil
 }
 
-// HandleOnLoadMatchConfigFailed implements controller.Controller
-func (d *discord) HandleOnLoadMatchConfigFailed(ctx context.Context, p models.OnLoadMatchConfigFailedPayload) error {
+// HandleOnLoadMatchConfigFailed implements controller.EventHandler
+func (d *Discord) HandleOnLoadMatchConfigFailed(ctx context.Context, p models.OnLoadMatchConfigFailedPayload) error {
 	return nil
 }
 
-// HandleOnMapPicked implements controller.Controller
-func (d *discord) HandleOnMapPicked(ctx context.Context, p models.OnMapPickedPayload) error {
+// HandleOnMapPicked implements controller.EventHandler
+func (d *Discord) HandleOnMapPicked(ctx context.Context, p models.OnMapPickedPayload) error {
 	return nil
 }
 
-// HandleOnMapResult implements controller.Controller
+// HandleOnMapResult implements controller.EventHandler
 // どうせBO1だしマップ結果も出さなくていいんじゃないか...?
-func (d *discord) HandleOnMapResult(ctx context.Context, p models.OnMapResultPayload) error {
+func (d *Discord) HandleOnMapResult(ctx context.Context, p models.OnMapResultPayload) error {
 	return nil
 }
 
-// HandleOnMapVetoed implements controller.Controller
-func (d *discord) HandleOnMapVetoed(ctx context.Context, p models.OnMapVetoedPayload) error {
+// HandleOnMapVetoed implements controller.EventHandler
+func (d *Discord) HandleOnMapVetoed(ctx context.Context, p models.OnMapVetoedPayload) error {
 	return nil
 }
 
-// HandleOnMatchPaused implements controller.Controller
-func (d *discord) HandleOnMatchPaused(ctx context.Context, p models.OnMatchPausedPayload) error {
+// HandleOnMatchPaused implements controller.EventHandler
+func (d *Discord) HandleOnMatchPaused(ctx context.Context, p models.OnMatchPausedPayload) error {
 	return nil
 }
 
-// HandleOnMatchUnpaused implements controller.Controller
-func (d *discord) HandleOnMatchUnpaused(ctx context.Context, p models.OnMatchUnpausedPayload) error {
+// HandleOnMatchUnpaused implements controller.EventHandler
+func (d *Discord) HandleOnMatchUnpaused(ctx context.Context, p models.OnMatchUnpausedPayload) error {
 	return nil
 }
 
-// HandleOnMolotovDetonated implements controller.Controller
-func (d *discord) HandleOnMolotovDetonated(ctx context.Context, p models.OnMolotovDetonatedPayload) error {
+// HandleOnMolotovDetonated implements controller.EventHandler
+func (d *Discord) HandleOnMolotovDetonated(ctx context.Context, p models.OnMolotovDetonatedPayload) error {
 	return nil
 }
 
-// HandleOnPlayerBecameMVP implements controller.Controller
-func (d *discord) HandleOnPlayerBecameMVP(ctx context.Context, p models.OnPlayerBecameMVPPayload) error {
+// HandleOnPlayerBecameMVP implements controller.EventHandler
+func (d *Discord) HandleOnPlayerBecameMVP(ctx context.Context, p models.OnPlayerBecameMVPPayload) error {
 	return nil
 }
 
-// HandleOnPlayerConnected implements controller.Controller
-func (d *discord) HandleOnPlayerConnected(ctx context.Context, p models.OnPlayerConnectedPayload) error {
+// HandleOnPlayerConnected implements controller.EventHandler
+func (d *Discord) HandleOnPlayerConnected(ctx context.Context, p models.OnPlayerConnectedPayload) error {
 	return nil
 }
 
-// HandleOnPlayerDeath implements controller.Controller
-func (d *discord) HandleOnPlayerDeath(ctx context.Context, p models.OnPlayerDeathPayload) error {
+// HandleOnPlayerDeath implements controller.EventHandler
+func (d *Discord) HandleOnPlayerDeath(ctx context.Context, p models.OnPlayerDeathPayload) error {
 	return nil
 }
 
-// HandleOnPlayerDisconnected implements controller.Controller
-func (d *discord) HandleOnPlayerDisconnected(ctx context.Context, p models.OnPlayerDisconnectedPayload) error {
+// HandleOnPlayerDisconnected implements controller.EventHandler
+func (d *Discord) HandleOnPlayerDisconnected(ctx context.Context, p models.OnPlayerDisconnectedPayload) error {
 	return nil
 }
 
-// HandleOnPlayerSay implements controller.Controller
-func (d *discord) HandleOnPlayerSay(ctx context.Context, p models.OnPlayerSayPayload) error {
+// HandleOnPlayerSay implements controller.EventHandler
+func (d *Discord) HandleOnPlayerSay(ctx context.Context, p models.OnPlayerSayPayload) error {
 	return nil
 }
 
-// HandleOnPreLoadMatchConfig implements controller.Controller
-func (d *discord) HandleOnPreLoadMatchConfig(ctx context.Context, p models.OnPreLoadMatchConfigPayload) error {
+// HandleOnPreLoadMatchConfig implements controller.EventHandler
+func (d *Discord) HandleOnPreLoadMatchConfig(ctx context.Context, p models.OnPreLoadMatchConfigPayload) error {
 	return nil
 }
 
-// HandleOnRoundEnd implements controller.Controller
-func (d *discord) HandleOnRoundEnd(ctx context.Context, p models.OnRoundEndPayload) error {
+// HandleOnRoundEnd implements controller.EventHandler
+func (d *Discord) HandleOnRoundEnd(ctx context.Context, p models.OnRoundEndPayload) error {
 	return nil
 }
 
-// HandleOnRoundStart implements controller.Controller
-func (d *discord) HandleOnRoundStart(ctx context.Context, p models.OnRoundStartPayload) error {
+// HandleOnRoundStart implements controller.EventHandler
+func (d *Discord) HandleOnRoundStart(ctx context.Context, p models.OnRoundStartPayload) error {
 	return nil
 }
 
-// HandleOnRoundStatsUpdated implements controller.Controller
-func (d *discord) HandleOnRoundStatsUpdated(ctx context.Context, p models.OnRoundStatsUpdatedPayload) error {
+// HandleOnRoundStatsUpdated implements controller.EventHandler
+func (d *Discord) HandleOnRoundStatsUpdated(ctx context.Context, p models.OnRoundStatsUpdatedPayload) error {
 	return nil
 }
 
-// HandleOnSeriesInit implements controller.Controller
-func (d *discord) HandleOnSeriesInit(ctx context.Context, p models.OnSeriesInitPayload) error {
+// HandleOnSeriesInit implements controller.EventHandler
+func (d *Discord) HandleOnSeriesInit(ctx context.Context, p models.OnSeriesInitPayload) error {
 	return nil
 }
 
-// HandleOnSeriesResult implements controller.Controller
-func (d *discord) HandleOnSeriesResult(ctx context.Context, p models.OnSeriesResultPayload) error {
+// HandleOnSeriesResult implements controller.EventHandler
+func (d *Discord) HandleOnSeriesResult(ctx context.Context, p models.OnSeriesResultPayload) error {
 	d.mu.RLock()
 	defer d.mu.RUnlock()
 	m, ok := d.matches[p.Matchid]
@@ -241,17 +241,17 @@ func (d *discord) HandleOnSeriesResult(ctx context.Context, p models.OnSeriesRes
 	return nil
 }
 
-// HandleOnSidePicked implements controller.Controller
-func (d *discord) HandleOnSidePicked(ctx context.Context, p models.OnSidePickedPayload) error {
+// HandleOnSidePicked implements controller.EventHandler
+func (d *Discord) HandleOnSidePicked(ctx context.Context, p models.OnSidePickedPayload) error {
 	return nil
 }
 
-// HandleOnSmokeGrenadeDetonated implements controller.Controller
-func (d *discord) HandleOnSmokeGrenadeDetonated(ctx context.Context, p models.OnSmokeGrenadeDetonatedPayload) error {
+// HandleOnSmokeGrenadeDetonated implements controller.EventHandler
+func (d *Discord) HandleOnSmokeGrenadeDetonated(ctx context.Context, p models.OnSmokeGrenadeDetonatedPayload) error {
 	return nil
 }
 
-// HandleOnTeamReadyStatusChanged implements controller.Controller
-func (d *discord) HandleOnTeamReadyStatusChanged(ctx context.Context, p models.OnTeamReadyStatusChangedPayload) error {
+// HandleOnTeamReadyStatusChanged implements controller.EventHandler
+func (d *Discord) HandleOnTeamReadyStatusChanged(ctx context.Context, p models.OnTeamReadyStatusChangedPayload) error {
 	return nil
 }

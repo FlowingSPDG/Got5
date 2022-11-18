@@ -8,7 +8,7 @@ import (
 
 // DemoUploadHandler POST CS:GO dem file
 // アップロードされたdemファイルを制御するハンドラ
-func DemoUploadHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
+func DemoUploadHandler(uploader controller.DemoUploader) func(c *fiber.Ctx) error {
 	return (func(c *fiber.Ctx) error {
 		// TODO: ヘッダーを検証し不正であれば拒否する
 		// Controllerに渡してアップロードを実施
@@ -17,7 +17,7 @@ func DemoUploadHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
 		// mapNumber := c.Get("Get5-MapNumber")
 		// serverID := c.Get("Get5-ServerId")
 
-		if err := ctrl.RegisterDemoFile(c.Context(), matchID, filename, c.Body()); err != nil {
+		if err := uploader.Upload(c.Context(), matchID, filename, c.Body()); err != nil {
 			return c.Status(fiber.StatusInternalServerError).SendString(err.Error()) // カスタムエラーを返したい
 		}
 		return nil

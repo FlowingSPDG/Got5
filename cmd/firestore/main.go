@@ -5,7 +5,6 @@ import (
 	"flag"
 	"log"
 	"net"
-	"strconv"
 
 	firebase "firebase.google.com/go"
 	"github.com/gofiber/fiber/v2"
@@ -29,11 +28,6 @@ func main() {
 	flag.StringVar(&port, "port", "8080", "Port to listen")
 	flag.Parse()
 
-	portInt, err := strconv.Atoi(port)
-	if err != nil {
-		panic(err)
-	}
-
 	// Get Firebase service
 	ctx := context.Background()
 	conf := &firebase.Config{
@@ -45,20 +39,29 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	// Get Controller connected to firestore
-	ctrl, err := fsc.NewFirebaseController(ctx, fb, fsc.ControllerSetting{
-		Hostname: hostName,
-		Port:     portInt,
-	})
+	// Get Event Handler
+	evh, err := fsc.NewEventHandler(ctx, fb)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer ctrl.Close()
+	defer evh.Close()
+
+	loader, err := fsc.NewMatchLoader(ctx, fb)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	demUploader, err := fsc.NewDemoUploader(ctx, fb)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	// Get Match Loader
 
 	// Setup fiber
 	app := fiber.New()
 	g5 := app.Group("/get5") // /get5
-	if err := route.SetupAllGet5Handlers(ctrl, g5); err != nil {
+	if err := route.SetupAllGet5Handlers(evh, loader, demUploader, g5); err != nil {
 		panic(err)
 	}
 

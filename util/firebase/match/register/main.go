@@ -31,7 +31,7 @@ func main() {
 	}
 
 	// Get Controller connected to firestore
-	ctrl, err := fsc.NewFirebaseController(ctx, fb, fsc.ControllerSetting{})
+	ctrl, err := fsc.NewDatabase(ctx, fb)
 	if err != nil {
 		log.Fatalln(err)
 	}

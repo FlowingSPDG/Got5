@@ -12,7 +12,10 @@ import (
 	"github.com/FlowingSPDG/Got5/models"
 )
 
-// Discord Interaction(POST) の実装をしてもいいかもしれない
+var _ controller.EventHandler = (*Discord)(nil)
+var _ controller.Database = (*Discord)(nil)
+var _ controller.MatchLoader = (*Discord)(nil)
+var _ controller.DemoUploader = (*Discord)(nil)
 
 // ControllerSetting Settings
 type ControllerSetting struct {
@@ -20,9 +23,10 @@ type ControllerSetting struct {
 	Port     int
 }
 
-// discord is Automated CS:GO/get5 BOT.
+// Discord is Automated CS:GO/get5 BOT.
 // 外部のDBなどを使わずに動くため、永続化したいのであればFirebaseなどのクライアントへ保存することを推奨
-type discord struct {
+// discord implements all of EventHandler, Database, MatchLoader, DemoUploader.
+type Discord struct {
 	setting ControllerSetting
 	s       *discordgo.Session // Session本体
 	mu      sync.RWMutex
@@ -33,12 +37,13 @@ type discord struct {
 	} // GET5のマッチID(=interactionID))に対応したマッチ情報
 }
 
-// DemoUploadHandlerURL implements controller.Controller
-func (d *discord) Hostname() string {
+// Hostname implements controller.EventHandler
+func (d *Discord) Hostname() string {
 	return d.setting.Hostname
 }
 
-func (d *discord) Close() error {
+// Close implements controller.EventHandler
+func (d *Discord) Close() error {
 	return d.s.Close()
 }
 
@@ -75,13 +80,13 @@ func getInteractionIDByAddModal(d discordgo.ModalSubmitInteractionData) string {
 	return d.Components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
 }
 
-// NewDiscordController Get discord pointer
-func NewDiscordController(ctx context.Context, token string, setting ControllerSetting) (controller.Controller, error) {
+// NewDiscord Get discord pointer
+func NewDiscord(ctx context.Context, token string, setting ControllerSetting) (*Discord, error) {
 	d, err := discordgo.New("Bot " + token)
 	if err != nil {
 		return nil, err
 	}
-	c := &discord{
+	c := &Discord{
 		setting: setting,
 		s:       d,
 		mu:      sync.RWMutex{},

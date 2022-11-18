@@ -22,7 +22,7 @@ func reMarshal(m map[string]any, p any) error {
 }
 
 // OnEventHandler POST on /Get5_OnEvent
-func OnEventHandler(ctrl controller.Controller) func(c *fiber.Ctx) error {
+func OnEventHandler(ctrl controller.EventHandler) func(c *fiber.Ctx) error {
 	return (func(c *fiber.Ctx) error {
 		p := make(map[string]any)
 		if err := c.BodyParser(&p); err != nil {

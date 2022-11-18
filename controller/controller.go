@@ -6,9 +6,8 @@ import (
 	"github.com/FlowingSPDG/Got5/models"
 )
 
-// Controller Controller interface operates CRUD operation for e.g. Databases.
-type Controller interface {
-	// TODO: イベントハンドラーの部分のinterfaceとし、CRUDオペレーションに関連したオペレーション部分を別のinterfaceとして再定義する
+// EventHandler EventHandler interface handles read operation by get5 events
+type EventHandler interface {
 	Close() error
 
 	// イベントハンドラへの絶対パスURL
@@ -50,13 +49,21 @@ type Controller interface {
 	HandleOnPlayerConnected(ctx context.Context, p models.OnPlayerConnectedPayload) error
 	HandleOnPlayerDisconnected(ctx context.Context, p models.OnPlayerDisconnectedPayload) error
 	HandleOnPlayerSay(ctx context.Context, p models.OnPlayerSayPayload) error
+}
 
-	// Read Operation
-	GetMatch(ctx context.Context, mid string) (models.G5Match, error)
-	// GetMap etc
+// MatchLoader is for Read Operation(get5_loadmatch_url)
+type MatchLoader interface {
+	Load(ctx context.Context, mid string) (models.G5Match, error)
+}
 
+// DemoUploader is for Demo Upload Operation(get5_dem_upload_url)
+type DemoUploader interface {
+	Upload(ctx context.Context, mid string, filename string, b []byte) error // demoファイルの登録処理
+}
+
+// Database Write interface
+type Database interface {
 	// Create Operation
-	RegisterMatch(ctx context.Context, m models.Match) (models.Match, error)           // 外部からマッチ作成リクエストが発生した際に実行されるハンドラ
-	UpdateMatch(ctx context.Context, mid string, m models.Match) error                 // 外部からマッチ変更リクエストが発生した際に実行されるハンドラ
-	RegisterDemoFile(ctx context.Context, mid string, filename string, b []byte) error // demoファイルの登録処理
+	RegisterMatch(ctx context.Context, m models.Match) (models.Match, error) // 外部からマッチ作成リクエストが発生した際に実行されるハンドラ
+	UpdateMatch(ctx context.Context, mid string, m models.Match) error       // 外部からマッチ変更リクエストが発生した際に実行されるハンドラ
 }

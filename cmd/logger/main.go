@@ -8,13 +8,17 @@ import (
 )
 
 func main() {
-	ctrl := logger.NewLoggerController()
-	defer ctrl.Close()
+	evh := logger.NewEventHandler()
+	defer evh.Close()
+
+	// db := logger.NewDatabase()
+	loader := logger.NewMatchLoader()
+	uploader := logger.NewDemoUploader()
 
 	app := fiber.New()
 
 	g5 := app.Group("/get5") // /get5
-	if err := route.SetupAllGet5Handlers(ctrl, g5); err != nil {
+	if err := route.SetupAllGet5Handlers(evh, loader, uploader, g5); err != nil {
 		panic(err)
 	}
 
