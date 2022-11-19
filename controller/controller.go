@@ -14,6 +14,9 @@ type EventHandler interface {
 	// イベントハンドラへの絶対パスURL
 	Hostname() string
 
+	// Auth Checker
+	CheckAuth(ctx context.Context, mid string, reqAuth string) error
+
 	// GET5 Events
 	HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error
 	HandleOnPreLoadMatchConfig(ctx context.Context, p models.OnPreLoadMatchConfigPayload) error

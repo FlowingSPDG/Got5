@@ -353,7 +353,7 @@ type OnBombPlantedPayload struct {
 	Site        string `json:"site"`
 }
 
-//OnBombDefusedPayload Fired when the bomb is defused. player describes who defused the bomb.
+// OnBombDefusedPayload Fired when the bomb is defused. player describes who defused the bomb.
 type OnBombDefusedPayload struct {
 	Event             string `json:"event"`
 	Matchid           string `json:"matchid"`

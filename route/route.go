@@ -34,6 +34,7 @@ func SetupMatchLoadHandler(loader controller.MatchLoader, r fiber.Router) error 
 
 // SetupEventHandlers get5 handlers to specified fiber.Router
 func SetupEventHandlers(ctrl controller.EventHandler, r fiber.Router) error {
-	r.Post("/event", OnEventHandler(ctrl))
+	ev := r.Use(CheckAuth(ctrl))
+	ev.Post("/event", OnEventHandler(ctrl))
 	return nil
 }

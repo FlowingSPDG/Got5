@@ -248,3 +248,25 @@ func OnEventHandler(ctrl controller.EventHandler) func(c *fiber.Ctx) error {
 		}
 	})
 }
+
+// OnEventHandler POST on /Get5_OnEvent
+func CheckAuth(ctrl controller.EventHandler) func(c *fiber.Ctx) error {
+	return (func(c *fiber.Ctx) error {
+		p := make(map[string]any)
+		if err := c.BodyParser(&p); err != nil {
+			return err
+		}
+		mid, ok := (p["matchid"]).(string)
+		if !ok {
+			return fmt.Errorf("Unsupported JSON Format")
+		}
+
+		reqAuthVal := c.Get("Authorization")
+
+		if err := ctrl.CheckAuth(c.Context(), mid, reqAuthVal); err != nil {
+			c.Status(fiber.StatusUnauthorized)
+			return nil
+		}
+		return c.Next()
+	})
+}

@@ -36,6 +36,11 @@ type Discord struct {
 	} // GET5のマッチID(=interactionID))に対応したマッチ情報
 }
 
+// CheckAuth implements controller.EventHandler
+func (*Discord) CheckAuth(ctx context.Context, string string, value string) error {
+	return nil
+}
+
 // Verify implements controller.DemoUploader
 func (d *Discord) Verify(ctx context.Context, mid string, filename string, mapNumber int, serverID int) bool {
 	// not supported
