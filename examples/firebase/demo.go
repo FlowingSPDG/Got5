@@ -16,6 +16,12 @@ type firebaseDemoUploader struct {
 	s *storage.Client
 }
 
+func (f *firebaseDemoUploader) Verify(ctx context.Context, mid string, filename string, mapNumber int, serverID int) bool {
+	// TODO: Implement Verify method
+	// Grand all access for now
+	return true
+}
+
 // GetMatch implements controller.EventHandler
 func (f *firebaseDemoUploader) Upload(ctx context.Context, mid string, filename string, r io.Reader) error {
 	bh, err := f.s.DefaultBucket()

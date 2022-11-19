@@ -36,6 +36,12 @@ type Discord struct {
 	} // GET5のマッチID(=interactionID))に対応したマッチ情報
 }
 
+// Verify implements controller.DemoUploader
+func (d *Discord) Verify(ctx context.Context, mid string, filename string, mapNumber int, serverID int) bool {
+	// not supported
+	return false
+}
+
 // Hostname implements controller.EventHandler
 func (d *Discord) Hostname() string {
 	return d.setting.Hostname

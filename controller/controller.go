@@ -59,5 +59,6 @@ type MatchLoader interface {
 
 // DemoUploader is for Demo Upload Operation(get5_dem_upload_url)
 type DemoUploader interface {
-	Upload(ctx context.Context, mid string, filename string, r io.Reader) error // demoファイルの登録処理
+	Verify(ctx context.Context, mid string, filename string, mapNumber int, serverID int) bool // errorではなくboolで良いか？
+	Upload(ctx context.Context, mid string, filename string, r io.Reader) error                // demoファイルの登録処理
 }

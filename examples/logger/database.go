@@ -14,11 +14,6 @@ func (*Database) UpdateMatch(ctx context.Context, mid string, m models.Match) er
 	return nil
 }
 
-// RegisterDemoFile implements controller.EventHandler
-func (*Database) RegisterDemoFile(ctx context.Context, mid string, filename string, b []byte) error {
-	return nil
-}
-
 // RegisterMatch implements controller.EventHandler
 func (*Database) RegisterMatch(ctx context.Context, m models.Match) (models.G5Match, error) {
 	log.Println(m)

@@ -12,11 +12,6 @@ func (*Discord) UpdateMatch(ctx context.Context, mid string, m models.Match) err
 	return nil
 }
 
-// Upload implements controller.DemoUploader
-func (d *Discord) Upload(ctx context.Context, mid string, filename string, b []byte) error {
-	return nil
-}
-
 // RegisterMatch implements controller.EventHandler
 func (d *Discord) RegisterMatch(ctx context.Context, m models.Match) (models.Match, error) {
 	d.mu.Lock()
