@@ -249,8 +249,8 @@ func OnEventHandler(ctrl controller.EventHandler) func(c *fiber.Ctx) error {
 	})
 }
 
-// CheckAuth 認証用ハンドラ
-func CheckAuth(ctrl controller.EventHandler) func(c *fiber.Ctx) error {
+// CheckEventHandlerAuth 認証用ハンドラ
+func CheckEventHandlerAuth(ctrl controller.EventHandler) func(c *fiber.Ctx) error {
 	return (func(c *fiber.Ctx) error {
 		p := make(map[string]any)
 		if err := c.BodyParser(&p); err != nil {

@@ -2,6 +2,7 @@ package fb
 
 import (
 	"context"
+	"fmt"
 
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
@@ -13,20 +14,25 @@ import (
 var _ controller.MatchLoader = (*firebaseMatchLoader)(nil)
 
 type firebaseMatchLoader struct {
-	fs *firestore.Client
+	*Database // Databaseを埋め込む
+	fs        *firestore.Client
+}
+
+// CheckAuth implements controller.MatchLoader
+func (f *firebaseMatchLoader) CheckAuth(ctx context.Context, mid string, reqAuth string) error {
+	m, err := f.Database.GetMatch(ctx, mid)
+	if err != nil {
+		return err
+	}
+	if reqAuth != m.AuthValue {
+		return fmt.Errorf("Auth mismatch")
+	}
+	return nil
 }
 
 // GetMatch implements controller.EventHandler
 func (f *firebaseMatchLoader) Load(ctx context.Context, mid string) (models.G5Match, error) {
-	ret := Match{}
-	dsnap, err := f.fs.Collection(CollectionMatch).Doc(mid).Get(ctx)
-	if err != nil {
-		return ret, err
-	}
-	if err := dsnap.DataTo(&ret); err != nil {
-		return ret, err
-	}
-	return ret, nil
+	return f.Database.GetMatch(ctx, mid)
 }
 
 // NewMatchLoader Get Firebase Match Loader
@@ -37,7 +43,13 @@ func NewMatchLoader(ctx context.Context, c *firebase.App) (controller.MatchLoade
 		return nil, err
 	}
 
+	db, err := NewDatabase(ctx, c)
+	if err != nil {
+		return nil, err
+	}
+
 	return &firebaseMatchLoader{
-		fs: fs,
+		Database: db,
+		fs:       fs,
 	}, nil
 }

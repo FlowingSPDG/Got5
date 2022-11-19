@@ -29,6 +29,7 @@ func DemoUploadHandler(uploader controller.DemoUploader) func(c *fiber.Ctx) erro
 			return c.Status(fiber.StatusBadRequest).SendString(err.Error()) // カスタムエラーを返したい
 		}
 
+		// Verifyをかける
 		if !uploader.Verify(c.Context(), filename, matchID, mapNum, serverID) {
 			return c.Status(fiber.StatusBadRequest).SendString("Not verified") // カスタムエラーを返したい
 		}

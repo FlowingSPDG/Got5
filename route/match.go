@@ -6,14 +6,23 @@ import (
 	"github.com/FlowingSPDG/Got5/controller"
 )
 
+// CheckMatchLoaderAuth 認証用ハンドラ
+func CheckMatchLoaderAuth(loader controller.MatchLoader) func(c *fiber.Ctx) error {
+	return (func(c *fiber.Ctx) error {
+		mid := c.Params("matchID")
+		reqAuthVal := c.Get("Authorization")
+		if err := loader.CheckAuth(c.Context(), mid, reqAuthVal); err != nil {
+			c.Status(fiber.StatusUnauthorized)
+			return nil
+		}
+		return c.Next()
+	})
+}
+
 // LoadMatchHandler GET on get5_loadmatch_url "https://example.com/match_config.json" "Authorization" "Bearer <token>"
 func LoadMatchHandler(loader controller.MatchLoader) func(c *fiber.Ctx) error {
 	return (func(c *fiber.Ctx) error {
-		// TODO: 必要であればJWTを検証する
-
 		// マッチを取得、JSONを組んで返す
-		// 注意: c.Params はリクエストの間でしか有効ではないので注意
-		// 参照: https://docs.gofiber.io/#zero-allocation
 		mid := c.Params("matchID")
 		m, err := loader.Load(c.Context(), mid)
 		if err != nil {
