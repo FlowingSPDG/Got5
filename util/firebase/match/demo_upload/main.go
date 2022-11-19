@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"flag"
 	"log"
@@ -38,7 +39,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	if err := up.Upload(ctx, "UNJR7KfmIC1heVjHNyLD", "test_file_name.dem", []byte("Invalid dem data")); err != nil {
+	if err := up.Upload(ctx, "UNJR7KfmIC1heVjHNyLD", "test_file_name.dem", bytes.NewBuffer([]byte("INVALID DATA"))); err != nil {
 		log.Fatalln(err)
 	}
 }

@@ -1,7 +1,6 @@
 package fb
 
 import (
-	"bytes"
 	"context"
 	"io"
 
@@ -17,7 +16,7 @@ type firebaseDemoUploader struct {
 }
 
 // GetMatch implements controller.EventHandler
-func (f *firebaseDemoUploader) Upload(ctx context.Context, mid string, filename string, b []byte) error {
+func (f *firebaseDemoUploader) Upload(ctx context.Context, mid string, filename string, r io.Reader) error {
 	bh, err := f.s.DefaultBucket()
 	if err != nil {
 		return err
@@ -29,7 +28,7 @@ func (f *firebaseDemoUploader) Upload(ctx context.Context, mid string, filename 
 	writer.ObjectAttrs.ContentType = "application/octet-stream"
 	writer.ObjectAttrs.CacheControl = "public,max-age=86400"
 
-	if _, err := io.Copy(writer, bytes.NewReader(b)); err != nil {
+	if _, err := io.Copy(writer, r); err != nil {
 		return err
 	}
 	return nil

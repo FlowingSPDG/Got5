@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+	"io"
 
 	"github.com/FlowingSPDG/Got5/models"
 )
@@ -58,5 +59,5 @@ type MatchLoader interface {
 
 // DemoUploader is for Demo Upload Operation(get5_dem_upload_url)
 type DemoUploader interface {
-	Upload(ctx context.Context, mid string, filename string, b []byte) error // demoファイルの登録処理
+	Upload(ctx context.Context, mid string, filename string, r io.Reader) error // demoファイルの登録処理
 }
