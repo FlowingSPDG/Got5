@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/FlowingSPDG/Got5/controller/logger"
+	"github.com/FlowingSPDG/Got5/examples/logger"
 	"github.com/FlowingSPDG/Got5/route"
 )
 

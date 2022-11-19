@@ -7,7 +7,7 @@ import (
 
 	firebase "firebase.google.com/go"
 
-	fsc "github.com/FlowingSPDG/Got5/controller/firebase"
+	fsc "github.com/FlowingSPDG/Got5/examples/firebase"
 )
 
 var (

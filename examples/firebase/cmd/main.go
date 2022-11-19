@@ -9,7 +9,7 @@ import (
 	firebase "firebase.google.com/go"
 	"github.com/gofiber/fiber/v2"
 
-	fsc "github.com/FlowingSPDG/Got5/controller/firebase"
+	fsc "github.com/FlowingSPDG/Got5/examples/firebase"
 	"github.com/FlowingSPDG/Got5/route"
 )
 

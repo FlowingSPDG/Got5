@@ -22,3 +22,4 @@ go.work
 
 # Firebase related
 *.log
+.DS_Store
