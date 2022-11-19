@@ -13,6 +13,11 @@ var _ controller.EventHandler = (*loggerEventHandler)(nil)
 // logger is simply prints what happend.
 type loggerEventHandler struct{}
 
+// CheckAuth implements controller.EventHandler
+func (*loggerEventHandler) CheckAuth(ctx context.Context, mid string, reqAuth string) error {
+	return nil
+}
+
 // Hostname implements controller.EventHandler
 func (*loggerEventHandler) Hostname() string {
 	return ""

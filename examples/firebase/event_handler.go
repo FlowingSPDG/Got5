@@ -3,6 +3,7 @@ package fb
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
@@ -15,9 +16,22 @@ import (
 var _ controller.EventHandler = (*firebaseEventHandler)(nil)
 
 type firebaseEventHandler struct {
-	fs      *firestore.Client
-	s       *storage.Client
-	setting setting
+	*Database // Databaseを埋め込んでおく
+	fs        *firestore.Client
+	s         *storage.Client
+	setting   setting
+}
+
+// CheckAuth implements controller.EventHandler
+func (f *firebaseEventHandler) CheckAuth(ctx context.Context, mid string, reqAuth string) error {
+	m, err := f.Database.GetMatch(ctx, mid)
+	if err != nil {
+		return err
+	}
+	if reqAuth != m.AuthValue {
+		return fmt.Errorf("Auth mismatch")
+	}
+	return nil
 }
 
 // ControllerSetting Settings
@@ -266,8 +280,16 @@ func NewEventHandler(ctx context.Context, c *firebase.App) (controller.EventHand
 		return nil, err
 	}
 
+	// Database for writing
+	db, err := NewDatabase(ctx, c)
+	if err != nil {
+		return nil, err
+	}
+
 	return &firebaseEventHandler{
-		fs: fs,
-		s:  s,
+		Database: db,
+		fs:       fs,
+		s:        s,
+		setting:  setting{},
 	}, nil
 }

@@ -25,6 +25,8 @@ type Match struct {
 	Cvars                map[string]string `firestore:"cvars"`
 
 	// Firetore向けに追加したいフィールドがあればここで追記する
+	// Additional fields for firestore
+	AuthValue string `firestore:"auth_value"`
 }
 
 func (m Match) ToG5Format() models.Match {

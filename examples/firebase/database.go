@@ -39,6 +39,20 @@ func (f *Database) RegisterMatch(ctx context.Context, m Match) (Match, error) {
 	return ret, nil
 }
 
+// GetMatch Get Match from Firestore
+func (f *Database) GetMatch(ctx context.Context, mid string) (Match, error) {
+	ret := Match{}
+	ref := f.fs.Collection(CollectionMatch).Doc(mid)
+	snap, err := ref.Get(ctx)
+	if err != nil {
+		return ret, err
+	}
+	if err := snap.DataTo(&ret); err != nil {
+		return ret, err
+	}
+	return ret, nil
+}
+
 // NewDatabase Get Firestore Database
 func NewDatabase(ctx context.Context, c *firebase.App) (*Database, error) {
 	// Firestore

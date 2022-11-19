@@ -14,6 +14,9 @@ type EventHandler interface {
 	// イベントハンドラへの絶対パスURL
 	Hostname() string
 
+	// Auth Checker
+	CheckAuth(ctx context.Context, mid string, reqAuth string) error
+
 	// GET5 Events
 	HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error
 	HandleOnPreLoadMatchConfig(ctx context.Context, p models.OnPreLoadMatchConfigPayload) error
@@ -54,6 +57,10 @@ type EventHandler interface {
 
 // MatchLoader is for Read Operation(get5_loadmatch_url)
 type MatchLoader interface {
+	// Auth Checker
+	CheckAuth(ctx context.Context, mid string, reqAuth string) error
+
+	// Load respond to get5_loadmatch_url
 	Load(ctx context.Context, mid string) (models.G5Match, error)
 }
 
