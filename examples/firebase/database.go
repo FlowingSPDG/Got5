@@ -8,8 +8,6 @@ import (
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
 	storage "firebase.google.com/go/storage"
-
-	"github.com/FlowingSPDG/Got5/models"
 )
 
 // Database is Get5 API Database on firestore
@@ -19,7 +17,7 @@ type Database struct {
 }
 
 // UpdateMatch implements controller.EventHandler
-func (f *Database) UpdateMatch(ctx context.Context, mid string, m models.Match) error {
+func (f *Database) UpdateMatch(ctx context.Context, mid string, m Match) error {
 	if _, err := f.fs.Collection(CollectionMatch).Doc(mid).Set(ctx, m, firestore.MergeAll); err != nil {
 		return err
 	}
