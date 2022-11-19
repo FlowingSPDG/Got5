@@ -249,7 +249,7 @@ func OnEventHandler(ctrl controller.EventHandler) func(c *fiber.Ctx) error {
 	})
 }
 
-// OnEventHandler POST on /Get5_OnEvent
+// CheckAuth 認証用ハンドラ
 func CheckAuth(ctrl controller.EventHandler) func(c *fiber.Ctx) error {
 	return (func(c *fiber.Ctx) error {
 		p := make(map[string]any)
