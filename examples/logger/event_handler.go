@@ -14,7 +14,7 @@ var _ controller.EventHandler = (*loggerEventHandler)(nil)
 type loggerEventHandler struct{}
 
 // CheckAuth implements controller.EventHandler
-func (*loggerEventHandler) CheckAuth(ctx context.Context, mid string, reqAuth string) error {
+func (*loggerEventHandler) CheckEventAuth(ctx context.Context, mid string, reqAuth string) error {
 	return nil
 }
 

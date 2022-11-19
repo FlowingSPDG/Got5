@@ -22,7 +22,8 @@ func SetupAllGet5Handlers(evh controller.EventHandler, loader controller.MatchLo
 
 // SetupDemoUploadHandler Setup get5 upload demo handler
 func SetupDemoUploadHandler(uploader controller.DemoUploader, r fiber.Router) error {
-	r.Post("/demo", DemoUploadHandler(uploader))
+	dem := r.Use(CheckDemoAuth(uploader))
+	dem.Post("/demo", DemoUploadHandler(uploader))
 	return nil
 }
 

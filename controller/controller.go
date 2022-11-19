@@ -15,7 +15,7 @@ type EventHandler interface {
 	Hostname() string
 
 	// Auth Checker
-	CheckAuth(ctx context.Context, mid string, reqAuth string) error
+	CheckEventAuth(ctx context.Context, mid string, reqAuth string) error
 
 	// GET5 Events
 	HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error
@@ -58,7 +58,7 @@ type EventHandler interface {
 // MatchLoader is for Read Operation(get5_loadmatch_url)
 type MatchLoader interface {
 	// Auth Checker
-	CheckAuth(ctx context.Context, mid string, reqAuth string) error
+	CheckMatchAuth(ctx context.Context, mid string, reqAuth string) error
 
 	// Load respond to get5_loadmatch_url
 	Load(ctx context.Context, mid string) (models.G5Match, error)
@@ -66,6 +66,6 @@ type MatchLoader interface {
 
 // DemoUploader is for Demo Upload Operation(get5_dem_upload_url)
 type DemoUploader interface {
-	Verify(ctx context.Context, mid string, filename string, mapNumber int, serverID int) bool // errorではなくboolで良いか？
-	Upload(ctx context.Context, mid string, filename string, r io.Reader) error                // demoファイルの登録処理
+	CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error
+	Upload(ctx context.Context, mid string, filename string, r io.Reader) error // demoファイルの登録処理
 }

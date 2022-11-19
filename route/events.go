@@ -263,7 +263,7 @@ func CheckEventHandlerAuth(ctrl controller.EventHandler) func(c *fiber.Ctx) erro
 
 		reqAuthVal := c.Get("Authorization")
 
-		if err := ctrl.CheckAuth(c.Context(), mid, reqAuthVal); err != nil {
+		if err := ctrl.CheckEventAuth(c.Context(), mid, reqAuthVal); err != nil {
 			c.Status(fiber.StatusUnauthorized)
 			return nil
 		}

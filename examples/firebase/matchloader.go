@@ -19,7 +19,7 @@ type firebaseMatchLoader struct {
 }
 
 // CheckAuth implements controller.MatchLoader
-func (f *firebaseMatchLoader) CheckAuth(ctx context.Context, mid string, reqAuth string) error {
+func (f *firebaseMatchLoader) CheckMatchAuth(ctx context.Context, mid string, reqAuth string) error {
 	m, err := f.Database.GetMatch(ctx, mid)
 	if err != nil {
 		return err

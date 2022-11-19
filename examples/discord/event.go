@@ -7,6 +7,11 @@ import (
 	"github.com/FlowingSPDG/Got5/models"
 )
 
+// CheckEventAuth implements controller.EventHandler
+func (*Discord) CheckEventAuth(ctx context.Context, mid string, reqAuth string) error {
+	return nil
+}
+
 // UpdateMatch implements controller.EventHandler
 func (*Discord) UpdateMatch(ctx context.Context, mid string, m models.Match) error {
 	return nil

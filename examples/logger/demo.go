@@ -13,12 +13,12 @@ var _ controller.DemoUploader = (*loggerDemoUploader)(nil)
 type loggerDemoUploader struct{}
 
 // Verify implements controller.DemoUploader
-func (*loggerDemoUploader) Verify(ctx context.Context, mid string, filename string, mapNumber int, serverID int) bool {
+func (*loggerDemoUploader) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error {
 	log.Println("mid", mid)
 	log.Println("filename", filename)
 	log.Println("mapNumber", mapNumber)
 	log.Println("serverID", serverID)
-	return true
+	return nil
 }
 
 // GetMatch implements controller.EventHandler

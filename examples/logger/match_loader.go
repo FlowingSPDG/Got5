@@ -13,7 +13,7 @@ var _ controller.MatchLoader = (*loggerMatchLoader)(nil)
 type loggerMatchLoader struct{}
 
 // CheckAuth implements controller.MatchLoader
-func (*loggerMatchLoader) CheckAuth(ctx context.Context, mid string, reqAuth string) error {
+func (*loggerMatchLoader) CheckMatchAuth(ctx context.Context, mid string, reqAuth string) error {
 	return nil
 }
 
