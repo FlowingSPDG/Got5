@@ -8,12 +8,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// DemoUploadHandler POST CS:GO dem file
+// DemoUploadHandler POST CS:GO dem file.
 // アップロードされたdemファイルを制御するハンドラ
 func DemoUploadHandler(uploader controller.DemoUploader) func(c *fiber.Ctx) error {
 	return (func(c *fiber.Ctx) error {
-		// TODO: ヘッダーを検証し不正であれば拒否する
-		// Controllerに渡してアップロードを実施
+		// アップロードを実施
 		filename := c.Get("Get5-DemoName")
 		matchID := c.Get("Get5-MatchId")
 
@@ -30,7 +29,7 @@ func DemoUploadHandler(uploader controller.DemoUploader) func(c *fiber.Ctx) erro
 		}
 
 		if !uploader.Verify(c.Context(), filename, matchID, mapNum, serverID) {
-			return c.Status(fiber.StatusBadRequest).SendString("Not verified") // カスタムエラーを返したい
+			return c.Status(fiber.StatusUnauthorized).SendString("Not verified") // カスタムエラーを返したい
 		}
 
 		br := bytes.NewBuffer(c.Body())
