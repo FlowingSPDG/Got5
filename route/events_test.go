@@ -293,6 +293,64 @@ func TestEventHandleTD(t *testing.T) {
 			// err:        nil,
 			input: []byte(`{"event": "preload_match_config","filename": "TEST_FILENAME"}`),
 		},
+		{
+			title: "MatchConfigLoadFail",
+			eventHandler: &mockEventHandler{
+				expect: models.OnLoadMatchConfigFailedPayload{
+					Event:  models.Event{Event: "match_config_load_fail"},
+					Reason: "You done goofed.",
+				},
+			},
+			statusCode: http.StatusOK,
+			// err:        nil,
+			input: []byte(`{"event": "match_config_load_fail","reason": "You done goofed."}`),
+		},
+		{
+			title: "SeriesInit",
+			eventHandler: &mockEventHandler{
+				expect: models.OnSeriesInitPayload{
+					Event:     models.Event{Event: "series_start"},
+					Matchid:   "14272",
+					Team1Name: "NaVi",
+					Team2Name: "Astralis",
+				},
+			},
+			statusCode: http.StatusOK,
+			// err:        nil,
+			input: []byte(`{"event": "series_start","matchid": "14272","team1_name": "NaVi","team2_name": "Astralis"}`),
+		},
+		{
+			title: "MapResult",
+			eventHandler: &mockEventHandler{
+				expect: models.OnMapResultPayload{
+					Event:      models.Event{Event: "map_result"},
+					Matchid:    "14272",
+					MapNumber:  0,
+					Team1Score: 16,
+					Team2Score: 13,
+					Winner:     models.Winner{Side: "ct", Team: "team1"},
+				},
+			},
+			statusCode: http.StatusOK,
+			// err:        nil,
+			input: []byte(`{"event": "map_result","matchid": "14272","map_number": 0,"team1_score": 16,"team2_score": 13,"winner": {"side": "ct","team": "team1"}}`),
+		},
+		{
+			title: "SeriesEnd",
+			eventHandler: &mockEventHandler{
+				expect: models.OnSeriesResultPayload{
+					Event:            models.Event{Event: "series_end"},
+					Matchid:          "14272",
+					Team1SeriesScore: 2,
+					Team2SeriesScore: 0,
+					Winner:           models.Winner{Side: "ct", Team: "team1"},
+					TimeUntilRestore: 45,
+				},
+			},
+			statusCode: http.StatusOK,
+			// err:        nil,
+			input: []byte(`{"event": "series_end","matchid": "14272","team1_series_score": 2,"team2_series_score": 0,"winner": {"side": "ct","team": "team1"},"time_until_restore": 45}`),
+		},
 	}
 
 	for _, tt := range cases {
