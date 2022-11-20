@@ -22,21 +22,18 @@ func SetupAllGet5Handlers(evh controller.EventHandler, loader controller.MatchLo
 
 // SetupDemoUploadHandler Setup get5 upload demo handler
 func SetupDemoUploadHandler(uploader controller.DemoUploader, r fiber.Router) error {
-	dem := r.Use(CheckDemoAuth(uploader))
-	dem.Post("/demo", DemoUploadHandler(uploader))
+	r.Post("/demo", CheckDemoAuth(uploader), DemoUploadHandler(uploader))
 	return nil
 }
 
 // SetupMatchLoadHandler Setup get5 loadmatch handler
 func SetupMatchLoadHandler(loader controller.MatchLoader, r fiber.Router) error {
-	ml := r.Use(CheckMatchLoaderAuth(loader))
-	ml.Get("/match/:matchID", LoadMatchHandler(loader))
+	r.Get("/match/:matchID", CheckMatchLoaderAuth(loader), LoadMatchHandler(loader))
 	return nil
 }
 
 // SetupEventHandlers get5 handlers to specified fiber.Router
 func SetupEventHandlers(ctrl controller.EventHandler, r fiber.Router) error {
-	ev := r.Use(CheckEventHandlerAuth(ctrl))
-	ev.Post("/event", OnEventHandler(ctrl))
+	r.Post("/event", CheckEventHandlerAuth(ctrl), OnEventHandler(ctrl))
 	return nil
 }
