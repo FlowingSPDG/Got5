@@ -45,7 +45,7 @@ func GetDefaultMatchBO1() Match {
 			Name:    "",
 			Players: map[string]string{},
 		},
-		Maplist:  []string{"de_dust2", "de_nuke", "de_inferno", "de_mirage", "de_vertigo", "de_ancient", "de_overpass"},
+		Maplist:  []string{"de_anubis", "de_nuke", "de_inferno", "de_mirage", "de_vertigo", "de_ancient", "de_overpass"},
 		MapSides: []string{"knife"},
 		Team1: Team{
 			Name:    "",

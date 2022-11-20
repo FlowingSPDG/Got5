@@ -54,7 +54,7 @@ func main() {
 				"76561197987511774": "Anders Blume",
 			},
 		},
-		Maplist:  []string{"de_dust2", "de_nuke", "de_inferno", "de_mirage", "de_vertigo", "de_ancient", "de_overpass"},
+		Maplist:  []string{"de_anubis", "de_nuke", "de_inferno", "de_mirage", "de_vertigo", "de_ancient", "de_overpass"},
 		MapSides: []string{"team1_ct", "team2_ct", "knife"},
 		Team1: fsc.Team{
 			Name: "Natus Vincere",
