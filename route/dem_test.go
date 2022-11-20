@@ -31,7 +31,7 @@ func (*mockDemoUploaderGrant) Upload(ctx context.Context, mid string, filename s
 
 // Verify implements controller.DemoUploader
 func (*mockDemoUploaderGrant) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error {
-	return fmt.Errorf("") // always true
+	return nil // always true
 }
 
 // mockDemoUploaderDeny Deny all access
@@ -45,7 +45,7 @@ func (*mockDemoUploaderDenyAll) Upload(ctx context.Context, mid string, filename
 
 // Verify implements controller.DemoUploader
 func (*mockDemoUploaderDenyAll) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error {
-	return nil // always false
+	return fmt.Errorf("DENY") // always false
 }
 
 // mockDemoUploaderDenyUpload Deny all upload
@@ -59,7 +59,7 @@ func (*mockDemoUploaderDenyUpload) Upload(ctx context.Context, mid string, filen
 
 // Verify implements controller.DemoUploader
 func (*mockDemoUploaderDenyUpload) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error {
-	return fmt.Errorf("") // always true
+	return nil // always true
 }
 
 func TestDemoUploadTD(t *testing.T) {
