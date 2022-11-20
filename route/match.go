@@ -12,8 +12,7 @@ func CheckMatchLoaderAuth(loader controller.MatchLoader) func(c *fiber.Ctx) erro
 		mid := c.Params("matchID")
 		reqAuthVal := c.Get("Authorization")
 		if err := loader.CheckMatchAuth(c.Context(), mid, reqAuthVal); err != nil {
-			c.Status(fiber.StatusUnauthorized)
-			return nil
+			return c.Status(fiber.StatusUnauthorized).SendString("Authorization Invalid")
 		}
 		return c.Next()
 	})
