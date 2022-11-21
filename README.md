@@ -1,4 +1,5 @@
 # Got5
+[![test](https://github.com/FlowingSPDG/Got5/actions/workflows/dagger.yml/badge.svg)](https://github.com/FlowingSPDG/Got5/actions/workflows/dagger.yml)  
 Go + get5 = Got5!  
 Got5 is simple and fast, Build-Your-Own-Get5Web framework.  
 Built with Go(1.18), Fiber.
@@ -23,6 +24,9 @@ type EventHandler interface {
 
 	// イベントハンドラへの絶対パスURL
 	Hostname() string
+
+	// Auth Checker
+	CheckEventAuth(ctx context.Context, mid string, reqAuth string) error
 
 	// GET5 Events
 	HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error
@@ -70,6 +74,10 @@ https://splewis.github.io/get5/latest/match_schema/
 ```go
 // MatchLoader is for Read Operation(get5_loadmatch_url)
 type MatchLoader interface {
+	// Auth Checker
+	CheckMatchAuth(ctx context.Context, mid string, auth string) error
+
+	// Load respond to get5_loadmatch_url
 	Load(ctx context.Context, mid string) (models.G5Match, error)
 }
 ```
@@ -102,10 +110,6 @@ type Match struct {
 	Team2                Team              `json:"team2"`
 	Cvars                map[string]string `json:"cvars"`
 }
-
-func (m Match) ToG5Format() Match {
-	return m
-}
 ```
 
 #### DemoUploader
@@ -114,9 +118,24 @@ You may want to add auth middleware to prevend unauthorized demo uploads.
 ```go
 // DemoUploader is for Demo Upload Operation(get5_dem_upload_url)
 type DemoUploader interface {
-	Upload(ctx context.Context, mid string, filename string, b []byte) error // demoファイルの登録処理
+	CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error
+	Upload(ctx context.Context, mid string, filename string, r io.Reader) error // demoファイルの登録処理
 }
 ```
+
+## Authentication  
+There are some CVARs for authenticating Got5 and get5 gameserver.  
+- `get5_remote_log_url` - For specifying where to send Event Data.  
+  - `get5_remote_log_header_key` - HTTP Header key for event request.  
+  - `get5_remote_log_header_value` - HTTP header value for event request.  
+- `get5_demo_upload_url` - For specifying where to upload demo data.  
+  - `get5_demo_upload_header_key` - HTTP Header key for demo upload.  
+  - `get5_demo_upload_header_value` - HTTP Header value for demo upload.  
+- `get5_loadmatch_url "https://example.com/match_config.json" "Authorization" "Bearer <token>"` - For loading match info.  
+
+However, currently **Got5 does not support  `get5_remote_log_header_key` and `get5_remote_log_header_value` CVARs** due to implemention issue(https://github.com/splewis/get5/issues/940 , https://github.com/FlowingSPDG/Got5/issues/25)  
+So your Got5-based system has **no authentication of receiving events**.  
+I am going to add this feature once I got way to solve this, but currently this is unsafe way.  
 
 ## Examples
 ### logger
@@ -133,4 +152,7 @@ You may need to enable firestore on your Google Cloud Platform project.
 Discord struct implements all Got5 interfaces.  
 You can create match, store event datas and post what happens.  
 
+### Discord webhook
+[discord_webhook](https://github.com/FlowingSPDG/Got5/tree/main/examples/discord_webhook) posts received get5 events.  
+This is fairly simple and nice example for learning your first Got5 based system.
 
