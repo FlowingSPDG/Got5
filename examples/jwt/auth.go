@@ -26,10 +26,12 @@ func (f *firebaseAuth) CheckDemoAuth(ctx context.Context, mid string, filename s
 		return f.secret, nil
 	})
 
+	if err != nil {
+		return err
+	}
+
 	if claims, ok := token.Claims.(route.G5JWT); ok && token.Valid {
 		fmt.Println(claims)
-	} else {
-		return err
 	}
 	return nil
 }
