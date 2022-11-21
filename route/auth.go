@@ -3,7 +3,7 @@ package route
 import (
 	"fmt"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 // G5JWT Got5 JWT. CVAR only supports 128 characters so shrink as much as you can

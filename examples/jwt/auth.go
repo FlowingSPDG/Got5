@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/golang-jwt/jwt/v4"
+
 	"github.com/FlowingSPDG/Got5/controller"
 	"github.com/FlowingSPDG/Got5/route"
-	"github.com/golang-jwt/jwt"
 )
 
 var _ controller.Auth = (*firebaseAuth)(nil)

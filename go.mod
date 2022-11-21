@@ -11,6 +11,8 @@ require (
 	github.com/disgoorg/disgo v0.13.22
 	github.com/disgoorg/snowflake/v2 v2.0.1
 	github.com/gofiber/fiber/v2 v2.39.0
+	github.com/golang-jwt/jwt/v4 v4.4.2
+	github.com/najeira/randstr v0.1.1
 	github.com/stretchr/testify v1.8.1
 )
 
@@ -49,7 +51,6 @@ require (
 	github.com/gofrs/flock v0.8.1 // indirect
 	github.com/gogo/googleapis v1.4.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
@@ -70,7 +71,6 @@ require (
 	github.com/moby/locker v1.0.1 // indirect
 	github.com/moby/sys/signal v0.7.0 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
-	github.com/najeira/randstr v0.1.1 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.0.3-0.20211202183452-c5a74bcca799 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
