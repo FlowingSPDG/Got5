@@ -12,11 +12,6 @@ var _ controller.MatchLoader = (*loggerMatchLoader)(nil)
 
 type loggerMatchLoader struct{}
 
-// CheckAuth implements controller.MatchLoader
-func (*loggerMatchLoader) CheckMatchAuth(ctx context.Context, mid string, reqAuth string) error {
-	return nil
-}
-
 // GetMatch implements controller.EventHandler
 func (*loggerMatchLoader) Load(ctx context.Context, mid string) (models.G5Match, error) {
 	log.Println(mid)

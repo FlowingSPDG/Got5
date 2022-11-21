@@ -22,11 +22,6 @@ type mockEventHandler struct {
 	parsed any
 }
 
-// CheckEventAuth implements controller.EventHandler
-func (m *mockEventHandler) CheckEventAuth(ctx context.Context, mid string, reqAuth string) error {
-	return nil
-}
-
 // Close implements controller.EventHandler
 func (m *mockEventHandler) Close() error {
 	return nil
@@ -253,6 +248,7 @@ func TestEventHandleTD(t *testing.T) {
 	cases := []struct {
 		title        string
 		eventHandler *mockEventHandler
+		auth         *mockAuth
 		statusCode   int
 		input        []byte
 		// err        error
@@ -358,7 +354,7 @@ func TestEventHandleTD(t *testing.T) {
 			// Setup fiber
 			app := fiber.New()
 			g5test := app.Group("/get5testevent") // /test
-			err := route.SetupEventHandlers(tt.eventHandler, g5test)
+			err := route.SetupEventHandlers(tt.eventHandler, tt.auth, g5test)
 			asserts.NoError(err)
 
 			r := httptest.NewRequest("POST", "/get5testevent/event", bytes.NewBuffer(tt.input))

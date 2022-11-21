@@ -3,7 +3,6 @@ package fb
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
@@ -20,18 +19,6 @@ type firebaseEventHandler struct {
 	fs        *firestore.Client
 	s         *storage.Client
 	setting   setting
-}
-
-// CheckAuth implements controller.EventHandler
-func (f *firebaseEventHandler) CheckEventAuth(ctx context.Context, mid string, reqAuth string) error {
-	m, err := f.Database.GetMatch(ctx, mid)
-	if err != nil {
-		return err
-	}
-	if reqAuth != m.AuthValue {
-		return fmt.Errorf("Auth mismatch")
-	}
-	return nil
 }
 
 // ControllerSetting Settings

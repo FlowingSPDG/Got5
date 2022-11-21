@@ -9,7 +9,7 @@ import (
 )
 
 // CheckDemoAuth 認証用ハンドラ
-func CheckDemoAuth(uploader controller.DemoUploader) func(c *fiber.Ctx) error {
+func CheckDemoAuth(auth controller.Auth) func(c *fiber.Ctx) error {
 	return (func(c *fiber.Ctx) error { // Verifyをかける
 		filename := c.Get("Get5-DemoName")
 		matchID := c.Get("Get5-MatchId")
@@ -26,8 +26,8 @@ func CheckDemoAuth(uploader controller.DemoUploader) func(c *fiber.Ctx) error {
 			return c.Status(fiber.StatusBadRequest).SendString(err.Error()) // カスタムエラーを返したい
 		}
 
-		auth := c.Get("Get5-Authorization")
-		if err := uploader.CheckDemoAuth(c.Context(), filename, matchID, mapNum, serverID, auth); err != nil {
+		reqAuth := c.Get("Get5-Authorization")
+		if err := auth.CheckDemoAuth(c.Context(), filename, matchID, mapNum, serverID, reqAuth); err != nil {
 			return c.Status(fiber.StatusUnauthorized).SendString("Not verified") // カスタムエラーを返したい
 		}
 		return c.Next()

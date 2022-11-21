@@ -29,11 +29,6 @@ func (*mockDemoUploaderGrant) Upload(ctx context.Context, mid string, filename s
 	return nil
 }
 
-// Verify implements controller.DemoUploader
-func (*mockDemoUploaderGrant) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error {
-	return nil // always true
-}
-
 // mockDemoUploaderDeny Deny all access
 type mockDemoUploaderDenyAll struct{}
 
@@ -41,11 +36,6 @@ type mockDemoUploaderDenyAll struct{}
 func (*mockDemoUploaderDenyAll) Upload(ctx context.Context, mid string, filename string, r io.Reader) error {
 	io.Copy(io.Discard, r)
 	return fmt.Errorf("Deny all access")
-}
-
-// Verify implements controller.DemoUploader
-func (*mockDemoUploaderDenyAll) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error {
-	return fmt.Errorf("DENY") // always false
 }
 
 // mockDemoUploaderDenyUpload Deny all upload
@@ -68,6 +58,7 @@ func TestDemoUploadTD(t *testing.T) {
 	cases := []struct {
 		title      string
 		uploader   controller.DemoUploader
+		auth       controller.Auth
 		statusCode int
 		// err        error
 		headers map[string]string
@@ -76,6 +67,7 @@ func TestDemoUploadTD(t *testing.T) {
 			title:      "Grant All Access",
 			uploader:   &mockDemoUploaderGrant{},
 			statusCode: http.StatusOK,
+			auth:       &mockAuth{},
 			// err:        nil,
 			headers: map[string]string{
 				"Get5-DemoName":  "dem_name",
@@ -88,6 +80,7 @@ func TestDemoUploadTD(t *testing.T) {
 			title:      "Deny All",
 			uploader:   &mockDemoUploaderDenyAll{},
 			statusCode: http.StatusUnauthorized,
+			auth:       &mockAuth{},
 			headers: map[string]string{
 				"Get5-DemoName":  "dem_name",
 				"Get5-MatchId":   "mID_ABCDEFG",
@@ -100,6 +93,7 @@ func TestDemoUploadTD(t *testing.T) {
 			title:      "Internal Error on Upload",
 			uploader:   &mockDemoUploaderDenyUpload{},
 			statusCode: http.StatusInternalServerError,
+			auth:       &mockAuth{},
 			headers: map[string]string{
 				"Get5-DemoName":  "dem_name",
 				"Get5-MatchId":   "mID_ABCDEFG",
@@ -112,6 +106,7 @@ func TestDemoUploadTD(t *testing.T) {
 			title:      "Invalid request",
 			uploader:   &mockDemoUploaderGrant{},
 			statusCode: http.StatusBadRequest,
+			auth:       &mockAuth{},
 			headers: map[string]string{
 				"Get5-DemoName":  "dem_name",
 				"Get5-MatchId":   "000",
@@ -127,7 +122,7 @@ func TestDemoUploadTD(t *testing.T) {
 			// Setup fiber
 			app := fiber.New()
 			g5test := app.Group("/get5testdemo") // /test
-			err := route.SetupDemoUploadHandler(tt.uploader, g5test)
+			err := route.SetupDemoUploadHandler(tt.uploader, tt.auth, g5test)
 			asserts.NoError(err)
 
 			r := httptest.NewRequest("POST", "/get5testdemo/demo", bytes.NewBuffer([]byte("demo file data")))

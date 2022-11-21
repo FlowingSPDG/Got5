@@ -18,6 +18,7 @@ var (
 	bucket    = ""
 	hostName  = "localhost"
 	port      = "8080"
+	secret    = ""
 )
 
 func main() {
@@ -26,6 +27,7 @@ func main() {
 	flag.StringVar(&bucket, "bucket", "", "Firebase Storage Bucket")
 	flag.StringVar(&hostName, "hostname", "localhost", "Web hostname")
 	flag.StringVar(&port, "port", "8080", "Port to listen")
+	flag.StringVar(&secret, "secret", "SUPER_SECRET_STRING_PLEASE_CHANGE", "Secret string for JWT")
 	flag.Parse()
 
 	// Get Firebase service
@@ -38,6 +40,8 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	auth := fsc.NewAuth(secret)
 
 	// Get Event Handler
 	evh, err := fsc.NewEventHandler(ctx, fb)
@@ -61,7 +65,7 @@ func main() {
 	// Setup fiber
 	app := fiber.New()
 	g5 := app.Group("/get5") // /get5
-	if err := route.SetupAllGet5Handlers(evh, loader, demUploader, g5); err != nil {
+	if err := route.SetupAllGet5Handlers(evh, loader, demUploader, auth, g5); err != nil {
 		panic(err)
 	}
 

@@ -2,7 +2,6 @@ package fb
 
 import (
 	"context"
-	"fmt"
 	"io"
 
 	firebase "firebase.google.com/go"
@@ -16,17 +15,6 @@ var _ controller.MatchLoader = (*firebaseMatchLoader)(nil)
 type firebaseDemoUploader struct {
 	*Database
 	s *storage.Client
-}
-
-func (f *firebaseDemoUploader) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error {
-	m, err := f.Database.GetMatch(ctx, mid)
-	if err != nil {
-		return err
-	}
-	if auth != m.AuthValue {
-		return fmt.Errorf("Auth mismatch")
-	}
-	return nil
 }
 
 // GetMatch implements controller.EventHandler
