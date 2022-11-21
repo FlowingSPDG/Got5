@@ -6,7 +6,10 @@ require (
 	cloud.google.com/go/firestore v1.8.0
 	dagger.io/dagger v0.4.0
 	firebase.google.com/go v3.13.0+incompatible
+	github.com/aws/aws-sdk-go-v2 v1.17.1
 	github.com/bwmarrin/discordgo v0.26.1
+	github.com/disgoorg/disgo v0.13.22
+	github.com/disgoorg/snowflake/v2 v2.0.1
 	github.com/gofiber/fiber/v2 v2.39.0
 	github.com/stretchr/testify v1.8.1
 )
@@ -22,6 +25,7 @@ require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
+	github.com/aws/smithy-go v1.13.4 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
 	github.com/containerd/console v1.0.3 // indirect
 	github.com/containerd/containerd v1.6.9 // indirect
@@ -32,6 +36,8 @@ require (
 	github.com/dagger/graphql v0.0.0-20221102000338-24d5e47d3b72 // indirect
 	github.com/dagger/graphql-go-tools v0.0.0-20221102001222-e68b44170936 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/disgoorg/json v1.0.0 // indirect
+	github.com/disgoorg/log v1.2.0 // indirect
 	github.com/docker/cli v20.10.17+incompatible // indirect
 	github.com/docker/distribution v2.8.1+incompatible // indirect
 	github.com/docker/docker v20.10.17+incompatible // indirect
@@ -50,7 +56,7 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.7.0 // indirect
-	github.com/gorilla/websocket v1.4.2 // indirect
+	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.2 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
@@ -69,6 +75,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/rs/zerolog v1.28.0 // indirect
+	github.com/sasha-s/go-csync v0.0.0-20210812194225-61421b77c44b // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/tonistiigi/fsutil v0.0.0-20220115021204-b19f7f9cb274 // indirect
 	github.com/tonistiigi/units v0.0.0-20180711220420-6950e57a87ea // indirect
