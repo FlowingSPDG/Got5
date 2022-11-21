@@ -20,6 +20,7 @@ var _ controller.DemoUploader = (*Discord)(nil)
 type ControllerSetting struct {
 	Hostname string
 	Port     int
+	password string
 }
 
 // Discord is Automated CS:GO/get5 BOT.
@@ -34,12 +35,6 @@ type Discord struct {
 		member      *discordgo.Member      // マッチ作成を実行したユーザー
 		match       models.Match           // GET5自体のマッチ情報
 	} // GET5のマッチID(=interactionID))に対応したマッチ情報
-}
-
-// CheckMatchAuth implements controller.MatchLoader
-func (*Discord) CheckMatchAuth(ctx context.Context, mid string, reqAuth string) error {
-	// TODO:auth
-	return nil
 }
 
 // Hostname implements controller.EventHandler

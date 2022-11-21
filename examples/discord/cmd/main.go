@@ -17,6 +17,7 @@ var (
 	discordToken = ""
 	hostName     = "localhost"
 	port         = "8080"
+	password     = ""
 )
 
 func main() {
@@ -24,6 +25,7 @@ func main() {
 	flag.StringVar(&discordToken, "token", "", "Discord BOT Token")
 	flag.StringVar(&hostName, "hostname", "", "Web hostname")
 	flag.StringVar(&port, "port", "8080", "Port to listen")
+	flag.StringVar(&password, "password", "password", "Password to auth")
 	flag.Parse()
 
 	portInt, err := strconv.Atoi(port)
@@ -45,10 +47,10 @@ func main() {
 	// Setup fiber
 	app := fiber.New()
 	g5 := app.Group("/get5") // /get5
-	if err := route.SetupEventHandlers(ctrl, g5); err != nil {
+	if err := route.SetupEventHandlers(ctrl, ctrl, g5); err != nil {
 		panic(err)
 	}
-	if err := route.SetupMatchLoadHandler(ctrl, g5); err != nil {
+	if err := route.SetupMatchLoadHandler(ctrl, ctrl, g5); err != nil {
 		panic(err)
 	}
 

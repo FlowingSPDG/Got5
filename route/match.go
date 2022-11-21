@@ -7,11 +7,11 @@ import (
 )
 
 // CheckMatchLoaderAuth 認証用ハンドラ
-func CheckMatchLoaderAuth(loader controller.MatchLoader) func(c *fiber.Ctx) error {
+func CheckMatchLoaderAuth(auth controller.Auth) func(c *fiber.Ctx) error {
 	return (func(c *fiber.Ctx) error {
 		mid := c.Params("matchID")
 		reqAuthVal := c.Get("Authorization")
-		if err := loader.CheckMatchAuth(c.Context(), mid, reqAuthVal); err != nil {
+		if err := auth.MatchAuth(c.Context(), mid, reqAuthVal); err != nil {
 			return c.Status(fiber.StatusUnauthorized).SendString("Authorization Invalid")
 		}
 		return c.Next()

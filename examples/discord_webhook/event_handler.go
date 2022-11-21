@@ -25,14 +25,6 @@ type webhookEventHandler struct {
 	c        webhook.Client
 }
 
-// CheckAuth implements controller.EventHandler
-func (wh *webhookEventHandler) CheckEventAuth(ctx context.Context, mid string, reqAuth string) error {
-	if reqAuth == wh.auth {
-		return nil
-	}
-	return fmt.Errorf("Password mismatch")
-}
-
 // Hostname implements controller.EventHandler
 func (wh *webhookEventHandler) Hostname() string {
 	return wh.eventURL

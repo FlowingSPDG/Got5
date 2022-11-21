@@ -7,15 +7,19 @@ import (
 	"github.com/FlowingSPDG/Got5/models"
 )
 
+// Auth Auth interface handles auth
+type Auth interface {
+	EventAuth(ctx context.Context, serverID string, auth string) error
+	MatchAuth(ctx context.Context, mid string, auth string) error
+	CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error
+}
+
 // EventHandler EventHandler interface handles read operation by get5 events
 type EventHandler interface {
 	Close() error
 
 	// イベントハンドラへの絶対パスURL
 	Hostname() string
-
-	// Auth Checker
-	CheckEventAuth(ctx context.Context, mid string, reqAuth string) error
 
 	// GET5 Events
 	HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error
@@ -57,15 +61,11 @@ type EventHandler interface {
 
 // MatchLoader is for Read Operation(get5_loadmatch_url)
 type MatchLoader interface {
-	// Auth Checker
-	CheckMatchAuth(ctx context.Context, mid string, auth string) error
-
 	// Load respond to get5_loadmatch_url
 	Load(ctx context.Context, mid string) (models.G5Match, error)
 }
 
 // DemoUploader is for Demo Upload Operation(get5_dem_upload_url)
 type DemoUploader interface {
-	CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error
 	Upload(ctx context.Context, mid string, filename string, r io.Reader) error // demoファイルの登録処理
 }

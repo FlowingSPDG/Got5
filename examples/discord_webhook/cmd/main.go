@@ -25,6 +25,9 @@ var (
 
 	// Port port to listen
 	Port int
+
+	// Password password for game server
+	Password string
 )
 
 func main() {
@@ -33,7 +36,10 @@ func main() {
 	// flag.StringVar(&Auth, "auth", "", "Password for game server event")
 	flag.StringVar(&Host, "host", "localhost", "hostname")
 	flag.IntVar(&Port, "port", 3000, "Port to listen")
+	flag.StringVar(&Password, "password", "my_password", "Password for game server")
 	flag.Parse()
+
+	auth := webhook.NewAuth(Password)
 
 	evh := webhook.NewEventHandler(ID, Token, fmt.Sprintf("http://%s:%d/get5/event", Host, Port), Auth)
 	defer evh.Close()
@@ -41,7 +47,7 @@ func main() {
 	app := fiber.New()
 
 	g5 := app.Group("/get5") // /get5
-	if err := route.SetupEventHandlers(evh, g5); err != nil {
+	if err := route.SetupEventHandlers(evh, auth, g5); err != nil {
 		panic(err)
 	}
 

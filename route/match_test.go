@@ -14,20 +14,38 @@ import (
 )
 
 var _ controller.MatchLoader = (*mockMatchLoader)(nil)
+var _ controller.Auth = (*mockAuth)(nil)
 
-type mockMatchLoader struct {
-	auths map[string]string
-	match map[string]models.Match
+type mockAuth struct {
+	auth string
 }
 
-// CheckMatchAuth implements controller.MatchLoader
-func (m *mockMatchLoader) CheckMatchAuth(ctx context.Context, mid string, auth string) error {
-	if a, ok := m.auths[mid]; ok {
-		if a == auth {
-			return nil
-		}
+// CheckDemoAuth implements controller.Auth
+func (a *mockAuth) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error {
+	if auth == a.auth {
+		return nil
 	}
 	return fmt.Errorf("Fail")
+}
+
+// EventAuth implements controller.Auth
+func (a *mockAuth) EventAuth(ctx context.Context, serverID string, auth string) error {
+	if auth == a.auth {
+		return nil
+	}
+	return fmt.Errorf("Fail")
+}
+
+// MatchAuth implements controller.Auth
+func (a *mockAuth) MatchAuth(ctx context.Context, mid string, auth string) error {
+	if auth == a.auth {
+		return nil
+	}
+	return fmt.Errorf("Fail")
+}
+
+type mockMatchLoader struct {
+	match map[string]models.Match
 }
 
 // Load implements controller.MatchLoader
@@ -45,14 +63,13 @@ func TestLoadMatchSuccess(t *testing.T) {
 	cases := []struct {
 		title  string
 		loader *mockMatchLoader
+		auth   *mockAuth
 		mid    string
-		auth   string
 	}{
 		{
 			title:  "Fail auth",
-			loader: &mockMatchLoader{auths: map[string]string{"TEST_MATCH": "ABC"}, match: map[string]models.Match{"": {MatchTitle: "", MatchID: "", ClinchSeries: false, NumMaps: 0, PlayersPerTeam: 0, CoachesPerTeam: 0, CoachesMustReady: false, MinPlayersToReady: 0, MinSpectatorsToReady: 0, SkipVeto: false, VetoFirst: "", SideType: "", Spectators: models.Spectators{}, Maplist: []string{}, MapSides: []string{}, Team1: models.Team{}, Team2: models.Team{}, Cvars: map[string]string{}}}},
+			loader: &mockMatchLoader{match: map[string]models.Match{"": {MatchTitle: "", MatchID: "", ClinchSeries: false, NumMaps: 0, PlayersPerTeam: 0, CoachesPerTeam: 0, CoachesMustReady: false, MinPlayersToReady: 0, MinSpectatorsToReady: 0, SkipVeto: false, VetoFirst: "", SideType: "", Spectators: models.Spectators{}, Maplist: []string{}, MapSides: []string{}, Team1: models.Team{}, Team2: models.Team{}, Cvars: map[string]string{}}}},
 			mid:    "TEST_MATCH",
-			auth:   "ABC",
 		},
 	}
 
@@ -61,7 +78,7 @@ func TestLoadMatchSuccess(t *testing.T) {
 			// Setup fiber
 			app := fiber.New()
 			g5test := app.Group("/get5testloadmatch") // /test
-			err := route.SetupMatchLoadHandler(tt.loader, g5test)
+			err := route.SetupMatchLoadHandler(tt.loader, tt.auth, g5test)
 			asserts.NoError(err)
 
 			r := httptest.NewRequest("GET", "/get5testloadmatch/event", nil)
