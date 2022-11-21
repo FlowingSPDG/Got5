@@ -291,7 +291,36 @@ func OnEventHandler(ctrl controller.EventHandler) func(c *fiber.Ctx) error {
 func CheckEventHandlerAuth(ctrl controller.EventHandler) func(c *fiber.Ctx) error {
 	return (func(c *fiber.Ctx) error {
 		// TODO: マッチIDはどう取得する？
-		// get5_remote_log_header_key をマッチIDにするしかないかもしれない
+		// https://github.com/FlowingSPDG/Got5/issues/25
+
+		// ヘッダーのKey/Valueは一つだけ設定出来るが、それだと認証用キーとマッチIDが同時に設定出来ない
+		// だが、マッチがロードされていない際のイベントにはMatchIDが付与されないので、送ることが難しい...
+		//
+		// [IDEA1] get5_server_id を設定(数字のみだが)し、これをベースに認証を行う方法もあるが実装が煩雑になりそう
+		// [IDEA2] ValueにマッチIDと認証用の鍵を詰め込み、両方扱える形にする
+		//
+		//		e.g.1 アンダースコアで分割する
+		//			get5_remote_log_header_value "{MatchID}_{AuthKey}""
+		//		e.g.2 JSON形式にする
+		//			get5_remote_log_header_value "{"matchid":"{MatchID}"","auth":"{AuthKey}"}"
+		//		e.g.3 JWTを使用する
+		//			get5_remote_log_header_value "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+
+		// (in English for any suggestions/help)
+		// TODO: How to get MatchID of event?
+		// There is a cvar that sets Key/Value on HTTP header but it is not possible to send Auth key and MatchID in same time
+		// But server will NOT send MatchID if no match loaded
+		//
+		// [IDEA1] set get5_server_id cvar(integer only) and get match ID from this, but this could be more complicated Database structure
+		// [IDEA2] Put both of MatchID and Auth string into one HTTP header value
+		//
+		//		e.g.1 split by underscore
+		//			get5_remote_log_header_value "{MatchID}_{AuthKey}""
+		//		e.g.2 Send via JSON
+		//			get5_remote_log_header_value "{"matchid":"{MatchID}"","auth":"{AuthKey}"}"
+		//		e.g.3 Use JWT
+		//			get5_remote_log_header_value "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+
 		// reqAuthVal := c.Get("Authorization")
 		/*
 			if err := ctrl.CheckEventAuth(c.Context(), mid, reqAuthVal); err != nil {
