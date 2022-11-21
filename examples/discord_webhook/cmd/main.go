@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 
@@ -14,14 +15,27 @@ var (
 	ID uint64
 	// Token Webhook Token
 	Token string
+
+	// Auth Auth for game server
+	// Currently unavailable
+	Auth string = ""
+
+	// Host e.g. "localhost"
+	Host string
+
+	// Port port to listen
+	Port int
 )
 
 func main() {
 	flag.Uint64Var(&ID, "id", 0, "Webhook ID")
 	flag.StringVar(&Token, "token", "", "Webhook Token")
+	// flag.StringVar(&Auth, "auth", "", "Password for game server event")
+	flag.StringVar(&Host, "host", "localhost", "hostname")
+	flag.IntVar(&Port, "port", 3000, "Port to listen")
 	flag.Parse()
 
-	evh := webhook.NewEventHandler(ID, Token)
+	evh := webhook.NewEventHandler(ID, Token, fmt.Sprintf("http://%s:%d/get5/event", Host, Port), Auth)
 	defer evh.Close()
 
 	app := fiber.New()
@@ -31,5 +45,7 @@ func main() {
 		panic(err)
 	}
 
-	app.Listen(":3000")
+	if err := app.Listen(fmt.Sprintf(":%d", Port)); err != nil {
+		panic(err)
+	}
 }

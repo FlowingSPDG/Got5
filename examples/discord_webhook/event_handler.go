@@ -695,8 +695,10 @@ func (wh *webhookEventHandler) HandleOnTeamReadyStatusChanged(ctx context.Contex
 }
 
 // NewEventHandler Get Logger pointer
-func NewEventHandler(webhookID uint64, webhookToken string) controller.EventHandler {
+func NewEventHandler(webhookID uint64, webhookToken string, url string, auth string) controller.EventHandler {
 	return &webhookEventHandler{
-		c: webhook.New(snowflake.ID(webhookID), webhookToken),
+		eventURL: url, // can be empty
+		auth:     auth,
+		c:        webhook.New(snowflake.ID(webhookID), webhookToken),
 	}
 }

@@ -6,8 +6,8 @@ https://discord.com/api/webhooks/THIS_IS_YOUR_WEBHOOK_ID/THIS_IS_YOUR_WEBHOOK_TO
 
 then run Program
 
-``go run ./examples/discord_webhook/cmd/main.go -id 0 -token YOUR_WEBHOOK_TOKEN``
+``go run ./examples/discord_webhook/cmd/main.go -id 0 -token YOUR_WEBHOOK_TOKEN -host localhost -port 8080 ``
 
 ## On Your Game Server
 There is no authentication.  
-You need to configure event logger on get5: ``get5_remote_log_url "http://YOUR_IP/get5/event".  
+You need to configure event logger on get5: ``get5_remote_log_url "http://localhost:8080/get5/event".  
