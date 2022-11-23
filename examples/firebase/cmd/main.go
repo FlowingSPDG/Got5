@@ -41,7 +41,11 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	auth := fsc.NewAuth(secret)
+	fbauth, err := fb.Auth(ctx)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	auth := fsc.NewAuth(fbauth)
 
 	// Get Event Handler
 	evh, err := fsc.NewEventHandler(ctx, fb)
