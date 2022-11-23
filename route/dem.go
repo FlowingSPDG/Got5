@@ -15,20 +15,27 @@ func CheckDemoAuth(auth controller.Auth) func(c *fiber.Ctx) error {
 		matchID := c.Get("Get5-MatchId")
 
 		mapNumStr := c.Get("Get5-MapNumber")
-		mapNum, err := strconv.Atoi(mapNumStr)
-		if err != nil {
-			return c.Status(fiber.StatusBadRequest).SendString(err.Error()) // カスタムエラーを返したい
+		mapNum := 0
+		var err error
+		if mapNumStr != "" {
+			mapNum, err = strconv.Atoi(mapNumStr)
+			if err != nil {
+				return c.Status(fiber.StatusBadRequest).SendString(err.Error()) // カスタムエラーを返したい
+			}
 		}
 
 		serverIDstr := c.Get("Get5-ServerId")
-		serverID, err := strconv.Atoi(serverIDstr)
-		if err != nil {
-			return c.Status(fiber.StatusBadRequest).SendString(err.Error()) // カスタムエラーを返したい
+		var serverID int
+		if serverIDstr != "" {
+			serverID, err = strconv.Atoi(serverIDstr)
+			if err != nil {
+				return c.Status(fiber.StatusBadRequest).SendString(err.Error()) // カスタムエラーを返したい
+			}
 		}
 
 		reqAuth := c.Get("Get5-Authorization")
 		if err := auth.CheckDemoAuth(c.Context(), filename, matchID, mapNum, serverID, reqAuth); err != nil {
-			return c.Status(fiber.StatusUnauthorized).SendString("Not verified") // カスタムエラーを返したい
+			return c.Status(fiber.StatusUnauthorized).SendString(err.Error()) // カスタムエラーを返したい
 		}
 		return c.Next()
 	})
