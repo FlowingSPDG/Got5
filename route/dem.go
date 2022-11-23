@@ -33,7 +33,7 @@ func CheckDemoAuth(auth controller.Auth) func(c *fiber.Ctx) error {
 			}
 		}
 
-		reqAuth := c.Get("Get5-Authorization")
+		reqAuth := c.Get("Authorization")
 		if err := auth.CheckDemoAuth(c.Context(), filename, matchID, mapNum, serverID, reqAuth); err != nil {
 			return c.Status(fiber.StatusUnauthorized).SendString(err.Error()) // カスタムエラーを返したい
 		}
