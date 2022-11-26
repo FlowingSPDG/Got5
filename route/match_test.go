@@ -78,8 +78,7 @@ func TestLoadMatchSuccess(t *testing.T) {
 			// Setup fiber
 			app := fiber.New()
 			g5test := app.Group("/get5testloadmatch") // /test
-			err := route.SetupMatchLoadHandler(tt.loader, tt.auth, g5test)
-			asserts.NoError(err)
+			route.SetupMatchLoadHandler(tt.loader, tt.auth, g5test)
 
 			r := httptest.NewRequest("GET", "/get5testloadmatch/event", nil)
 			r.Header.Set("Content-Type", "application/json")

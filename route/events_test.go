@@ -354,8 +354,7 @@ func TestEventHandleTD(t *testing.T) {
 			// Setup fiber
 			app := fiber.New()
 			g5test := app.Group("/get5testevent") // /test
-			err := route.SetupEventHandlers(tt.eventHandler, tt.auth, g5test)
-			asserts.NoError(err)
+			route.SetupEventHandlers(tt.eventHandler, tt.auth, g5test)
 
 			r := httptest.NewRequest("POST", "/get5testevent/event", bytes.NewBuffer(tt.input))
 			r.Header.Set("Content-Type", "application/json")

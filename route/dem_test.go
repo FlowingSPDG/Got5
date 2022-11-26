@@ -122,8 +122,7 @@ func TestDemoUploadTD(t *testing.T) {
 			// Setup fiber
 			app := fiber.New()
 			g5test := app.Group("/get5testdemo") // /test
-			err := route.SetupDemoUploadHandler(tt.uploader, tt.auth, g5test)
-			asserts.NoError(err)
+			route.SetupDemoUploadHandler(tt.uploader, tt.auth, g5test)
 
 			r := httptest.NewRequest("POST", "/get5testdemo/demo", bytes.NewBuffer([]byte("demo file data")))
 			for k, v := range tt.headers {

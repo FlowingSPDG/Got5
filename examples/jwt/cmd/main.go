@@ -16,9 +16,7 @@ func main() {
 	app := fiber.New()
 
 	g5 := app.Group("/get5") // /get5
-	if err := route.SetupMatchLoadHandler(loader, auth, g5); err != nil {
-		panic(err)
-	}
+	route.SetupMatchLoadHandler(loader, auth, g5)
 
 	app.Listen(":3000")
 }

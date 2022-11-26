@@ -69,9 +69,7 @@ func main() {
 	// Setup fiber
 	app := fiber.New()
 	g5 := app.Group("/get5") // /get5
-	if err := route.SetupAllGet5Handlers(evh, loader, demUploader, auth, g5); err != nil {
-		panic(err)
-	}
+	route.SetupAllGet5Handlers(evh, loader, demUploader, auth, g5)
 
 	p := net.JoinHostPort(hostName, port)
 

@@ -19,9 +19,7 @@ func main() {
 	app := fiber.New()
 
 	g5 := app.Group("/get5") // /get5
-	if err := route.SetupAllGet5Handlers(evh, loader, uploader, auth, g5); err != nil {
-		panic(err)
-	}
+	route.SetupAllGet5Handlers(evh, loader, uploader, auth, g5)
 
 	app.Listen(":3000")
 }

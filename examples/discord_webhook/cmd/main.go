@@ -47,9 +47,7 @@ func main() {
 	app := fiber.New()
 
 	g5 := app.Group("/get5") // /get5
-	if err := route.SetupEventHandlers(evh, auth, g5); err != nil {
-		panic(err)
-	}
+	route.SetupEventHandlers(evh, auth, g5)
 
 	if err := app.Listen(fmt.Sprintf(":%d", Port)); err != nil {
 		panic(err)
