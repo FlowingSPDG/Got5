@@ -313,6 +313,34 @@ func TestEventHandleTD(t *testing.T) {
 			statusCode:   http.StatusOK,
 			input:        []byte(`{"event": "side_picked","matchid": "14272","team": "team1","map_name": "de_nuke","side": "ct","map_number": 0}`),
 		},
+		{
+			title:        "MapVetoed",
+			eventHandler: &mockEventHandler{expect: models.OnMapVetoedPayload{Event: models.Event{Event: "map_vetoed"}, Matchid: "14272", Team: "team1", MapName: "de_nuke"}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "map_vetoed","matchid": "14272","team": "team1","map_name": "de_nuke"}`),
+		},
+		{
+			title:        "BackupLoaded",
+			eventHandler: &mockEventHandler{expect: models.OnBackupRestorePayload{Event: models.Event{Event: "backup_loaded"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, Filename: "string"}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "backup_loaded","matchid": "14272","map_number": 0,"round_number": 13,"filename": "string"}`),
+		},
+		{
+			title:        "DemoFinished",
+			eventHandler: &mockEventHandler{expect: models.OnDemoFinishedPayload{Event: models.Event{Event: "demo_finished"}, Matchid: "14272", MapNumber: 0, Filename: "1324_map_0_de_nuke.dem"}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "demo_finished","matchid": "14272","map_number": 0,"filename": "1324_map_0_de_nuke.dem"}`),
+		},
+		{
+			title:        "DemoUploadEnded",
+			eventHandler: &mockEventHandler{expect: models.OnDemoUploadEndedPayload{Event: models.Event{Event: "demo_upload_ended"}, Matchid: "14272", MapNumber: 0, Filename: "1324_map_0_de_nuke.dem", Success: true}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "demo_upload_ended","matchid": "14272","map_number": 0,"filename": "1324_map_0_de_nuke.dem","success": true}`),
+		},
 	}
 
 	for _, tt := range cases {
