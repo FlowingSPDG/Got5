@@ -79,7 +79,7 @@ func TestDemoUploadTD(t *testing.T) {
 		{
 			title:      "Deny All",
 			uploader:   &mockDemoUploaderDenyAll{},
-			statusCode: http.StatusUnauthorized,
+			statusCode: http.StatusInternalServerError,
 			auth:       &mockAuth{},
 			headers: map[string]string{
 				"Get5-DemoName":  "dem_name",
@@ -118,7 +118,7 @@ func TestDemoUploadTD(t *testing.T) {
 	}
 
 	for _, tt := range cases {
-		t.Run(tt.title, func(t *testing.T) {
+		t.Run("DEMO UPLOAD:"+tt.title, func(t *testing.T) {
 			// Setup fiber
 			app := fiber.New()
 			g5test := app.Group("/get5testdemo") // /test
