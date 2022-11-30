@@ -1,8 +1,9 @@
 # Got5
 [![test](https://github.com/FlowingSPDG/Got5/actions/workflows/dagger.yml/badge.svg)](https://github.com/FlowingSPDG/Got5/actions/workflows/dagger.yml)  
+STATUS: UNDER DEVELOPMENT  
 Go + get5 = Got5!  
 Got5 is simple and fast, Build-Your-Own-Get5Web framework.  
-Built with Go(1.18), Fiber.
+Built with Go(1.18), Fiber.  
 
 Got5 interfaces supports general get5 event handling such as Kill, Match Load or Demo upload.  
 This makes you easier to build get5-based system like get5-web.  
@@ -12,7 +13,7 @@ Shugo Kawamura - 河村 柊吾
 
 ### Got5 interfaces
 [controller](https://github.com/FlowingSPDG/Got5/tree/main/controller) package has 3 interfaces that communicates with get5.  
-controller does not have database interface, so you may implement database system by yourself.
+controller does not have database interface, so you may implement database system by yourself.  
 
 #### EventHandler
 [EventHandler](https://github.com/FlowingSPDG/Got5/blob/75996d44058558ca7453af1c4b4f9e73115924d4/controller/controller.go#L10-L52) interface should handle event coming from get5 [Events & Forwards](https://splewis.github.io/get5/latest/events_and_forwards/) (get5_remote_log_url).  
@@ -132,10 +133,6 @@ There are some CVARs for authenticating Got5 and get5 gameserver.
   - `get5_demo_upload_header_key` - HTTP Header key for demo upload.  
   - `get5_demo_upload_header_value` - HTTP Header value for demo upload.  
 - `get5_loadmatch_url "https://example.com/match_config.json" "Authorization" "Bearer <token>"` - For loading match info.  
-
-However, currently **Got5 does not support  `get5_remote_log_header_key` and `get5_remote_log_header_value` CVARs** due to implemention issue(https://github.com/splewis/get5/issues/940 , https://github.com/FlowingSPDG/Got5/issues/25)  
-So your Got5-based system has **no authentication of receiving events**.  
-I am going to add this feature once I got way to solve this, but currently this is unsafe way.  
 
 ## Examples
 ### logger
