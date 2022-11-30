@@ -3,7 +3,6 @@ package route_test
 import (
 	"bytes"
 	"context"
-	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -341,6 +340,172 @@ func TestEventHandleTD(t *testing.T) {
 			statusCode:   http.StatusOK,
 			input:        []byte(`{"event": "demo_upload_ended","matchid": "14272","map_number": 0,"filename": "1324_map_0_de_nuke.dem","success": true}`),
 		},
+		{
+			title:        "GamePaused",
+			eventHandler: &mockEventHandler{expect: models.OnMatchPausedPayload{Event: models.Event{Event: "game_paused"}, Matchid: "14272", MapNumber: 0, Team: "team1", PauseType: "tactical"}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "game_paused","matchid": "14272","map_number": 0,"team": "team1","pause_type": "tactical"}`),
+		},
+		{
+			title:        "GameUnpaused",
+			eventHandler: &mockEventHandler{expect: models.OnMatchUnpausedPayload{Event: models.Event{Event: "game_unpaused"}, Matchid: "14272", MapNumber: 0, Team: "team1", PauseType: "tactical"}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "game_unpaused","matchid": "14272","map_number": 0,"team": "team1","pause_type": "tactical"}`),
+		},
+		{
+			title:        "KnifeStart",
+			eventHandler: &mockEventHandler{expect: models.OnKnifeRoundStartedPayload{Event: models.Event{Event: "knife_start"}, Matchid: "14272", MapNumber: 0}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "knife_start","matchid": "14272","map_number": 0}`),
+		},
+		{
+			title:        "KnifeRoundWon",
+			eventHandler: &mockEventHandler{expect: models.OnKnifeRoundWonPayload{Event: models.Event{Event: "knife_won"}, Matchid: "14272", MapNumber: 0, Team: "team1", Side: "ct", Swapped: true}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "knife_won","matchid": "14272","map_number": 0,"team": "team1","side": "ct","swapped": true}`),
+		},
+		{
+			title:        "TeamReadyStatusChanged",
+			eventHandler: &mockEventHandler{expect: models.OnTeamReadyStatusChangedPayload{Event: models.Event{Event: "team_ready_status_changed"}, Matchid: "14272", Team: "team1", Ready: true, GameState: "none"}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "team_ready_status_changed","matchid": "14272","team": "team1","ready": true,"game_state": "none"}`),
+		},
+		{
+			title:        "GoingLive",
+			eventHandler: &mockEventHandler{expect: models.OnGoingLivePayload{Event: models.Event{Event: "going_live"}, Matchid: "14272", MapNumber: 0}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "going_live","matchid": "14272","map_number": 0}`),
+		},
+		{
+			title:        "RoundStart",
+			eventHandler: &mockEventHandler{expect: models.OnRoundStartPayload{Event: models.Event{Event: "round_start"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "round_start","matchid": "14272","map_number": 0,"round_number": 13}`),
+		},
+		{
+			title:        "RoundEnd",
+			eventHandler: &mockEventHandler{expect: models.OnRoundEndPayload{Event: models.Event{Event: "round_end"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, RoundTime: 51434, Reason: 0, Winner: models.Winner{Side: "ct", Team: "team1"}, Team1Score: 0, Team2Score: 0}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "round_end","matchid": "14272","map_number": 0,"round_number": 13,"round_time": 51434,"reason": 0,"winner": {"side": "ct","team": "team1"},"team1_score": 0,"team2_score": 0}`),
+		},
+		{
+			title:        "RoundStatsUpdated",
+			eventHandler: &mockEventHandler{expect: models.OnRoundStatsUpdatedPayload{Event: models.Event{Event: "stats_updated"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "stats_updated","matchid": "14272","map_number": 0,"round_number": 13}`),
+		},
+		{
+			title:        "PlayerBecomeMVP",
+			eventHandler: &mockEventHandler{expect: models.OnPlayerBecameMVPPayload{Event: models.Event{Event: "round_mvp"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Reason: 0}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "round_mvp","matchid": "14272","map_number": 0,"round_number": 13,"player": {"user_id": 4,"steamid": "76561198279375306","side": "ct","name": "s1mple","is_bot": false},"reason": 0}`),
+		},
+		{
+			title:        "GreanadeThrown",
+			eventHandler: &mockEventHandler{expect: models.OnGrenadeThrownPayload{Event: models.Event{Event: "grenade_thrown"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, RoundTime: 51434, Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Weapon: models.Weapon{Name: "ak47", ID: 27}}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event":"grenade_thrown","matchid":"14272","map_number":0,"round_number":13,"round_time":51434,"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"weapon":{"name":"ak47","id":27}}`),
+		},
+
+		// Penetrated should be float64, but example in https://splewis.github.io/get5/latest/events_and_forwards/#events shows true
+		/*
+			{
+				title:        "PlayerDeath",
+				eventHandler: &mockEventHandler{expect: models.OnPlayerDeathPayload{Event: models.Event{Event: "player_death"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, RoundTime: 51434, Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Weapon: models.Weapon{Name: "ak47", ID: 27}, Bomb: true, Headshot: true, ThruSmoke: true, Penetrated: 1 , AttackerBlind: true, NoScope: true, Suicide: true, FriendlyFire: true, Attacker: models.Attacker{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Assist: models.Assist{Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, FriendlyFire: true, FlashAssist: true}}},
+				auth:         &mockAuth{},
+				statusCode:   http.StatusOK,
+				input:        []byte(`{"event":"player_death","matchid":"14272","map_number":0,"round_number":13,"round_time":51434,"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"weapon":{"name":"ak47","id":27},"bomb":true,"headshot":true,"thru_smoke":true,"penetrated":true,"attacker_blind":true,"no_scope":true,"suicide":true,"friendly_fire":true,"attacker":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"assist":{"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"friendly_fire":true,"flash_assist":true}}`),
+			},
+		*/
+
+		{
+			title:        "HEGrenadeDetonated",
+			eventHandler: &mockEventHandler{expect: models.OnHEGrenadeDetonatedPayload{Event: models.Event{Event: "hegrenade_detonated"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, RoundTime: 51434, Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Weapon: models.Weapon{Name: "ak47", ID: 27}, Victims: []models.Victim{{Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, FriendlyFire: true, BlindDuration: 5, Damage: 100, Killed: true}}, DamageEnemies: 0, DamageFriendlies: 0}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event":"hegrenade_detonated","matchid":"14272","map_number":0,"round_number":13,"round_time":51434,"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"weapon":{"name":"ak47","id":27},"victims":[{"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"friendly_fire":true,"blind_duration":5},{"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"friendly_fire":true,"damage":100,"killed":true}],"damage_enemies":0,"damage_friendlies":0}`),
+		},
+		{
+			title:        "MolotovDetonated",
+			eventHandler: &mockEventHandler{expect: models.OnMolotovDetonatedPayload{Event: models.Event{Event: "molotov_detonated"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, RoundTime: 51434, Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Weapon: models.Weapon{Name: "ak47", ID: 27}, Victims: []models.Victim{{Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, FriendlyFire: true, BlindDuration: 5, Damage: 100, Killed: true}}, DamageEnemies: 0, DamageFriendlies: 0}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event":"molotov_detonated","matchid":"14272","map_number":0,"round_number":13,"round_time":51434,"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"weapon":{"name":"ak47","id":27},"victims":[{"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"friendly_fire":true,"blind_duration":5},{"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"friendly_fire":true,"damage":100,"killed":true}],"damage_enemies":0,"damage_friendlies":0}`),
+		},
+		{
+			title:        "FlashbangDetonated",
+			eventHandler: &mockEventHandler{expect: models.OnFlashbangDetonatedPayload{Event: models.Event{Event: "flashbang_detonated"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, RoundTime: 51434, Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Weapon: models.Weapon{Name: "ak47", ID: 27}, Victims: []models.Victim{{Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, FriendlyFire: true, BlindDuration: 5, Damage: 100, Killed: true}}}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event":"flashbang_detonated","matchid":"14272","map_number":0,"round_number":13,"round_time":51434,"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"weapon":{"name":"ak47","id":27},"victims":[{"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"friendly_fire":true,"blind_duration":5},{"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"friendly_fire":true,"damage":100,"killed":true}]}`),
+		},
+		{
+			title:        "SmokegrenadeDetonated",
+			eventHandler: &mockEventHandler{expect: models.OnSmokeGrenadeDetonatedPayload{Event: models.Event{Event: "smokegrenade_detonated"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, RoundTime: 51434, Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Weapon: models.Weapon{Name: "ak47", ID: 27}, ExtinguishedMolotov: true}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event":"smokegrenade_detonated","matchid":"14272","map_number":0,"round_number":13,"round_time":51434,"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"weapon":{"name":"ak47","id":27},"extinguished_molotov":true}`),
+		},
+		{
+			title:        "DecoyStarted",
+			eventHandler: &mockEventHandler{expect: models.OnDecoyStartedPayload{Event: models.Event{Event: "decoygrenade_started"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, RoundTime: 51434, Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Weapon: models.Weapon{Name: "ak47", ID: 27}}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event":"decoygrenade_started","matchid":"14272","map_number":0,"round_number":13,"round_time":51434,"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"weapon":{"name":"ak47","id":27}}`),
+		},
+		{
+			title:        "BombPlanted",
+			eventHandler: &mockEventHandler{expect: models.OnBombPlantedPayload{Event: models.Event{Event: "bomb_planted"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, RoundTime: 51434, Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Site: "a"}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event":"bomb_planted","matchid":"14272","map_number":0,"round_number":13,"round_time":51434,"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"site":"a"}`),
+		},
+		{
+			title:        "BombDefused",
+			eventHandler: &mockEventHandler{expect: models.OnBombDefusedPayload{Event: models.Event{Event: "bomb_defused"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, RoundTime: 51434, Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Site: "a", BombTimeRemaining: 12438}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event":"bomb_defused","matchid":"14272","map_number":0,"round_number":13,"round_time":51434,"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"site":"a","bomb_time_remaining":12438}`),
+		},
+		{
+			title:        "BombExploded",
+			eventHandler: &mockEventHandler{expect: models.OnBombExplodedPayload{Event: models.Event{Event: "bomb_defused"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, RoundTime: 51434, Site: "a"}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event":"bomb_exploded","matchid":"14272","map_number":0,"round_number":13,"round_time":51434,"site":"a"}`),
+		},
+		{
+			title:        "PlayerConnected",
+			eventHandler: &mockEventHandler{expect: models.OnPlayerConnectedPayload{Event: models.Event{Event: "player_connect"}, Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "side", Name: "s1mple", IsBot: false}, IPAddress: "34.132.182.66"}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event":"player_connect","player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"ip_address":"34.132.182.66"}`),
+		},
+		{
+			title:        "PlayerDisconnected",
+			eventHandler: &mockEventHandler{expect: models.OnPlayerDisconnectedPayload{Event: models.Event{Event: "player_disconnect"}, Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "side", Name: "s1mple", IsBot: false}}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event":"player_disconnect","player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false}}`),
+		},
+		{
+			title:        "PlayerSay",
+			eventHandler: &mockEventHandler{expect: models.OnPlayerSayPayload{Event: models.Event{Event: "player_say"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, RoundTime: 51434, Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "side", Name: "s1mple", IsBot: false}, Command: "say", Message: "gg have fun"}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event":"player_say","matchid":"14272","map_number":0,"round_number":13,"round_time":51434,"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"command":"say","message":"gg have fun"}`),
+		},
 	}
 
 	for _, tt := range cases {
@@ -355,8 +520,8 @@ func TestEventHandleTD(t *testing.T) {
 
 			resp, _ := app.Test(r, -1)
 			defer resp.Body.Close()
-			b, _ := io.ReadAll(resp.Body)
-			t.Logf("b:%s\n", b)
+			// b, _ := io.ReadAll(resp.Body)
+			// t.Logf("b:%s\n", b)
 			// asserts.Equal(tt.err, err)
 			asserts.Equal(tt.statusCode, resp.StatusCode)
 			asserts.Equal(tt.eventHandler.parsed, tt.eventHandler.parsed)
