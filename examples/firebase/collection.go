@@ -1,6 +1,8 @@
 package fb
 
 const (
-	CollectionChat  = "chat"
+	// CollectionChat Collection for user chat
+	CollectionChat = "chat"
+	// CollectionMatch Collection for match
 	CollectionMatch = "match"
 )
