@@ -2,17 +2,24 @@ package main
 
 import (
 	"context"
+	"log"
 	"os"
 
 	"dagger.io/dagger"
 )
 
-const (
+var (
 	repo   = "https://github.com/FlowingSPDG/Got5.git"
-	branch = "main"
+	branch = "unknown"
+	commit = "unknown"
 )
 
 func main() {
+	log.Println("repo:", repo)
+	log.Println("branch:", branch)
+	log.Println("commit:", commit)
+
+	// Get context
 	ctx := context.Background()
 
 	// Dagger クライアントを初期化

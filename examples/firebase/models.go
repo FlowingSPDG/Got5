@@ -4,6 +4,7 @@ import "github.com/FlowingSPDG/Got5/models"
 
 // https://splewis.github.io/get5/latest/match_schema/#schema
 
+// Match for Get5 match
 type Match struct {
 	MatchTitle           string            `firestore:"match_title"`
 	MatchID              string            `firestore:"matchid"`
@@ -29,6 +30,7 @@ type Match struct {
 	AuthValue string `firestore:"auth_value"`
 }
 
+// ToG5Format Convert into models.Match
 func (m Match) ToG5Format() models.Match {
 	return models.Match{
 		MatchTitle:           m.MatchTitle,
@@ -52,10 +54,13 @@ func (m Match) ToG5Format() models.Match {
 	}
 }
 
+// Spectators Spec team
 type Spectators struct {
 	Name    string            `firestore:"name"`
 	Players map[string]string `firestore:"players"`
 }
+
+// Team for team1,team2
 type Team struct {
 	Name    string            `firestore:"name"`
 	Tag     string            `firestore:"tag"`
