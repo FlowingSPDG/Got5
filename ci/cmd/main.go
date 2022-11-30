@@ -9,7 +9,8 @@ import (
 
 const (
 	repo   = "https://github.com/FlowingSPDG/Got5.git"
-	branch = "main"
+	branch = "unknown"
+	commit = "unknown"
 )
 
 func main() {

@@ -306,6 +306,13 @@ func TestEventHandleTD(t *testing.T) {
 			statusCode:   http.StatusOK,
 			input:        []byte(`{"event": "series_end","matchid": "14272","team1_series_score": 2,"team2_series_score": 0,"winner": {"side": "ct","team": "team1"},"time_until_restore": 45}`),
 		},
+		{
+			title:        "SidePicked",
+			eventHandler: &mockEventHandler{expect: models.OnSidePickedPayload{Event: models.Event{Event: "side_picked"}, Matchid: "14272", Team: "team1", MapName: "de_nuke", Side: "ct", MapNumber: 0}},
+			auth:         &mockAuth{},
+			statusCode:   http.StatusOK,
+			input:        []byte(`{"event": "side_picked","matchid": "14272","team": "team1","map_name": "de_nuke","side": "ct","map_number": 0}`),
+		},
 	}
 
 	for _, tt := range cases {
