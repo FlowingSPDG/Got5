@@ -30,19 +30,16 @@ func main() {
 	}
 	defer client.Close()
 
-	// リポジトリをクローン
-	repo := client.Git(repo)
-	src := repo.Branch(branch).Tree()
-
 	// Docker イメージを読み込む
 	golang := client.Container().From("golang:1.19")
 
 	// クローンしたリポジトリのソースをマウントする
 	// WithWorkdir で作業ディレクトリを設定できる
-	golang = golang.WithMountedDirectory("/app", src).WithWorkdir("/app")
+	// ローカルのワーキングディレクトリを取得
+	src := client.Host().Workdir()
 
 	// 実行するコマンドを追加
-	golang = golang.
+	golang = golang.WithMountedDirectory("/app", src).WithWorkdir("/app").
 		Exec(dagger.ContainerExecOpts{
 			Args: []string{"go", "test", "-v", "-count=1", "./..."},
 		})
