@@ -70,7 +70,7 @@ func TestDemoUploadTD(t *testing.T) {
 			auth:       &mockAuth{},
 			// err:        nil,
 			headers: map[string]string{
-				"Get5-DemoName":  "dem_name",
+				"Get5-FileName":  "dem_name",
 				"Get5-MatchId":   "mID_ABCDEFG",
 				"Get5-MapNumber": "1",
 				"Get5-ServerId":  "100",
@@ -82,7 +82,7 @@ func TestDemoUploadTD(t *testing.T) {
 			statusCode: http.StatusInternalServerError,
 			auth:       &mockAuth{},
 			headers: map[string]string{
-				"Get5-DemoName":  "dem_name",
+				"Get5-FileName":  "dem_name",
 				"Get5-MatchId":   "mID_ABCDEFG",
 				"Get5-MapNumber": "1",
 				"Get5-ServerId":  "100",
@@ -95,7 +95,7 @@ func TestDemoUploadTD(t *testing.T) {
 			statusCode: http.StatusInternalServerError,
 			auth:       &mockAuth{},
 			headers: map[string]string{
-				"Get5-DemoName":  "dem_name",
+				"Get5-FileName":  "dem_name",
 				"Get5-MatchId":   "mID_ABCDEFG",
 				"Get5-MapNumber": "1",
 				"Get5-ServerId":  "100",
@@ -108,7 +108,7 @@ func TestDemoUploadTD(t *testing.T) {
 			statusCode: http.StatusBadRequest,
 			auth:       &mockAuth{},
 			headers: map[string]string{
-				"Get5-DemoName":  "dem_name",
+				"Get5-FileName":  "dem_name",
 				"Get5-MatchId":   "000",
 				"Get5-MapNumber": "ABC",
 				"Get5-ServerId":  "ABC",

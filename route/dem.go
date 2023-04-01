@@ -11,7 +11,7 @@ import (
 // CheckDemoAuth 認証用ハンドラ
 func CheckDemoAuth(auth controller.Auth) func(c *fiber.Ctx) error {
 	return (func(c *fiber.Ctx) error { // Verifyをかける
-		filename := c.Get("Get5-DemoName")
+		filename := c.Get("Get5-FileName")
 		matchID := c.Get("Get5-MatchId")
 
 		mapNumStr := c.Get("Get5-MapNumber")
@@ -48,7 +48,7 @@ func DemoUploadHandler(uploader controller.DemoUploader) func(c *fiber.Ctx) erro
 		// アップロードを実施
 		br := bytes.NewBuffer(c.Body())
 
-		filename := c.Get("Get5-DemoName")
+		filename := c.Get("Get5-FileName")
 		matchID := c.Get("Get5-MatchId")
 
 		if err := uploader.Upload(c.Context(), matchID, filename, br); err != nil {
