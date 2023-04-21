@@ -95,7 +95,7 @@ func (d *Discord) HandleOnGoingLive(ctx context.Context, p models.OnGoingLivePay
 	// しかしInteraction token自体が15分しか持続しないため、それ以降は個別にメッセージを送信する必要がある
 	d.mu.RLock()
 	defer d.mu.RUnlock()
-	m := d.matches[p.Matchid]
+	m := d.matches[p.MatchID]
 	msg := fmt.Sprintf("🔫ゲーム %s がまもなく開始します！\n[G]ood [L]uck [H]ave [F]un!", m.match.MatchTitle)
 	if _, err := d.s.ChannelMessageSend(m.interaction.ChannelID, msg); err != nil {
 		return err
@@ -117,7 +117,7 @@ func (d *Discord) HandleOnHEGrenadeDetonated(ctx context.Context, p models.OnHEG
 func (d *Discord) HandleOnKnifeRoundStarted(ctx context.Context, p models.OnKnifeRoundStartedPayload) error {
 	d.mu.RLock()
 	defer d.mu.RUnlock()
-	m := d.matches[p.Matchid]
+	m := d.matches[p.MatchID]
 	msg := fmt.Sprintf("🔪ゲーム ``%s``\nナイフラウンドがまもなく開始します！🔪🔪", m.match.MatchTitle)
 
 	if _, err := d.s.ChannelMessageSend(m.interaction.ChannelID, msg); err != nil {
@@ -130,7 +130,7 @@ func (d *Discord) HandleOnKnifeRoundStarted(ctx context.Context, p models.OnKnif
 func (d *Discord) HandleOnKnifeRoundWon(ctx context.Context, p models.OnKnifeRoundWonPayload) error {
 	d.mu.RLock()
 	defer d.mu.RUnlock()
-	m := d.matches[p.Matchid]
+	m := d.matches[p.MatchID]
 	msg := fmt.Sprintf("🔪ゲーム ``%s``\nチーム%sがナイフラウンドに勝利しました！🔪🔪", m.match.MatchTitle, p.Team)
 	if _, err := d.s.ChannelMessageSend(m.interaction.ChannelID, msg); err != nil {
 		return err
@@ -228,7 +228,7 @@ func (d *Discord) HandleOnSeriesInit(ctx context.Context, p models.OnSeriesInitP
 func (d *Discord) HandleOnSeriesResult(ctx context.Context, p models.OnSeriesResultPayload) error {
 	d.mu.RLock()
 	defer d.mu.RUnlock()
-	m, ok := d.matches[p.Matchid]
+	m, ok := d.matches[p.MatchID]
 	if !ok {
 		return fmt.Errorf("Invalid Match ID")
 	}
@@ -237,7 +237,7 @@ func (d *Discord) HandleOnSeriesResult(ctx context.Context, p models.OnSeriesRes
 		return err
 	}
 	// mapの容量が無限に増えちゃうのでdeleteをかける
-	delete(d.matches, p.Matchid)
+	delete(d.matches, p.MatchID)
 	return nil
 }
 
