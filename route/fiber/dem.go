@@ -1,4 +1,4 @@
-package route
+package fiberroute
 
 import (
 	"bytes"
@@ -25,14 +25,7 @@ func CheckDemoAuth(auth controller.Auth) func(c *fiber.Ctx) error {
 			}
 		}
 
-		serverIDstr := c.Get("Get5-ServerId")
-		var serverID int
-		if serverIDstr != "" {
-			serverID, err = strconv.Atoi(serverIDstr)
-			if err != nil {
-				return c.Status(fiber.StatusBadRequest).SendString(err.Error()) // カスタムエラーを返したい
-			}
-		}
+		serverID := c.Get("Get5-ServerId")
 
 		reqAuth := c.Get("Authorization")
 		if err := auth.CheckDemoAuth(c.Context(), filename, matchID, mapNum, serverID, reqAuth); err != nil {

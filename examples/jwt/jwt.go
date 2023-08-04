@@ -1,4 +1,4 @@
-package route
+package jwt
 
 import (
 	"fmt"

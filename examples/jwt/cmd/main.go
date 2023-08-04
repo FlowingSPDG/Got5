@@ -5,7 +5,7 @@ import (
 	"github.com/najeira/randstr"
 
 	"github.com/FlowingSPDG/Got5/examples/jwt"
-	"github.com/FlowingSPDG/Got5/route"
+	fiberroute "github.com/FlowingSPDG/Got5/route/fiber"
 )
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 	app := fiber.New()
 
 	g5 := app.Group("/get5") // /get5
-	route.SetupMatchLoadHandler(loader, auth, g5)
+	fiberroute.SetupMatchLoadHandler(loader, auth, g5)
 
 	app.Listen(":3000")
 }

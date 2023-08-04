@@ -19,7 +19,7 @@ func (d *Discord) EventAuth(ctx context.Context, mid string, auth string) error 
 }
 
 // CheckDemoAuth implements controller.JWTAuth
-func (d *Discord) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error {
+func (d *Discord) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID string, auth string) error {
 	// Lets say simple password...
 	if auth == d.setting.password {
 		return nil

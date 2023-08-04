@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/FlowingSPDG/Got5/examples/discord"
-	"github.com/FlowingSPDG/Got5/route"
+	fiberroute "github.com/FlowingSPDG/Got5/route/fiber"
 )
 
 var (
@@ -47,8 +47,8 @@ func main() {
 	// Setup fiber
 	app := fiber.New()
 	g5 := app.Group("/get5") // /get5
-	route.SetupEventHandlers(ctrl, ctrl, g5)
-	route.SetupMatchLoadHandler(ctrl, ctrl, g5)
+	fiberroute.SetupEventHandlers(ctrl, ctrl, g5)
+	fiberroute.SetupMatchLoadHandler(ctrl, ctrl, g5)
 
 	p := net.JoinHostPort(hostName, port)
 

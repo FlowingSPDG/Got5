@@ -1,4 +1,4 @@
-package route_test
+package ginroute_test
 
 import (
 	"bytes"
@@ -9,11 +9,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/FlowingSPDG/Got5/controller"
-	"github.com/FlowingSPDG/Got5/route"
+	ginroute "github.com/FlowingSPDG/Got5/route/gin"
 )
 
 var _ controller.DemoUploader = (*mockDemoUploaderGrant)(nil)
@@ -119,19 +119,20 @@ func TestDemoUploadTD(t *testing.T) {
 
 	for _, tt := range cases {
 		t.Run("DEMO UPLOAD:"+tt.title, func(t *testing.T) {
-			// Setup fiber
-			app := fiber.New()
+			// Setup Gin
+			app := gin.New()
 			g5test := app.Group("/get5testdemo") // /test
-			route.SetupDemoUploadHandler(tt.uploader, tt.auth, g5test)
+			ginroute.SetupDemoUploadHandler(tt.uploader, tt.auth, g5test)
 
 			r := httptest.NewRequest("POST", "/get5testdemo/demo", bytes.NewBuffer([]byte("demo file data")))
 			for k, v := range tt.headers {
 				r.Header.Add(k, v)
 			}
 
-			resp, _ := app.Test(r, -1)
-			// asserts.Equal(tt.err, err)
-			asserts.Equal(tt.statusCode, resp.StatusCode)
+			w := httptest.NewRecorder()
+			app.ServeHTTP(w, r)
+
+			asserts.Equal(tt.statusCode, w.Code)
 		})
 	}
 }

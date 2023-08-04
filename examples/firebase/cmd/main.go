@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	fsc "github.com/FlowingSPDG/Got5/examples/firebase"
-	"github.com/FlowingSPDG/Got5/route"
+	fiberroute "github.com/FlowingSPDG/Got5/route/fiber"
 )
 
 var (
@@ -69,7 +69,7 @@ func main() {
 	// Setup fiber
 	app := fiber.New()
 	g5 := app.Group("/get5") // /get5
-	route.SetupAllGet5Handlers(evh, loader, demUploader, auth, g5)
+	fiberroute.SetupAllGet5Handlers(evh, loader, demUploader, auth, g5)
 
 	p := net.JoinHostPort(hostName, port)
 

@@ -7,7 +7,6 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 
 	"github.com/FlowingSPDG/Got5/controller"
-	"github.com/FlowingSPDG/Got5/route"
 )
 
 var _ controller.Auth = (*firebaseAuth)(nil)
@@ -17,7 +16,7 @@ type firebaseAuth struct {
 }
 
 // CheckDemoAuth implements controller.Auth
-func (f *firebaseAuth) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error {
+func (f *firebaseAuth) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID string, auth string) error {
 	token, err := jwt.Parse(auth, func(token *jwt.Token) (any, error) {
 		// Don't forget to validate the alg is what you expect:
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -31,7 +30,7 @@ func (f *firebaseAuth) CheckDemoAuth(ctx context.Context, mid string, filename s
 		return err
 	}
 
-	if claims, ok := token.Claims.(route.G5JWT); ok && token.Valid {
+	if claims, ok := token.Claims.(G5JWT); ok && token.Valid {
 		fmt.Println(claims)
 	}
 	return nil
@@ -48,7 +47,7 @@ func (f *firebaseAuth) EventAuth(ctx context.Context, serverID string, auth stri
 		return f.secret, nil
 	})
 
-	if claims, ok := token.Claims.(route.G5JWT); ok && token.Valid {
+	if claims, ok := token.Claims.(G5JWT); ok && token.Valid {
 		fmt.Println(claims)
 	} else {
 		fmt.Println(err)
@@ -67,7 +66,7 @@ func (f *firebaseAuth) MatchAuth(ctx context.Context, mid string, auth string) e
 		return f.secret, nil
 	})
 
-	if claims, ok := token.Claims.(route.G5JWT); ok && token.Valid {
+	if claims, ok := token.Claims.(G5JWT); ok && token.Valid {
 		fmt.Println(claims)
 	} else {
 		fmt.Println(err)

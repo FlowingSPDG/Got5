@@ -11,7 +11,7 @@ import (
 type Auth interface {
 	EventAuth(ctx context.Context, serverID string, auth string) error
 	MatchAuth(ctx context.Context, mid string, auth string) error
-	CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error
+	CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID string, auth string) error
 }
 
 // EventHandler EventHandler interface handles read operation by get5 events

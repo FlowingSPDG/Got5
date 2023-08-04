@@ -23,7 +23,7 @@ func (wh *webhookAuth) EventAuth(ctx context.Context, mid string, auth string) e
 }
 
 // CheckDemoAuth implements controller.JWTAuth
-func (*webhookAuth) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, jwt string) error {
+func (*webhookAuth) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID string, jwt string) error {
 	panic("unimplemented")
 }
 

@@ -1,4 +1,4 @@
-package route_test
+package fiberroute_test
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 
 	"github.com/FlowingSPDG/Got5/controller"
 	"github.com/FlowingSPDG/Got5/models"
-	"github.com/FlowingSPDG/Got5/route"
+	fiberroute "github.com/FlowingSPDG/Got5/route/fiber"
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 )
@@ -21,7 +21,7 @@ type mockAuth struct {
 }
 
 // CheckDemoAuth implements controller.Auth
-func (a *mockAuth) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error {
+func (a *mockAuth) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID string, auth string) error {
 	if auth == a.auth {
 		return nil
 	}
@@ -78,7 +78,7 @@ func TestLoadMatchSuccess(t *testing.T) {
 			// Setup fiber
 			app := fiber.New()
 			g5test := app.Group("/get5testloadmatch") // /test
-			route.SetupMatchLoadHandler(tt.loader, tt.auth, g5test)
+			fiberroute.SetupMatchLoadHandler(tt.loader, tt.auth, g5test)
 
 			r := httptest.NewRequest("GET", "/get5testloadmatch/event", nil)
 			r.Header.Set("Content-Type", "application/json")
