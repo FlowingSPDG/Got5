@@ -795,7 +795,7 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "Get5_OnPauseBegan",
-			eventHandler: &mockEventHandler{expect: models.OnMatchUnpausedPayload{
+			eventHandler: &mockEventHandler{expect: models.OnPauseBeganPayload{
 				Event:     models.Event{Event: "pause_began"},
 				MatchID:   "14272",
 				MapNumber: 0,
@@ -1399,7 +1399,7 @@ func TestEventHandleTD(t *testing.T) {
 							IsBot:   false,
 						},
 						FriendlyFire:  true,
-						BlindDuration: 5,
+						BlindDuration: 0.5,
 					},
 				},
 				DamageEnemies:    0,
@@ -1714,7 +1714,8 @@ func TestEventHandleTD(t *testing.T) {
 		{
 			title: "PlayerDisconnected",
 			eventHandler: &mockEventHandler{expect: models.OnPlayerDisconnectedPayload{
-				Event: models.Event{Event: "player_disconnect"},
+				Event:   models.Event{Event: "player_disconnect"},
+				MatchID: "14272",
 				Player: models.Player{
 					SteamID: "76561198279375306",
 					Name:    "s1mple",
@@ -1792,7 +1793,7 @@ func TestEventHandleTD(t *testing.T) {
 			// t.Logf("b:%s\n", b)
 			// asserts.Equal(tt.err, err)
 			asserts.Equal(tt.statusCode, resp.StatusCode)
-			asserts.Equal(tt.eventHandler.parsed, tt.eventHandler.parsed)
+			asserts.Equal(tt.eventHandler.expect, tt.eventHandler.parsed)
 		})
 	}
 }

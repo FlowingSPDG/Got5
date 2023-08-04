@@ -7,12 +7,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/FlowingSPDG/Got5/controller"
 	"github.com/FlowingSPDG/Got5/models"
-	fiberroute "github.com/FlowingSPDG/Got5/route/fiber"
+	ginroute "github.com/FlowingSPDG/Got5/route/gin"
 )
 
 func getStringPointer(s string) *string {
@@ -795,7 +795,7 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "Get5_OnPauseBegan",
-			eventHandler: &mockEventHandler{expect: models.OnMatchUnpausedPayload{
+			eventHandler: &mockEventHandler{expect: models.OnPauseBeganPayload{
 				Event:     models.Event{Event: "pause_began"},
 				MatchID:   "14272",
 				MapNumber: 0,
@@ -1399,7 +1399,7 @@ func TestEventHandleTD(t *testing.T) {
 							IsBot:   false,
 						},
 						FriendlyFire:  true,
-						BlindDuration: 5,
+						BlindDuration: 0.5,
 					},
 				},
 				DamageEnemies:    0,
@@ -1714,7 +1714,8 @@ func TestEventHandleTD(t *testing.T) {
 		{
 			title: "PlayerDisconnected",
 			eventHandler: &mockEventHandler{expect: models.OnPlayerDisconnectedPayload{
-				Event: models.Event{Event: "player_disconnect"},
+				Event:   models.Event{Event: "player_disconnect"},
+				MatchID: "14272",
 				Player: models.Player{
 					SteamID: "76561198279375306",
 					Name:    "s1mple",
@@ -1779,20 +1780,18 @@ func TestEventHandleTD(t *testing.T) {
 	for _, tt := range cases {
 		t.Run(tt.title, func(t *testing.T) {
 			// Setup fiber
-			app := fiber.New()
+			app := gin.New()
 			g5test := app.Group("/get5testevent") // /test
-			fiberroute.SetupEventHandlers(tt.eventHandler, tt.auth, g5test)
+			ginroute.SetupEventHandlers(tt.eventHandler, tt.auth, g5test)
 
 			r := httptest.NewRequest("POST", "/get5testevent/event", bytes.NewBuffer(tt.input))
 			r.Header.Set("Content-Type", "application/json")
 
-			resp, _ := app.Test(r, -1)
-			defer resp.Body.Close()
-			// b, _ := io.ReadAll(resp.Body)
-			// t.Logf("b:%s\n", b)
-			// asserts.Equal(tt.err, err)
-			asserts.Equal(tt.statusCode, resp.StatusCode)
-			asserts.Equal(tt.eventHandler.parsed, tt.eventHandler.parsed)
+			w := httptest.NewRecorder()
+			app.ServeHTTP(w, r)
+
+			asserts.Equal(tt.statusCode, w.Code)
+			asserts.Equal(tt.eventHandler.expect, tt.eventHandler.parsed)
 		})
 	}
 }
