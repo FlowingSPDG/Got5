@@ -3,7 +3,7 @@
 STATUS: UNDER DEVELOPMENT  
 Go + get5 = Got5!  
 Got5 is simple and fast, Build-Your-Own-Get5Web framework.  
-Built with Go(1.18), Fiber.  
+Built with Go(1.20), Fiber.  
 
 Got5 interfaces supports general get5 event handling such as Kill, Match Load or Demo upload.  
 This makes you easier to build get5-based system like get5-web.  
