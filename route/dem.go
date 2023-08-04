@@ -4,8 +4,9 @@ import (
 	"bytes"
 	"strconv"
 
-	"github.com/FlowingSPDG/Got5/controller"
 	"github.com/gofiber/fiber/v2"
+
+	"github.com/FlowingSPDG/Got5/controller"
 )
 
 // CheckDemoAuth 認証用ハンドラ
