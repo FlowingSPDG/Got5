@@ -1,4 +1,4 @@
-package route
+package fiberroute
 
 import (
 	"bytes"

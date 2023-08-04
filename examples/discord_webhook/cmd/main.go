@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	webhook "github.com/FlowingSPDG/Got5/examples/discord_webhook"
-	"github.com/FlowingSPDG/Got5/route"
+	fiberroute "github.com/FlowingSPDG/Got5/route/fiber"
 )
 
 var (
@@ -47,7 +47,7 @@ func main() {
 	app := fiber.New()
 
 	g5 := app.Group("/get5") // /get5
-	route.SetupEventHandlers(evh, auth, g5)
+	fiberroute.SetupEventHandlers(evh, auth, g5)
 
 	if err := app.Listen(fmt.Sprintf(":%d", Port)); err != nil {
 		panic(err)

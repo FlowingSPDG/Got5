@@ -1,4 +1,4 @@
-package route_test
+package fiberroute_test
 
 import (
 	"bytes"
@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/FlowingSPDG/Got5/controller"
-	"github.com/FlowingSPDG/Got5/route"
+	fiberroute "github.com/FlowingSPDG/Got5/route/fiber"
 )
 
 var _ controller.DemoUploader = (*mockDemoUploaderGrant)(nil)
@@ -122,7 +122,7 @@ func TestDemoUploadTD(t *testing.T) {
 			// Setup fiber
 			app := fiber.New()
 			g5test := app.Group("/get5testdemo") // /test
-			route.SetupDemoUploadHandler(tt.uploader, tt.auth, g5test)
+			fiberroute.SetupDemoUploadHandler(tt.uploader, tt.auth, g5test)
 
 			r := httptest.NewRequest("POST", "/get5testdemo/demo", bytes.NewBuffer([]byte("demo file data")))
 			for k, v := range tt.headers {

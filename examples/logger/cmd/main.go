@@ -4,7 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/FlowingSPDG/Got5/examples/logger"
-	"github.com/FlowingSPDG/Got5/route"
+	fiberroute "github.com/FlowingSPDG/Got5/route/fiber"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 	app := fiber.New()
 
 	g5 := app.Group("/get5") // /get5
-	route.SetupAllGet5Handlers(evh, loader, uploader, auth, g5)
+	fiberroute.SetupAllGet5Handlers(evh, loader, uploader, auth, g5)
 
 	app.Listen(":3000")
 }
