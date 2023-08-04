@@ -169,6 +169,11 @@ func (d *Discord) HandleOnMatchUnpaused(ctx context.Context, p models.OnMatchUnp
 	return nil
 }
 
+// HandleOnPauseBegan implements controller.EventHandler.
+func (d *Discord) HandleOnPauseBegan(ctx context.Context, p models.OnPauseBeganPayload) error {
+	return nil
+}
+
 // HandleOnMolotovDetonated implements controller.EventHandler
 func (d *Discord) HandleOnMolotovDetonated(ctx context.Context, p models.OnMolotovDetonatedPayload) error {
 	return nil

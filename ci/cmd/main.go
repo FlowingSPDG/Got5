@@ -31,7 +31,7 @@ func main() {
 	defer client.Close()
 
 	// Docker イメージを読み込む
-	golang := client.Container().From("golang:1.19")
+	golang := client.Container().From("golang:1.20")
 
 	// クローンしたリポジトリのソースをマウントする
 	// WithWorkdir で作業ディレクトリを設定できる

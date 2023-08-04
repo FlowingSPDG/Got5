@@ -3,7 +3,7 @@
 STATUS: UNDER DEVELOPMENT  
 Go + get5 = Got5!  
 Got5 is simple and fast, Build-Your-Own-Get5Web framework.  
-Built with Go(1.18), Fiber.  
+Built with Go(1.20), Fiber.  
 
 Got5 interfaces supports general get5 event handling such as Kill, Match Load or Demo upload.  
 This makes you easier to build get5-based system like get5-web.  
@@ -22,9 +22,6 @@ e.g. You can post Discord message, or save stats to your database.
 // EventHandler EventHandler interface handles read operation by get5 events
 type EventHandler interface {
 	Close() error
-
-	// イベントハンドラへの絶対パスURL
-	Hostname() string
 
 	// Auth Checker
 	CheckEventAuth(ctx context.Context, mid string, reqAuth string) error

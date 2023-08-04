@@ -62,12 +62,16 @@ type Spectators struct {
 
 // Team for team1,team2
 type Team struct {
-	Name    string            `firestore:"name"`
-	Tag     string            `firestore:"tag"`
-	Flag    string            `firestore:"flag"`
-	Logo    string            `firestore:"logo"`
-	Players map[string]string `firestore:"players"`
-	Coaches map[string]string `firestore:"coaches"`
+	ID          string            `firestore:"id"`
+	Players     map[string]string `firestore:"players"`
+	Coaches     map[string]string `firestore:"coaches"`
+	Name        string            `firestore:"name"`
+	Tag         string            `firestore:"tag"`
+	Flag        string            `firestore:"flag"`
+	Logo        string            `firestore:"logo"`
+	SeriesScore int               `firestore:"series_score"`
+	MatchText   string            `firestore:"matchtext"`
+	FromFile    string            `firestore:"fromfile"`
 }
 
 func toFirestoreMatch(m models.Match) Match {

@@ -133,6 +133,13 @@ func OnEventHandler(ctrl controller.EventHandler) func(c *fiber.Ctx) error {
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnMatchUnpaused(c.Context(), ret)
+		case "pause_began":
+			ret := models.OnPauseBeganPayload{}
+			if err := reMarshal(p, &ret); err != nil {
+				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error())) // TODO: Wrap error code
+				return c.SendStatus(fiber.StatusBadRequest)
+			}
+			return ctrl.HandleOnPauseBegan(c.Context(), ret)
 		case "knife_start":
 			ret := models.OnKnifeRoundStartedPayload{}
 			if err := reMarshal(p, &ret); err != nil {

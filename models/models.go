@@ -192,7 +192,7 @@ type OnMatchUnpausedPayload struct {
 	PauseType string `json:"pause_type"`
 }
 
-type OnPauseBegan struct {
+type OnPauseBeganPayload struct {
 	Event
 	MatchID   string `json:"matchid"`
 	MapNumber int    `json:"map_number"`

@@ -3,8 +3,9 @@ package route_test
 import (
 	"testing"
 
-	"github.com/FlowingSPDG/Got5/route"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/FlowingSPDG/Got5/route"
 )
 
 func TestGenerateJWT(t *testing.T) {

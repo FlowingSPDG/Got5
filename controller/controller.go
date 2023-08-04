@@ -18,9 +18,6 @@ type Auth interface {
 type EventHandler interface {
 	Close() error
 
-	// イベントハンドラへの絶対パスURL
-	Hostname() string
-
 	// GET5 Events
 	HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error
 	HandleOnPreLoadMatchConfig(ctx context.Context, p models.OnPreLoadMatchConfigPayload) error
@@ -36,6 +33,7 @@ type EventHandler interface {
 	HandleOnDemoUploadEnded(ctx context.Context, p models.OnDemoUploadEndedPayload) error
 	HandleOnMatchPaused(ctx context.Context, p models.OnMatchPausedPayload) error
 	HandleOnMatchUnpaused(ctx context.Context, p models.OnMatchUnpausedPayload) error
+	HandleOnPauseBegan(ctx context.Context, p models.OnPauseBeganPayload) error
 	HandleOnKnifeRoundStarted(ctx context.Context, p models.OnKnifeRoundStartedPayload) error
 	HandleOnKnifeRoundWon(ctx context.Context, p models.OnKnifeRoundWonPayload) error
 	HandleOnTeamReadyStatusChanged(ctx context.Context, p models.OnTeamReadyStatusChangedPayload) error
