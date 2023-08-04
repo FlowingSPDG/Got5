@@ -144,6 +144,11 @@ func (f *firebaseEventHandler) HandleOnMatchUnpaused(ctx context.Context, p mode
 	panic("unimplemented")
 }
 
+// HandleOnPauseBegan implements controller.EventHandler.
+func (f *firebaseEventHandler) HandleOnPauseBegan(ctx context.Context, p models.OnPauseBeganPayload) error {
+	panic("unimplemented")
+}
+
 // HandleOnMolotovDetonated implements controller.EventHandler
 func (f *firebaseEventHandler) HandleOnMolotovDetonated(ctx context.Context, p models.OnMolotovDetonatedPayload) error {
 	panic("unimplemented")

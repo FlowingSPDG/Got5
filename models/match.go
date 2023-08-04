@@ -3,24 +3,29 @@ package models
 // https://splewis.github.io/get5/latest/match_schema/#schema
 
 type Match struct {
-	MatchTitle           string            `json:"match_title"`
-	MatchID              string            `json:"matchid"`
-	ClinchSeries         bool              `json:"clinch_series"`
-	NumMaps              int               `json:"num_maps"`
-	PlayersPerTeam       int               `json:"players_per_team"`
-	CoachesPerTeam       int               `json:"coaches_per_team"`
-	CoachesMustReady     bool              `json:"coaches_must_ready"`
-	MinPlayersToReady    int               `json:"min_players_to_ready"`
-	MinSpectatorsToReady int               `json:"min_spectators_to_ready"`
-	SkipVeto             bool              `json:"skip_veto"`
-	VetoFirst            string            `json:"veto_first"`
-	SideType             string            `json:"side_type"`
-	Spectators           Spectators        `json:"spectators"`
-	Maplist              []string          `json:"maplist"`
-	MapSides             []string          `json:"map_sides"`
-	Team1                Team              `json:"team1"`
-	Team2                Team              `json:"team2"`
-	Cvars                map[string]string `json:"cvars"`
+	MatchTitle             string            `json:"match_title"`
+	MatchID                string            `json:"matchid"`
+	ClinchSeries           bool              `json:"clinch_series"`
+	NumMaps                int               `json:"num_maps"`
+	Scrim                  bool              `json:"scrim"`
+	Wingman                bool              `json:"wingman"`
+	PlayersPerTeam         int               `json:"players_per_team"`
+	CoachesPerTeam         int               `json:"coaches_per_team"`
+	CoachesMustReady       bool              `json:"coaches_must_ready"`
+	MinPlayersToReady      int               `json:"min_players_to_ready"`
+	MinSpectatorsToReady   int               `json:"min_spectators_to_ready"`
+	SkipVeto               bool              `json:"skip_veto"`
+	VetoFirst              string            `json:"veto_first"`
+	VetoMode               string            `json:"veto_mode"`
+	SideType               string            `json:"side_type"`
+	MapSides               []string          `json:"map_sides"`
+	Spectators             Spectators        `json:"spectators"`
+	Maplist                []string          `json:"maplist"`
+	FavoredPercentageTeam1 int               `json:"favored_percentage_team1"`
+	FavoredPercentageText  string            `json:"favored_percentage_text"`
+	Team1                  Team              `json:"team1"`
+	Team2                  Team              `json:"team2"`
+	Cvars                  map[string]string `json:"cvars"`
 }
 
 func (m Match) ToG5Format() Match {
@@ -72,12 +77,16 @@ type Spectators struct {
 	Players map[string]string `json:"players"`
 }
 type Team struct {
-	Name    string            `json:"name"`
-	Tag     string            `json:"tag"`
-	Flag    string            `json:"flag"`
-	Logo    string            `json:"logo"`
-	Players map[string]string `json:"players"`
-	Coaches map[string]string `json:"coaches"`
+	ID          string            `json:"id"`
+	Players     map[string]string `json:"players"`
+	Coaches     map[string]string `json:"coaches"`
+	Name        string            `json:"name"`
+	Tag         string            `json:"tag"`
+	Flag        string            `json:"flag"`
+	Logo        string            `json:"logo"`
+	SeriesScore int               `json:"series_score"`
+	MatchText   string            `json:"matchtext"`
+	FromFile    string            `json:"fromfile"`
 }
 
 // G5Match 別の構造体にG5Matchインターフェースを実装すれば型が違っても変換してGet5に渡してくれる

@@ -13,6 +13,12 @@ var _ controller.EventHandler = (*loggerEventHandler)(nil)
 // logger is simply prints what happend.
 type loggerEventHandler struct{}
 
+// HandleOnPauseBegan implements controller.EventHandler.
+func (*loggerEventHandler) HandleOnPauseBegan(ctx context.Context, p models.OnPauseBeganPayload) error {
+	log.Println(p)
+	return nil
+}
+
 // CheckAuth implements controller.EventHandler
 func (*loggerEventHandler) CheckEventAuth(ctx context.Context, mid string, reqAuth string) error {
 	return nil

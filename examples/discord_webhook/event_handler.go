@@ -39,7 +39,7 @@ func (wh *webhookEventHandler) HandleOnBackupRestore(ctx context.Context, p mode
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -56,7 +56,7 @@ func (wh *webhookEventHandler) HandleOnBombDefused(ctx context.Context, p models
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -76,7 +76,7 @@ func (wh *webhookEventHandler) HandleOnBombExploded(ctx context.Context, p model
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -94,7 +94,7 @@ func (wh *webhookEventHandler) HandleOnBombPlanted(ctx context.Context, p models
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -113,7 +113,7 @@ func (wh *webhookEventHandler) HandleOnDecoyStarted(ctx context.Context, p model
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -132,7 +132,7 @@ func (wh *webhookEventHandler) HandleOnDemoFinished(ctx context.Context, p model
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -148,7 +148,7 @@ func (wh *webhookEventHandler) HandleOnDemoUploadEnded(ctx context.Context, p mo
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -178,7 +178,7 @@ func (wh *webhookEventHandler) HandleOnFlashbangDetonated(ctx context.Context, p
 	emb := []discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields:      fields,
 		},
@@ -212,7 +212,7 @@ func (wh *webhookEventHandler) HandleOnGoingLive(ctx context.Context, p models.O
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -227,7 +227,7 @@ func (wh *webhookEventHandler) HandleOnGrenadeThrown(ctx context.Context, p mode
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -255,7 +255,7 @@ func (wh *webhookEventHandler) HandleOnHEGrenadeDetonated(ctx context.Context, p
 	emb := []discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields:      fields,
 		},
@@ -274,7 +274,7 @@ func (wh *webhookEventHandler) HandleOnKnifeRoundStarted(ctx context.Context, p 
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -289,7 +289,7 @@ func (wh *webhookEventHandler) HandleOnKnifeRoundWon(ctx context.Context, p mode
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -321,7 +321,7 @@ func (wh *webhookEventHandler) HandleOnMapPicked(ctx context.Context, p models.O
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -338,12 +338,12 @@ func (wh *webhookEventHandler) HandleOnMapResult(ctx context.Context, p models.O
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
-				{Name: "TEAM1 Score", Value: strconv.Itoa(p.Team1Score), Inline: aws.Bool(false)},
-				{Name: "TEAM2Score", Value: strconv.Itoa(p.Team2Score), Inline: aws.Bool(false)},
+				{Name: "TEAM1 Score", Value: strconv.Itoa(p.Team1.Score), Inline: aws.Bool(false)},
+				{Name: "TEAM2Score", Value: strconv.Itoa(p.Team1.Score), Inline: aws.Bool(false)},
 				{Name: "WINNER", Value: p.Winner.Team, Inline: aws.Bool(false)},
 			},
 		},
@@ -356,7 +356,7 @@ func (wh *webhookEventHandler) HandleOnMapVetoed(ctx context.Context, p models.O
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "TEAM", Value: p.Team, Inline: aws.Bool(false)},
@@ -372,7 +372,7 @@ func (wh *webhookEventHandler) HandleOnMatchPaused(ctx context.Context, p models
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -389,7 +389,24 @@ func (wh *webhookEventHandler) HandleOnMatchUnpaused(ctx context.Context, p mode
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
+			Timestamp:   aws.Time(time.Now()),
+			Fields: []discord.EmbedField{
+				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
+				{Name: "TEAM", Value: p.Team, Inline: aws.Bool(false)},
+				{Name: "PAUSE TYPE", Value: p.PauseType, Inline: aws.Bool(false)},
+			},
+		},
+	})
+	return err
+}
+
+// HandleOnPauseBegan implements controller.EventHandler.
+func (wh *webhookEventHandler) HandleOnPauseBegan(ctx context.Context, p models.OnPauseBeganPayload) error {
+	_, err := wh.c.CreateEmbeds([]discord.Embed{
+		{
+			Title:       p.Event.Event,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -415,7 +432,7 @@ func (wh *webhookEventHandler) HandleOnMolotovDetonated(ctx context.Context, p m
 	emb := []discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields:      fields,
 		},
@@ -434,7 +451,7 @@ func (wh *webhookEventHandler) HandleOnPlayerBecameMVP(ctx context.Context, p mo
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -467,7 +484,7 @@ func (wh *webhookEventHandler) HandleOnPlayerDeath(ctx context.Context, p models
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "PLAYER", Value: p.Player.Name, Inline: aws.Bool(false)},
@@ -512,7 +529,7 @@ func (wh *webhookEventHandler) HandleOnPlayerSay(ctx context.Context, p models.O
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "PLAYER", Value: p.Player.Name, Inline: aws.Bool(false)},
@@ -547,7 +564,7 @@ func (wh *webhookEventHandler) HandleOnRoundEnd(ctx context.Context, p models.On
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -555,8 +572,8 @@ func (wh *webhookEventHandler) HandleOnRoundEnd(ctx context.Context, p models.On
 				{Name: "ROUND TIME", Value: strconv.Itoa(p.RoundTime), Inline: aws.Bool(false)},
 				{Name: "REASON", Value: strconv.Itoa(p.Reason), Inline: aws.Bool(false)},
 				{Name: "WINNER", Value: p.Winner.Team, Inline: aws.Bool(false)},
-				{Name: "TEAM1 Score", Value: strconv.Itoa(p.Team1Score), Inline: aws.Bool(false)},
-				{Name: "TEAM2Score", Value: strconv.Itoa(p.Team2Score), Inline: aws.Bool(false)},
+				{Name: "TEAM1 Score", Value: strconv.Itoa(p.Team1.Score), Inline: aws.Bool(false)},
+				{Name: "TEAM2Score", Value: strconv.Itoa(p.Team2.Score), Inline: aws.Bool(false)},
 			},
 		},
 	})
@@ -568,7 +585,7 @@ func (wh *webhookEventHandler) HandleOnRoundStart(ctx context.Context, p models.
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -584,7 +601,7 @@ func (wh *webhookEventHandler) HandleOnRoundStatsUpdated(ctx context.Context, p 
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
@@ -600,11 +617,11 @@ func (wh *webhookEventHandler) HandleOnSeriesInit(ctx context.Context, p models.
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
-				{Name: "TEAM1 NAME", Value: p.Team1Name, Inline: aws.Bool(false)},
-				{Name: "TEAM2 NAME", Value: p.Team2Name, Inline: aws.Bool(false)},
+				{Name: "TEAM1 NAME", Value: p.Team1.Name, Inline: aws.Bool(false)},
+				{Name: "TEAM2 NAME", Value: p.Team2.Name, Inline: aws.Bool(false)},
 			},
 		},
 	})
@@ -616,7 +633,7 @@ func (wh *webhookEventHandler) HandleOnSeriesResult(ctx context.Context, p model
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "TEAM1 SERIES SCORE", Value: strconv.Itoa(p.Team1SeriesScore), Inline: aws.Bool(false)},
@@ -635,7 +652,7 @@ func (wh *webhookEventHandler) HandleOnSidePicked(ctx context.Context, p models.
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
 				{Name: "TEAM", Value: p.Team, Inline: aws.Bool(false)},
@@ -661,7 +678,7 @@ func (wh *webhookEventHandler) HandleOnSmokeGrenadeDetonated(ctx context.Context
 	emb := []discord.Embed{
 		{
 			Title:       p.Event.Event,
-			Description: p.Matchid,
+			Description: p.MatchID,
 			Timestamp:   aws.Time(time.Now()),
 			Fields:      fields,
 		},
@@ -677,7 +694,7 @@ func (wh *webhookEventHandler) HandleOnTeamReadyStatusChanged(ctx context.Contex
 			Title:     p.Event.Event,
 			Timestamp: aws.Time(time.Now()),
 			Fields: []discord.EmbedField{
-				{Name: "TEAM", Value: p.Team, Inline: aws.Bool(false)},
+				{Name: "TEAM", Value: *p.Team, Inline: aws.Bool(false)},
 				{Name: "READY", Value: strconv.FormatBool(p.Ready), Inline: aws.Bool(false)},
 				{Name: "GAME STATE", Value: p.GameState, Inline: aws.Bool(false)},
 			},

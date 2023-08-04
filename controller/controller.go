@@ -36,6 +36,7 @@ type EventHandler interface {
 	HandleOnDemoUploadEnded(ctx context.Context, p models.OnDemoUploadEndedPayload) error
 	HandleOnMatchPaused(ctx context.Context, p models.OnMatchPausedPayload) error
 	HandleOnMatchUnpaused(ctx context.Context, p models.OnMatchUnpausedPayload) error
+	HandleOnPauseBegan(ctx context.Context, p models.OnPauseBeganPayload) error
 	HandleOnKnifeRoundStarted(ctx context.Context, p models.OnKnifeRoundStartedPayload) error
 	HandleOnKnifeRoundWon(ctx context.Context, p models.OnKnifeRoundWonPayload) error
 	HandleOnTeamReadyStatusChanged(ctx context.Context, p models.OnTeamReadyStatusChangedPayload) error
