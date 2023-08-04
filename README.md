@@ -23,9 +23,6 @@ e.g. You can post Discord message, or save stats to your database.
 type EventHandler interface {
 	Close() error
 
-	// イベントハンドラへの絶対パスURL
-	Hostname() string
-
 	// Auth Checker
 	CheckEventAuth(ctx context.Context, mid string, reqAuth string) error
 
