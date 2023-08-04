@@ -116,7 +116,7 @@ You may want to add auth middleware to prevend unauthorized demo uploads.
 ```go
 // DemoUploader is for Demo Upload Operation(get5_dem_upload_url)
 type DemoUploader interface {
-	CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error
+	CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID string, auth string) error
 	Upload(ctx context.Context, mid string, filename string, r io.Reader) error // demoファイルの登録処理
 }
 ```

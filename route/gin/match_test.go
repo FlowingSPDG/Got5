@@ -1,4 +1,4 @@
-package fiberroute_test
+package ginroute_test
 
 import (
 	"context"

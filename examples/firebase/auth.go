@@ -24,7 +24,7 @@ func (f *firebaseAuth) EventAuth(ctx context.Context, mid string, auth string) e
 }
 
 // CheckDemoAuth implements controller.JWTAuth
-func (f *firebaseAuth) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error {
+func (f *firebaseAuth) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID string, auth string) error {
 	_, err := f.a.VerifyIDToken(ctx, auth)
 	if err != nil {
 		return err

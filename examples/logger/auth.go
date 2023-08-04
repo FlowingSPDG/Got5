@@ -12,7 +12,7 @@ var _ controller.Auth = (*loggerAuth)(nil)
 type loggerAuth struct{}
 
 // CheckDemoAuth implements controller.Auth
-func (*loggerAuth) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error {
+func (*loggerAuth) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID string, auth string) error {
 	log.Println("mid", mid, "filename", filename, "mapNumber", mapNumber, "serverID", serverID, "auth", auth)
 	return nil
 }

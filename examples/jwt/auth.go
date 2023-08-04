@@ -16,7 +16,7 @@ type firebaseAuth struct {
 }
 
 // CheckDemoAuth implements controller.Auth
-func (f *firebaseAuth) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID int, auth string) error {
+func (f *firebaseAuth) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID string, auth string) error {
 	token, err := jwt.Parse(auth, func(token *jwt.Token) (any, error) {
 		// Don't forget to validate the alg is what you expect:
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
