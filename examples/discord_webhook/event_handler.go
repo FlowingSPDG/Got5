@@ -7,16 +7,14 @@ import (
 	"time"
 
 	// AWS package converts value to pointer in function, so this is not something about Amazon Web Service
+	got5 "github.com/FlowingSPDG/Got5"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/disgoorg/disgo/discord"
 	"github.com/disgoorg/disgo/webhook"
 	"github.com/disgoorg/snowflake/v2"
-
-	"github.com/FlowingSPDG/Got5/controller"
-	"github.com/FlowingSPDG/Got5/models"
 )
 
-var _ controller.EventHandler = (*webhookEventHandler)(nil)
+var _ got5.EventHandler = (*webhookEventHandler)(nil)
 
 // webhookEventHandler Discord webhook
 type webhookEventHandler struct {
@@ -25,7 +23,7 @@ type webhookEventHandler struct {
 	c        webhook.Client
 }
 
-// Hostname implements controller.EventHandler
+// Hostname implements got5.EventHandler
 func (wh *webhookEventHandler) Hostname() string {
 	return wh.eventURL
 }
@@ -34,8 +32,8 @@ func (wh *webhookEventHandler) Close() error {
 	return nil
 }
 
-// HandleOnBackupRestore implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnBackupRestore(ctx context.Context, p models.OnBackupRestorePayload) error {
+// HandleOnBackupRestore implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnBackupRestore(ctx context.Context, p got5.OnBackupRestorePayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -51,8 +49,8 @@ func (wh *webhookEventHandler) HandleOnBackupRestore(ctx context.Context, p mode
 	return err
 }
 
-// HandleOnBombDefused implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnBombDefused(ctx context.Context, p models.OnBombDefusedPayload) error {
+// HandleOnBombDefused implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnBombDefused(ctx context.Context, p got5.OnBombDefusedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -71,8 +69,8 @@ func (wh *webhookEventHandler) HandleOnBombDefused(ctx context.Context, p models
 	return err
 }
 
-// HandleOnBombExploded implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnBombExploded(ctx context.Context, p models.OnBombExplodedPayload) error {
+// HandleOnBombExploded implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnBombExploded(ctx context.Context, p got5.OnBombExplodedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -89,8 +87,8 @@ func (wh *webhookEventHandler) HandleOnBombExploded(ctx context.Context, p model
 	return err
 }
 
-// HandleOnBombPlanted implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnBombPlanted(ctx context.Context, p models.OnBombPlantedPayload) error {
+// HandleOnBombPlanted implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnBombPlanted(ctx context.Context, p got5.OnBombPlantedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -108,8 +106,8 @@ func (wh *webhookEventHandler) HandleOnBombPlanted(ctx context.Context, p models
 	return err
 }
 
-// HandleOnDecoyStarted implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnDecoyStarted(ctx context.Context, p models.OnDecoyStartedPayload) error {
+// HandleOnDecoyStarted implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnDecoyStarted(ctx context.Context, p got5.OnDecoyStartedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -127,8 +125,8 @@ func (wh *webhookEventHandler) HandleOnDecoyStarted(ctx context.Context, p model
 	return err
 }
 
-// HandleOnDemoFinished implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnDemoFinished(ctx context.Context, p models.OnDemoFinishedPayload) error {
+// HandleOnDemoFinished implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnDemoFinished(ctx context.Context, p got5.OnDemoFinishedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -143,8 +141,8 @@ func (wh *webhookEventHandler) HandleOnDemoFinished(ctx context.Context, p model
 	return err
 }
 
-// HandleOnDemoUploadEnded implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnDemoUploadEnded(ctx context.Context, p models.OnDemoUploadEndedPayload) error {
+// HandleOnDemoUploadEnded implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnDemoUploadEnded(ctx context.Context, p got5.OnDemoUploadEndedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -160,14 +158,14 @@ func (wh *webhookEventHandler) HandleOnDemoUploadEnded(ctx context.Context, p mo
 	return err
 }
 
-// HandleOnEvent implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnEvent(ctx context.Context, p models.OnEventPayload) error {
+// HandleOnEvent implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnEvent(ctx context.Context, p got5.OnEventPayload) error {
 	// any event
 	return nil
 }
 
-// HandleOnFlashbangDetonated implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnFlashbangDetonated(ctx context.Context, p models.OnFlashbangDetonatedPayload) error {
+// HandleOnFlashbangDetonated implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnFlashbangDetonated(ctx context.Context, p got5.OnFlashbangDetonatedPayload) error {
 	fields := []discord.EmbedField{
 		{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
 		{Name: "ROUND", Value: strconv.Itoa(p.RoundNumber), Inline: aws.Bool(false)},
@@ -192,8 +190,8 @@ func (wh *webhookEventHandler) HandleOnFlashbangDetonated(ctx context.Context, p
 	return err
 }
 
-// HandleOnGameStateChanged implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error {
+// HandleOnGameStateChanged implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnGameStateChanged(ctx context.Context, p got5.OnGameStateChangedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:     p.Event.Event,
@@ -207,8 +205,8 @@ func (wh *webhookEventHandler) HandleOnGameStateChanged(ctx context.Context, p m
 	return err
 }
 
-// HandleOnGoingLive implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnGoingLive(ctx context.Context, p models.OnGoingLivePayload) error {
+// HandleOnGoingLive implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnGoingLive(ctx context.Context, p got5.OnGoingLivePayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -222,8 +220,8 @@ func (wh *webhookEventHandler) HandleOnGoingLive(ctx context.Context, p models.O
 	return err
 }
 
-// HandleOnGrenadeThrown implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnGrenadeThrown(ctx context.Context, p models.OnGrenadeThrownPayload) error {
+// HandleOnGrenadeThrown implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnGrenadeThrown(ctx context.Context, p got5.OnGrenadeThrownPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -241,8 +239,8 @@ func (wh *webhookEventHandler) HandleOnGrenadeThrown(ctx context.Context, p mode
 	return err
 }
 
-// HandleOnHEGrenadeDetonated implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnHEGrenadeDetonated(ctx context.Context, p models.OnHEGrenadeDetonatedPayload) error {
+// HandleOnHEGrenadeDetonated implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnHEGrenadeDetonated(ctx context.Context, p got5.OnHEGrenadeDetonatedPayload) error {
 	fields := []discord.EmbedField{
 		{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
 		{Name: "ROUND", Value: strconv.Itoa(p.RoundNumber), Inline: aws.Bool(false)},
@@ -269,8 +267,8 @@ func (wh *webhookEventHandler) HandleOnHEGrenadeDetonated(ctx context.Context, p
 	return err
 }
 
-// HandleOnKnifeRoundStarted implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnKnifeRoundStarted(ctx context.Context, p models.OnKnifeRoundStartedPayload) error {
+// HandleOnKnifeRoundStarted implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnKnifeRoundStarted(ctx context.Context, p got5.OnKnifeRoundStartedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -284,8 +282,8 @@ func (wh *webhookEventHandler) HandleOnKnifeRoundStarted(ctx context.Context, p 
 	return err
 }
 
-// HandleOnKnifeRoundWon implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnKnifeRoundWon(ctx context.Context, p models.OnKnifeRoundWonPayload) error {
+// HandleOnKnifeRoundWon implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnKnifeRoundWon(ctx context.Context, p got5.OnKnifeRoundWonPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -302,8 +300,8 @@ func (wh *webhookEventHandler) HandleOnKnifeRoundWon(ctx context.Context, p mode
 	return err
 }
 
-// HandleOnLoadMatchConfigFailed implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnLoadMatchConfigFailed(ctx context.Context, p models.OnLoadMatchConfigFailedPayload) error {
+// HandleOnLoadMatchConfigFailed implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnLoadMatchConfigFailed(ctx context.Context, p got5.OnLoadMatchConfigFailedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:     p.Event.Event,
@@ -316,8 +314,8 @@ func (wh *webhookEventHandler) HandleOnLoadMatchConfigFailed(ctx context.Context
 	return err
 }
 
-// HandleOnMapPicked implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnMapPicked(ctx context.Context, p models.OnMapPickedPayload) error {
+// HandleOnMapPicked implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnMapPicked(ctx context.Context, p got5.OnMapPickedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -333,8 +331,8 @@ func (wh *webhookEventHandler) HandleOnMapPicked(ctx context.Context, p models.O
 	return err
 }
 
-// HandleOnMapResult implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnMapResult(ctx context.Context, p models.OnMapResultPayload) error {
+// HandleOnMapResult implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnMapResult(ctx context.Context, p got5.OnMapResultPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -351,8 +349,8 @@ func (wh *webhookEventHandler) HandleOnMapResult(ctx context.Context, p models.O
 	return err
 }
 
-// HandleOnMapVetoed implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnMapVetoed(ctx context.Context, p models.OnMapVetoedPayload) error {
+// HandleOnMapVetoed implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnMapVetoed(ctx context.Context, p got5.OnMapVetoedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -367,8 +365,8 @@ func (wh *webhookEventHandler) HandleOnMapVetoed(ctx context.Context, p models.O
 	return err
 }
 
-// HandleOnMatchPaused implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnMatchPaused(ctx context.Context, p models.OnMatchPausedPayload) error {
+// HandleOnMatchPaused implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnMatchPaused(ctx context.Context, p got5.OnMatchPausedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -384,8 +382,8 @@ func (wh *webhookEventHandler) HandleOnMatchPaused(ctx context.Context, p models
 	return err
 }
 
-// HandleOnMatchUnpaused implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnMatchUnpaused(ctx context.Context, p models.OnMatchUnpausedPayload) error {
+// HandleOnMatchUnpaused implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnMatchUnpaused(ctx context.Context, p got5.OnMatchUnpausedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -401,8 +399,8 @@ func (wh *webhookEventHandler) HandleOnMatchUnpaused(ctx context.Context, p mode
 	return err
 }
 
-// HandleOnPauseBegan implements controller.EventHandler.
-func (wh *webhookEventHandler) HandleOnPauseBegan(ctx context.Context, p models.OnPauseBeganPayload) error {
+// HandleOnPauseBegan implements got5.EventHandler.
+func (wh *webhookEventHandler) HandleOnPauseBegan(ctx context.Context, p got5.OnPauseBeganPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -418,8 +416,8 @@ func (wh *webhookEventHandler) HandleOnPauseBegan(ctx context.Context, p models.
 	return err
 }
 
-// HandleOnMolotovDetonated implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnMolotovDetonated(ctx context.Context, p models.OnMolotovDetonatedPayload) error {
+// HandleOnMolotovDetonated implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnMolotovDetonated(ctx context.Context, p got5.OnMolotovDetonatedPayload) error {
 	fields := []discord.EmbedField{
 		{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
 		{Name: "ROUND", Value: strconv.Itoa(p.RoundNumber), Inline: aws.Bool(false)},
@@ -446,8 +444,8 @@ func (wh *webhookEventHandler) HandleOnMolotovDetonated(ctx context.Context, p m
 	return err
 }
 
-// HandleOnPlayerBecameMVP implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnPlayerBecameMVP(ctx context.Context, p models.OnPlayerBecameMVPPayload) error {
+// HandleOnPlayerBecameMVP implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnPlayerBecameMVP(ctx context.Context, p got5.OnPlayerBecameMVPPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -464,8 +462,8 @@ func (wh *webhookEventHandler) HandleOnPlayerBecameMVP(ctx context.Context, p mo
 	return err
 }
 
-// HandleOnPlayerConnected implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnPlayerConnected(ctx context.Context, p models.OnPlayerConnectedPayload) error {
+// HandleOnPlayerConnected implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnPlayerConnected(ctx context.Context, p got5.OnPlayerConnectedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:     p.Event.Event,
@@ -479,8 +477,8 @@ func (wh *webhookEventHandler) HandleOnPlayerConnected(ctx context.Context, p mo
 	return err
 }
 
-// HandleOnPlayerDeath implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnPlayerDeath(ctx context.Context, p models.OnPlayerDeathPayload) error {
+// HandleOnPlayerDeath implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnPlayerDeath(ctx context.Context, p got5.OnPlayerDeathPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -509,8 +507,8 @@ func (wh *webhookEventHandler) HandleOnPlayerDeath(ctx context.Context, p models
 	return err
 }
 
-// HandleOnPlayerDisconnected implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnPlayerDisconnected(ctx context.Context, p models.OnPlayerDisconnectedPayload) error {
+// HandleOnPlayerDisconnected implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnPlayerDisconnected(ctx context.Context, p got5.OnPlayerDisconnectedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:     p.Event.Event,
@@ -523,8 +521,8 @@ func (wh *webhookEventHandler) HandleOnPlayerDisconnected(ctx context.Context, p
 	return err
 }
 
-// HandleOnPlayerSay implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnPlayerSay(ctx context.Context, p models.OnPlayerSayPayload) error {
+// HandleOnPlayerSay implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnPlayerSay(ctx context.Context, p got5.OnPlayerSayPayload) error {
 	// You can GET their profile image/name by Steam API, and pretend on webhook message
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
@@ -544,8 +542,8 @@ func (wh *webhookEventHandler) HandleOnPlayerSay(ctx context.Context, p models.O
 	return err
 }
 
-// HandleOnPreLoadMatchConfig implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnPreLoadMatchConfig(ctx context.Context, p models.OnPreLoadMatchConfigPayload) error {
+// HandleOnPreLoadMatchConfig implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnPreLoadMatchConfig(ctx context.Context, p got5.OnPreLoadMatchConfigPayload) error {
 	// You can GET their profile image/name by Steam API, and pretend on webhook message
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
@@ -559,8 +557,8 @@ func (wh *webhookEventHandler) HandleOnPreLoadMatchConfig(ctx context.Context, p
 	return err
 }
 
-// HandleOnRoundEnd implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnRoundEnd(ctx context.Context, p models.OnRoundEndPayload) error {
+// HandleOnRoundEnd implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnRoundEnd(ctx context.Context, p got5.OnRoundEndPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -580,8 +578,8 @@ func (wh *webhookEventHandler) HandleOnRoundEnd(ctx context.Context, p models.On
 	return err
 }
 
-// HandleOnRoundStart implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnRoundStart(ctx context.Context, p models.OnRoundStartPayload) error {
+// HandleOnRoundStart implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnRoundStart(ctx context.Context, p got5.OnRoundStartPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -596,8 +594,8 @@ func (wh *webhookEventHandler) HandleOnRoundStart(ctx context.Context, p models.
 	return err
 }
 
-// HandleOnRoundStatsUpdated implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnRoundStatsUpdated(ctx context.Context, p models.OnRoundStatsUpdatedPayload) error {
+// HandleOnRoundStatsUpdated implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnRoundStatsUpdated(ctx context.Context, p got5.OnRoundStatsUpdatedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -612,8 +610,8 @@ func (wh *webhookEventHandler) HandleOnRoundStatsUpdated(ctx context.Context, p 
 	return err
 }
 
-// HandleOnSeriesInit implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnSeriesInit(ctx context.Context, p models.OnSeriesInitPayload) error {
+// HandleOnSeriesInit implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnSeriesInit(ctx context.Context, p got5.OnSeriesInitPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -628,8 +626,8 @@ func (wh *webhookEventHandler) HandleOnSeriesInit(ctx context.Context, p models.
 	return err
 }
 
-// HandleOnSeriesResult implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnSeriesResult(ctx context.Context, p models.OnSeriesResultPayload) error {
+// HandleOnSeriesResult implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnSeriesResult(ctx context.Context, p got5.OnSeriesResultPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -647,8 +645,8 @@ func (wh *webhookEventHandler) HandleOnSeriesResult(ctx context.Context, p model
 	return err
 }
 
-// HandleOnSidePicked implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnSidePicked(ctx context.Context, p models.OnSidePickedPayload) error {
+// HandleOnSidePicked implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnSidePicked(ctx context.Context, p got5.OnSidePickedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:       p.Event.Event,
@@ -665,8 +663,8 @@ func (wh *webhookEventHandler) HandleOnSidePicked(ctx context.Context, p models.
 	return err
 }
 
-// HandleOnSmokeGrenadeDetonated implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnSmokeGrenadeDetonated(ctx context.Context, p models.OnSmokeGrenadeDetonatedPayload) error {
+// HandleOnSmokeGrenadeDetonated implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnSmokeGrenadeDetonated(ctx context.Context, p got5.OnSmokeGrenadeDetonatedPayload) error {
 	fields := []discord.EmbedField{
 		{Name: "MAP", Value: strconv.Itoa(p.MapNumber), Inline: aws.Bool(false)},
 		{Name: "ROUND", Value: strconv.Itoa(p.RoundNumber), Inline: aws.Bool(false)},
@@ -687,8 +685,8 @@ func (wh *webhookEventHandler) HandleOnSmokeGrenadeDetonated(ctx context.Context
 	return err
 }
 
-// HandleOnTeamReadyStatusChanged implements controller.EventHandler
-func (wh *webhookEventHandler) HandleOnTeamReadyStatusChanged(ctx context.Context, p models.OnTeamReadyStatusChangedPayload) error {
+// HandleOnTeamReadyStatusChanged implements got5.EventHandler
+func (wh *webhookEventHandler) HandleOnTeamReadyStatusChanged(ctx context.Context, p got5.OnTeamReadyStatusChangedPayload) error {
 	_, err := wh.c.CreateEmbeds([]discord.Embed{
 		{
 			Title:     p.Event.Event,
@@ -704,7 +702,7 @@ func (wh *webhookEventHandler) HandleOnTeamReadyStatusChanged(ctx context.Contex
 }
 
 // NewEventHandler Get Logger pointer
-func NewEventHandler(webhookID uint64, webhookToken string, url string, auth string) controller.EventHandler {
+func NewEventHandler(webhookID uint64, webhookToken string, url string, auth string) got5.EventHandler {
 	return &webhookEventHandler{
 		eventURL: url, // can be empty
 		auth:     auth,

@@ -10,8 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/FlowingSPDG/Got5/controller"
-	"github.com/FlowingSPDG/Got5/models"
+	got5 "github.com/FlowingSPDG/Got5"
 	fiberroute "github.com/FlowingSPDG/Got5/route/fiber"
 )
 
@@ -19,235 +18,235 @@ func getStringPointer(s string) *string {
 	return &s
 }
 
-var _ controller.EventHandler = (*mockEventHandler)(nil)
+var _ got5.EventHandler = (*mockEventHandler)(nil)
 
 type mockEventHandler struct {
 	expect any
 	parsed any
 }
 
-// HandleOnPauseBegan implements controller.EventHandler.
-func (m *mockEventHandler) HandleOnPauseBegan(ctx context.Context, p models.OnPauseBeganPayload) error {
+// HandleOnPauseBegan implements got5.EventHandler.
+func (m *mockEventHandler) HandleOnPauseBegan(ctx context.Context, p got5.OnPauseBeganPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// Close implements controller.EventHandler
+// Close implements got5.EventHandler
 func (m *mockEventHandler) Close() error {
 	return nil
 }
 
-// HandleOnBackupRestore implements controller.EventHandler
-func (m *mockEventHandler) HandleOnBackupRestore(ctx context.Context, p models.OnBackupRestorePayload) error {
+// HandleOnBackupRestore implements got5.EventHandler
+func (m *mockEventHandler) HandleOnBackupRestore(ctx context.Context, p got5.OnBackupRestorePayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnBombDefused implements controller.EventHandler
-func (m *mockEventHandler) HandleOnBombDefused(ctx context.Context, p models.OnBombDefusedPayload) error {
+// HandleOnBombDefused implements got5.EventHandler
+func (m *mockEventHandler) HandleOnBombDefused(ctx context.Context, p got5.OnBombDefusedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnBombExploded implements controller.EventHandler
-func (m *mockEventHandler) HandleOnBombExploded(ctx context.Context, p models.OnBombExplodedPayload) error {
+// HandleOnBombExploded implements got5.EventHandler
+func (m *mockEventHandler) HandleOnBombExploded(ctx context.Context, p got5.OnBombExplodedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnBombPlanted implements controller.EventHandler
-func (m *mockEventHandler) HandleOnBombPlanted(ctx context.Context, p models.OnBombPlantedPayload) error {
+// HandleOnBombPlanted implements got5.EventHandler
+func (m *mockEventHandler) HandleOnBombPlanted(ctx context.Context, p got5.OnBombPlantedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnDecoyStarted implements controller.EventHandler
-func (m *mockEventHandler) HandleOnDecoyStarted(ctx context.Context, p models.OnDecoyStartedPayload) error {
+// HandleOnDecoyStarted implements got5.EventHandler
+func (m *mockEventHandler) HandleOnDecoyStarted(ctx context.Context, p got5.OnDecoyStartedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnDemoFinished implements controller.EventHandler
-func (m *mockEventHandler) HandleOnDemoFinished(ctx context.Context, p models.OnDemoFinishedPayload) error {
+// HandleOnDemoFinished implements got5.EventHandler
+func (m *mockEventHandler) HandleOnDemoFinished(ctx context.Context, p got5.OnDemoFinishedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnDemoUploadEnded implements controller.EventHandler
-func (m *mockEventHandler) HandleOnDemoUploadEnded(ctx context.Context, p models.OnDemoUploadEndedPayload) error {
+// HandleOnDemoUploadEnded implements got5.EventHandler
+func (m *mockEventHandler) HandleOnDemoUploadEnded(ctx context.Context, p got5.OnDemoUploadEndedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnFlashbangDetonated implements controller.EventHandler
-func (m *mockEventHandler) HandleOnFlashbangDetonated(ctx context.Context, p models.OnFlashbangDetonatedPayload) error {
+// HandleOnFlashbangDetonated implements got5.EventHandler
+func (m *mockEventHandler) HandleOnFlashbangDetonated(ctx context.Context, p got5.OnFlashbangDetonatedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnGameStateChanged implements controller.EventHandler
-func (m *mockEventHandler) HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error {
+// HandleOnGameStateChanged implements got5.EventHandler
+func (m *mockEventHandler) HandleOnGameStateChanged(ctx context.Context, p got5.OnGameStateChangedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnGoingLive implements controller.EventHandler
-func (m *mockEventHandler) HandleOnGoingLive(ctx context.Context, p models.OnGoingLivePayload) error {
+// HandleOnGoingLive implements got5.EventHandler
+func (m *mockEventHandler) HandleOnGoingLive(ctx context.Context, p got5.OnGoingLivePayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnGrenadeThrown implements controller.EventHandler
-func (m *mockEventHandler) HandleOnGrenadeThrown(ctx context.Context, p models.OnGrenadeThrownPayload) error {
+// HandleOnGrenadeThrown implements got5.EventHandler
+func (m *mockEventHandler) HandleOnGrenadeThrown(ctx context.Context, p got5.OnGrenadeThrownPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnHEGrenadeDetonated implements controller.EventHandler
-func (m *mockEventHandler) HandleOnHEGrenadeDetonated(ctx context.Context, p models.OnHEGrenadeDetonatedPayload) error {
+// HandleOnHEGrenadeDetonated implements got5.EventHandler
+func (m *mockEventHandler) HandleOnHEGrenadeDetonated(ctx context.Context, p got5.OnHEGrenadeDetonatedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnKnifeRoundStarted implements controller.EventHandler
-func (m *mockEventHandler) HandleOnKnifeRoundStarted(ctx context.Context, p models.OnKnifeRoundStartedPayload) error {
+// HandleOnKnifeRoundStarted implements got5.EventHandler
+func (m *mockEventHandler) HandleOnKnifeRoundStarted(ctx context.Context, p got5.OnKnifeRoundStartedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnKnifeRoundWon implements controller.EventHandler
-func (m *mockEventHandler) HandleOnKnifeRoundWon(ctx context.Context, p models.OnKnifeRoundWonPayload) error {
+// HandleOnKnifeRoundWon implements got5.EventHandler
+func (m *mockEventHandler) HandleOnKnifeRoundWon(ctx context.Context, p got5.OnKnifeRoundWonPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnLoadMatchConfigFailed implements controller.EventHandler
-func (m *mockEventHandler) HandleOnLoadMatchConfigFailed(ctx context.Context, p models.OnLoadMatchConfigFailedPayload) error {
+// HandleOnLoadMatchConfigFailed implements got5.EventHandler
+func (m *mockEventHandler) HandleOnLoadMatchConfigFailed(ctx context.Context, p got5.OnLoadMatchConfigFailedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnMapPicked implements controller.EventHandler
-func (m *mockEventHandler) HandleOnMapPicked(ctx context.Context, p models.OnMapPickedPayload) error {
+// HandleOnMapPicked implements got5.EventHandler
+func (m *mockEventHandler) HandleOnMapPicked(ctx context.Context, p got5.OnMapPickedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnMapResult implements controller.EventHandler
-func (m *mockEventHandler) HandleOnMapResult(ctx context.Context, p models.OnMapResultPayload) error {
+// HandleOnMapResult implements got5.EventHandler
+func (m *mockEventHandler) HandleOnMapResult(ctx context.Context, p got5.OnMapResultPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnMapVetoed implements controller.EventHandler
-func (m *mockEventHandler) HandleOnMapVetoed(ctx context.Context, p models.OnMapVetoedPayload) error {
+// HandleOnMapVetoed implements got5.EventHandler
+func (m *mockEventHandler) HandleOnMapVetoed(ctx context.Context, p got5.OnMapVetoedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnMatchPaused implements controller.EventHandler
-func (m *mockEventHandler) HandleOnMatchPaused(ctx context.Context, p models.OnMatchPausedPayload) error {
+// HandleOnMatchPaused implements got5.EventHandler
+func (m *mockEventHandler) HandleOnMatchPaused(ctx context.Context, p got5.OnMatchPausedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnMatchUnpaused implements controller.EventHandler
-func (m *mockEventHandler) HandleOnMatchUnpaused(ctx context.Context, p models.OnMatchUnpausedPayload) error {
+// HandleOnMatchUnpaused implements got5.EventHandler
+func (m *mockEventHandler) HandleOnMatchUnpaused(ctx context.Context, p got5.OnMatchUnpausedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnMolotovDetonated implements controller.EventHandler
-func (m *mockEventHandler) HandleOnMolotovDetonated(ctx context.Context, p models.OnMolotovDetonatedPayload) error {
+// HandleOnMolotovDetonated implements got5.EventHandler
+func (m *mockEventHandler) HandleOnMolotovDetonated(ctx context.Context, p got5.OnMolotovDetonatedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnPlayerBecameMVP implements controller.EventHandler
-func (m *mockEventHandler) HandleOnPlayerBecameMVP(ctx context.Context, p models.OnPlayerBecameMVPPayload) error {
+// HandleOnPlayerBecameMVP implements got5.EventHandler
+func (m *mockEventHandler) HandleOnPlayerBecameMVP(ctx context.Context, p got5.OnPlayerBecameMVPPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnPlayerConnected implements controller.EventHandler
-func (m *mockEventHandler) HandleOnPlayerConnected(ctx context.Context, p models.OnPlayerConnectedPayload) error {
+// HandleOnPlayerConnected implements got5.EventHandler
+func (m *mockEventHandler) HandleOnPlayerConnected(ctx context.Context, p got5.OnPlayerConnectedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnPlayerDeath implements controller.EventHandler
-func (m *mockEventHandler) HandleOnPlayerDeath(ctx context.Context, p models.OnPlayerDeathPayload) error {
+// HandleOnPlayerDeath implements got5.EventHandler
+func (m *mockEventHandler) HandleOnPlayerDeath(ctx context.Context, p got5.OnPlayerDeathPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnPlayerDisconnected implements controller.EventHandler
-func (m *mockEventHandler) HandleOnPlayerDisconnected(ctx context.Context, p models.OnPlayerDisconnectedPayload) error {
+// HandleOnPlayerDisconnected implements got5.EventHandler
+func (m *mockEventHandler) HandleOnPlayerDisconnected(ctx context.Context, p got5.OnPlayerDisconnectedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnPlayerSay implements controller.EventHandler
-func (m *mockEventHandler) HandleOnPlayerSay(ctx context.Context, p models.OnPlayerSayPayload) error {
+// HandleOnPlayerSay implements got5.EventHandler
+func (m *mockEventHandler) HandleOnPlayerSay(ctx context.Context, p got5.OnPlayerSayPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnPreLoadMatchConfig implements controller.EventHandler
-func (m *mockEventHandler) HandleOnPreLoadMatchConfig(ctx context.Context, p models.OnPreLoadMatchConfigPayload) error {
+// HandleOnPreLoadMatchConfig implements got5.EventHandler
+func (m *mockEventHandler) HandleOnPreLoadMatchConfig(ctx context.Context, p got5.OnPreLoadMatchConfigPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnRoundEnd implements controller.EventHandler
-func (m *mockEventHandler) HandleOnRoundEnd(ctx context.Context, p models.OnRoundEndPayload) error {
+// HandleOnRoundEnd implements got5.EventHandler
+func (m *mockEventHandler) HandleOnRoundEnd(ctx context.Context, p got5.OnRoundEndPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnRoundStart implements controller.EventHandler
-func (m *mockEventHandler) HandleOnRoundStart(ctx context.Context, p models.OnRoundStartPayload) error {
+// HandleOnRoundStart implements got5.EventHandler
+func (m *mockEventHandler) HandleOnRoundStart(ctx context.Context, p got5.OnRoundStartPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnRoundStatsUpdated implements controller.EventHandler
-func (m *mockEventHandler) HandleOnRoundStatsUpdated(ctx context.Context, p models.OnRoundStatsUpdatedPayload) error {
+// HandleOnRoundStatsUpdated implements got5.EventHandler
+func (m *mockEventHandler) HandleOnRoundStatsUpdated(ctx context.Context, p got5.OnRoundStatsUpdatedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnSeriesInit implements controller.EventHandler
-func (m *mockEventHandler) HandleOnSeriesInit(ctx context.Context, p models.OnSeriesInitPayload) error {
+// HandleOnSeriesInit implements got5.EventHandler
+func (m *mockEventHandler) HandleOnSeriesInit(ctx context.Context, p got5.OnSeriesInitPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnSeriesResult implements controller.EventHandler
-func (m *mockEventHandler) HandleOnSeriesResult(ctx context.Context, p models.OnSeriesResultPayload) error {
+// HandleOnSeriesResult implements got5.EventHandler
+func (m *mockEventHandler) HandleOnSeriesResult(ctx context.Context, p got5.OnSeriesResultPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnSidePicked implements controller.EventHandler
-func (m *mockEventHandler) HandleOnSidePicked(ctx context.Context, p models.OnSidePickedPayload) error {
+// HandleOnSidePicked implements got5.EventHandler
+func (m *mockEventHandler) HandleOnSidePicked(ctx context.Context, p got5.OnSidePickedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnSmokeGrenadeDetonated implements controller.EventHandler
-func (m *mockEventHandler) HandleOnSmokeGrenadeDetonated(ctx context.Context, p models.OnSmokeGrenadeDetonatedPayload) error {
+// HandleOnSmokeGrenadeDetonated implements got5.EventHandler
+func (m *mockEventHandler) HandleOnSmokeGrenadeDetonated(ctx context.Context, p got5.OnSmokeGrenadeDetonatedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// HandleOnTeamReadyStatusChanged implements controller.EventHandler
-func (m *mockEventHandler) HandleOnTeamReadyStatusChanged(ctx context.Context, p models.OnTeamReadyStatusChangedPayload) error {
+// HandleOnTeamReadyStatusChanged implements got5.EventHandler
+func (m *mockEventHandler) HandleOnTeamReadyStatusChanged(ctx context.Context, p got5.OnTeamReadyStatusChangedPayload) error {
 	m.parsed = p
 	return nil
 }
 
-// Hostname implements controller.EventHandler
+// Hostname implements got5.EventHandler
 func (m *mockEventHandler) Hostname() string {
 	return ""
 }
@@ -273,7 +272,7 @@ func TestEventHandleTD(t *testing.T) {
 		{
 			title: "GameStateChanged",
 			eventHandler: &mockEventHandler{
-				expect: models.OnGameStateChangedPayload{Event: models.Event{Event: "game_state_changed"}, NewState: "none", OldState: "none"},
+				expect: got5.OnGameStateChangedPayload{Event: got5.Event{Event: "game_state_changed"}, NewState: "none", OldState: "none"},
 			},
 			auth:       &mockAuth{},
 			statusCode: http.StatusOK,
@@ -286,7 +285,7 @@ func TestEventHandleTD(t *testing.T) {
 		{
 			title: "PreloadMatchConfig",
 			eventHandler: &mockEventHandler{
-				expect: models.OnPreLoadMatchConfigPayload{Event: models.Event{Event: "preload_match_config"}, Filename: "string"},
+				expect: got5.OnPreLoadMatchConfigPayload{Event: got5.Event{Event: "preload_match_config"}, Filename: "string"},
 			},
 			auth:       &mockAuth{},
 			statusCode: http.StatusOK,
@@ -297,7 +296,7 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title:        "MatchConfigLoadFail",
-			eventHandler: &mockEventHandler{expect: models.OnLoadMatchConfigFailedPayload{Event: models.Event{Event: "match_config_load_fail"}, Reason: "You done goofed."}},
+			eventHandler: &mockEventHandler{expect: got5.OnLoadMatchConfigFailedPayload{Event: got5.Event{Event: "match_config_load_fail"}, Reason: "You done goofed."}},
 			auth:         &mockAuth{},
 			statusCode:   http.StatusOK,
 			input: []byte(`{
@@ -307,8 +306,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "SeriesInit",
-			eventHandler: &mockEventHandler{expect: models.OnSeriesInitPayload{
-				Event:   models.Event{Event: "series_start"},
+			eventHandler: &mockEventHandler{expect: got5.OnSeriesInitPayload{
+				Event:   got5.Event{Event: "series_start"},
 				MatchID: "14272",
 				NumMaps: 1,
 				Team1: struct {
@@ -346,18 +345,18 @@ func TestEventHandleTD(t *testing.T) {
 		{
 			title: "MapResult",
 			eventHandler: &mockEventHandler{
-				expect: models.OnMapResultPayload{
-					Event:     models.Event{Event: "map_result"},
+				expect: got5.OnMapResultPayload{
+					Event:     got5.Event{Event: "map_result"},
 					MatchID:   "14272",
 					MapNumber: 0,
-					Team1: models.Get5StatsTeam{
+					Team1: got5.Get5StatsTeam{
 						ID:          "2843",
 						Name:        "Natus Vincere",
 						SeriesScore: 0,
 						Score:       14,
 						ScoreCt:     10,
 						ScoreT:      14,
-						Players: []models.Get5StatsPlayer{
+						Players: []got5.Get5StatsPlayer{
 							{
 								SteamID: "76561198279375306",
 								Name:    "s1mple",
@@ -435,14 +434,14 @@ func TestEventHandleTD(t *testing.T) {
 						Side:         "ct",
 						StartingSide: "ct",
 					},
-					Team2: models.Get5StatsTeam{
+					Team2: got5.Get5StatsTeam{
 						ID:          "2843",
 						Name:        "Natus Vincere",
 						SeriesScore: 0,
 						Score:       14,
 						ScoreCt:     10,
 						ScoreT:      14,
-						Players: []models.Get5StatsPlayer{
+						Players: []got5.Get5StatsPlayer{
 							{
 								SteamID: "76561198279375306",
 								Name:    "s1mple",
@@ -520,7 +519,7 @@ func TestEventHandleTD(t *testing.T) {
 						Side:         "ct",
 						StartingSide: "ct",
 					},
-					Winner: models.Winner{Side: "ct", Team: "team1"}},
+					Winner: got5.Winner{Side: "ct", Team: "team1"}},
 			},
 			auth:       &mockAuth{},
 			statusCode: http.StatusOK,
@@ -638,12 +637,12 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "SeriesEnd",
-			eventHandler: &mockEventHandler{expect: models.OnSeriesResultPayload{
-				Event:            models.Event{Event: "series_end"},
+			eventHandler: &mockEventHandler{expect: got5.OnSeriesResultPayload{
+				Event:            got5.Event{Event: "series_end"},
 				MatchID:          "14272",
 				Team1SeriesScore: 2,
 				Team2SeriesScore: 0,
-				Winner:           models.Winner{Side: "ct", Team: "team1"},
+				Winner:           got5.Winner{Side: "ct", Team: "team1"},
 				TimeUntilRestore: 45,
 			},
 			},
@@ -663,8 +662,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "SidePicked",
-			eventHandler: &mockEventHandler{expect: models.OnSidePickedPayload{
-				Event:     models.Event{Event: "side_picked"},
+			eventHandler: &mockEventHandler{expect: got5.OnSidePickedPayload{
+				Event:     got5.Event{Event: "side_picked"},
 				MatchID:   "14272",
 				Team:      "team1",
 				MapName:   "de_nuke",
@@ -685,8 +684,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "MapPicked",
-			eventHandler: &mockEventHandler{expect: models.OnMapPickedPayload{
-				Event:     models.Event{Event: "map_picked"},
+			eventHandler: &mockEventHandler{expect: got5.OnMapPickedPayload{
+				Event:     got5.Event{Event: "map_picked"},
 				MatchID:   "14272",
 				Team:      "team1",
 				MapName:   "de_nuke",
@@ -704,8 +703,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "MapVetoed",
-			eventHandler: &mockEventHandler{expect: models.OnMapVetoedPayload{
-				Event:   models.Event{Event: "map_vetoed"},
+			eventHandler: &mockEventHandler{expect: got5.OnMapVetoedPayload{
+				Event:   got5.Event{Event: "map_vetoed"},
 				MatchID: "14272",
 				Team:    "team1",
 				MapName: "de_nuke",
@@ -721,8 +720,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "BackupRestore",
-			eventHandler: &mockEventHandler{expect: models.OnBackupRestorePayload{
-				Event:       models.Event{Event: "backup_loaded"},
+			eventHandler: &mockEventHandler{expect: got5.OnBackupRestorePayload{
+				Event:       got5.Event{Event: "backup_loaded"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
@@ -740,8 +739,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "DemoFinished",
-			eventHandler: &mockEventHandler{expect: models.OnDemoFinishedPayload{
-				Event:     models.Event{Event: "demo_finished"},
+			eventHandler: &mockEventHandler{expect: got5.OnDemoFinishedPayload{
+				Event:     got5.Event{Event: "demo_finished"},
 				MatchID:   "14272",
 				MapNumber: 0,
 				Filename:  "1324_map_0_de_nuke.dem",
@@ -757,8 +756,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "DemoUploadEnded",
-			eventHandler: &mockEventHandler{expect: models.OnDemoUploadEndedPayload{
-				Event:     models.Event{Event: "demo_upload_ended"},
+			eventHandler: &mockEventHandler{expect: got5.OnDemoUploadEndedPayload{
+				Event:     got5.Event{Event: "demo_upload_ended"},
 				MatchID:   "14272",
 				MapNumber: 0,
 				Filename:  "1324_map_0_de_nuke.dem",
@@ -776,8 +775,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "GamePaused",
-			eventHandler: &mockEventHandler{expect: models.OnMatchPausedPayload{
-				Event:     models.Event{Event: "game_paused"},
+			eventHandler: &mockEventHandler{expect: got5.OnMatchPausedPayload{
+				Event:     got5.Event{Event: "game_paused"},
 				MatchID:   "14272",
 				MapNumber: 0,
 				Team:      "team1",
@@ -795,8 +794,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "Get5_OnPauseBegan",
-			eventHandler: &mockEventHandler{expect: models.OnPauseBeganPayload{
-				Event:     models.Event{Event: "pause_began"},
+			eventHandler: &mockEventHandler{expect: got5.OnPauseBeganPayload{
+				Event:     got5.Event{Event: "pause_began"},
 				MatchID:   "14272",
 				MapNumber: 0,
 				Team:      "team1",
@@ -814,8 +813,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "KnifeStart",
-			eventHandler: &mockEventHandler{expect: models.OnKnifeRoundStartedPayload{
-				Event:     models.Event{Event: "knife_start"},
+			eventHandler: &mockEventHandler{expect: got5.OnKnifeRoundStartedPayload{
+				Event:     got5.Event{Event: "knife_start"},
 				MatchID:   "14272",
 				MapNumber: 0,
 			}},
@@ -829,8 +828,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "KnifeRoundWon",
-			eventHandler: &mockEventHandler{expect: models.OnKnifeRoundWonPayload{
-				Event:     models.Event{Event: "knife_won"},
+			eventHandler: &mockEventHandler{expect: got5.OnKnifeRoundWonPayload{
+				Event:     got5.Event{Event: "knife_won"},
 				MatchID:   "14272",
 				MapNumber: 0,
 				Team:      "team1",
@@ -850,8 +849,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "TeamReadyStatusChanged",
-			eventHandler: &mockEventHandler{expect: models.OnTeamReadyStatusChangedPayload{
-				Event:     models.Event{Event: "team_ready_status_changed"},
+			eventHandler: &mockEventHandler{expect: got5.OnTeamReadyStatusChangedPayload{
+				Event:     got5.Event{Event: "team_ready_status_changed"},
 				MatchID:   "14272",
 				Team:      getStringPointer("team1"),
 				Ready:     true,
@@ -869,8 +868,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "GoingLive",
-			eventHandler: &mockEventHandler{expect: models.OnGoingLivePayload{
-				Event:     models.Event{Event: "going_live"},
+			eventHandler: &mockEventHandler{expect: got5.OnGoingLivePayload{
+				Event:     got5.Event{Event: "going_live"},
 				MatchID:   "14272",
 				MapNumber: 0,
 			}},
@@ -884,8 +883,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "RoundStart",
-			eventHandler: &mockEventHandler{expect: models.OnRoundStartPayload{
-				Event:       models.Event{Event: "round_start"},
+			eventHandler: &mockEventHandler{expect: got5.OnRoundStartPayload{
+				Event:       got5.Event{Event: "round_start"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
@@ -901,22 +900,22 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "RoundEnd",
-			eventHandler: &mockEventHandler{expect: models.OnRoundEndPayload{
-				Event:       models.Event{Event: "round_end"},
+			eventHandler: &mockEventHandler{expect: got5.OnRoundEndPayload{
+				Event:       got5.Event{Event: "round_end"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
 				RoundTime:   51434,
 				Reason:      0,
-				Winner:      models.Winner{Side: "ct", Team: "team1"},
-				Team1: models.Get5StatsTeam{
+				Winner:      got5.Winner{Side: "ct", Team: "team1"},
+				Team1: got5.Get5StatsTeam{
 					ID:          "2843",
 					Name:        "Natus Vincere",
 					SeriesScore: 0,
 					Score:       14,
 					ScoreCt:     10,
 					ScoreT:      14,
-					Players: []models.Get5StatsPlayer{
+					Players: []got5.Get5StatsPlayer{
 						{
 							SteamID: "76561198279375306",
 							Name:    "s1mple",
@@ -994,14 +993,14 @@ func TestEventHandleTD(t *testing.T) {
 					Side:         "ct",
 					StartingSide: "ct",
 				},
-				Team2: models.Get5StatsTeam{
+				Team2: got5.Get5StatsTeam{
 					ID:          "2843",
 					Name:        "Natus Vincere",
 					SeriesScore: 0,
 					Score:       14,
 					ScoreCt:     10,
 					ScoreT:      14,
-					Players: []models.Get5StatsPlayer{
+					Players: []got5.Get5StatsPlayer{
 						{
 							SteamID: "76561198279375306",
 							Name:    "s1mple",
@@ -1199,8 +1198,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "RoundStatsUpdated",
-			eventHandler: &mockEventHandler{expect: models.OnRoundStatsUpdatedPayload{
-				Event:       models.Event{Event: "stats_updated"},
+			eventHandler: &mockEventHandler{expect: got5.OnRoundStatsUpdatedPayload{
+				Event:       got5.Event{Event: "stats_updated"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
@@ -1216,12 +1215,12 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "PlayerBecomeMVP",
-			eventHandler: &mockEventHandler{expect: models.OnPlayerBecameMVPPayload{
-				Event:       models.Event{Event: "round_mvp"},
+			eventHandler: &mockEventHandler{expect: got5.OnPlayerBecameMVPPayload{
+				Event:       got5.Event{Event: "round_mvp"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
-				Player: models.Player{
+				Player: got5.Player{
 					SteamID: "76561198279375306",
 					Name:    "s1mple",
 					UserID:  4,
@@ -1249,19 +1248,19 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "GreanadeThrown",
-			eventHandler: &mockEventHandler{expect: models.OnGrenadeThrownPayload{
-				Event:       models.Event{Event: "grenade_thrown"},
+			eventHandler: &mockEventHandler{expect: got5.OnGrenadeThrownPayload{
+				Event:       got5.Event{Event: "grenade_thrown"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
 				RoundTime:   51434,
-				Player: models.Player{
+				Player: got5.Player{
 					SteamID: "76561198279375306",
 					Name:    "s1mple",
 					UserID:  4,
 					Side:    "ct",
 					IsBot:   false},
-				Weapon: models.Weapon{
+				Weapon: got5.Weapon{
 					Name: "ak47",
 					ID:   27,
 				},
@@ -1292,7 +1291,7 @@ func TestEventHandleTD(t *testing.T) {
 		/*
 			{
 				title:        "PlayerDeath",
-				eventHandler: &mockEventHandler{expect: models.OnPlayerDeathPayload{Event: models.Event{Event: "player_death"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, RoundTime: 51434, Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Weapon: models.Weapon{Name: "ak47", ID: 27}, Bomb: true, Headshot: true, ThruSmoke: true, Penetrated: 1 , AttackerBlind: true, NoScope: true, Suicide: true, FriendlyFire: true, Attacker: models.Attacker{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Assist: models.Assist{Player: models.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, FriendlyFire: true, FlashAssist: true}}},
+				eventHandler: &mockEventHandler{expect: got5.OnPlayerDeathPayload{Event: got5.Event{Event: "player_death"}, Matchid: "14272", MapNumber: 0, RoundNumber: 13, RoundTime: 51434, Player: got5.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Weapon: got5.Weapon{Name: "ak47", ID: 27}, Bomb: true, Headshot: true, ThruSmoke: true, Penetrated: 1 , AttackerBlind: true, NoScope: true, Suicide: true, FriendlyFire: true, Attacker: got5.Attacker{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, Assist: got5.Assist{Player: got5.Player{UserID: 4, Steamid: "76561198279375306", Side: "ct", Name: "s1mple", IsBot: false}, FriendlyFire: true, FlashAssist: true}}},
 				auth:         &mockAuth{},
 				statusCode:   http.StatusOK,
 				input:        []byte(`{"event":"player_death","matchid":"14272","map_number":0,"round_number":13,"round_time":51434,"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"weapon":{"name":"ak47","id":27},"bomb":true,"headshot":true,"thru_smoke":true,"penetrated":true,"attacker_blind":true,"no_scope":true,"suicide":true,"friendly_fire":true,"attacker":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"assist":{"player":{"user_id":4,"steamid":"76561198279375306","side":"ct","name":"s1mple","is_bot":false},"friendly_fire":true,"flash_assist":true}}`),
@@ -1301,26 +1300,26 @@ func TestEventHandleTD(t *testing.T) {
 
 		{
 			title: "HEGrenadeDetonated",
-			eventHandler: &mockEventHandler{expect: models.OnHEGrenadeDetonatedPayload{
-				Event:       models.Event{Event: "hegrenade_detonated"},
+			eventHandler: &mockEventHandler{expect: got5.OnHEGrenadeDetonatedPayload{
+				Event:       got5.Event{Event: "hegrenade_detonated"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
 				RoundTime:   51434,
-				Player: models.Player{
+				Player: got5.Player{
 					SteamID: "76561198279375306",
 					Name:    "s1mple",
 					Side:    "ct",
 					UserID:  4,
 					IsBot:   false,
 				},
-				Weapon: models.Weapon{
+				Weapon: got5.Weapon{
 					Name: "ak47",
 					ID:   27,
 				},
-				Victims: []models.Victim{
+				Victims: []got5.Victim{
 					{
-						Player: models.Player{
+						Player: got5.Player{
 							SteamID: "76561198279375306",
 							Name:    "s1mple",
 							UserID:  4,
@@ -1372,26 +1371,26 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "MolotovDetonated",
-			eventHandler: &mockEventHandler{expect: models.OnMolotovDetonatedPayload{
-				Event:       models.Event{Event: "molotov_detonated"},
+			eventHandler: &mockEventHandler{expect: got5.OnMolotovDetonatedPayload{
+				Event:       got5.Event{Event: "molotov_detonated"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
 				RoundTime:   51434,
-				Player: models.Player{
+				Player: got5.Player{
 					SteamID: "76561198279375306",
 					Name:    "s1mple",
 					UserID:  4,
 					Side:    "ct",
 					IsBot:   false,
 				},
-				Weapon: models.Weapon{
+				Weapon: got5.Weapon{
 					Name: "ak47",
 					ID:   27,
 				},
-				Victims: []models.Victim{
+				Victims: []got5.Victim{
 					{
-						Player: models.Player{
+						Player: got5.Player{
 							SteamID: "76561198279375306",
 							Name:    "s1mple",
 							UserID:  4,
@@ -1443,26 +1442,26 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "FlashbangDetonated",
-			eventHandler: &mockEventHandler{expect: models.OnFlashbangDetonatedPayload{
-				Event:       models.Event{Event: "flashbang_detonated"},
+			eventHandler: &mockEventHandler{expect: got5.OnFlashbangDetonatedPayload{
+				Event:       got5.Event{Event: "flashbang_detonated"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
 				RoundTime:   51434,
-				Player: models.Player{
+				Player: got5.Player{
 					SteamID: "76561198279375306",
 					Name:    "s1mple",
 					UserID:  4,
 					Side:    "ct",
 					IsBot:   false,
 				},
-				Weapon: models.Weapon{
+				Weapon: got5.Weapon{
 					Name: "ak47",
 					ID:   27,
 				},
-				Victims: []models.Victim{
+				Victims: []got5.Victim{
 					{
-						Player: models.Player{SteamID: "76561198279375306",
+						Player: got5.Player{SteamID: "76561198279375306",
 							Name:   "s1mple",
 							UserID: 4,
 							Side:   "ct",
@@ -1509,20 +1508,20 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "SmokegrenadeDetonated",
-			eventHandler: &mockEventHandler{expect: models.OnSmokeGrenadeDetonatedPayload{
-				Event:       models.Event{Event: "smokegrenade_detonated"},
+			eventHandler: &mockEventHandler{expect: got5.OnSmokeGrenadeDetonatedPayload{
+				Event:       got5.Event{Event: "smokegrenade_detonated"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
 				RoundTime:   51434,
-				Player: models.Player{
+				Player: got5.Player{
 					SteamID: "76561198279375306",
 					Name:    "s1mple",
 					UserID:  4,
 					Side:    "ct",
 					IsBot:   false,
 				},
-				Weapon: models.Weapon{
+				Weapon: got5.Weapon{
 					Name: "ak47",
 					ID:   27,
 				},
@@ -1552,20 +1551,20 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "DecoyStarted",
-			eventHandler: &mockEventHandler{expect: models.OnDecoyStartedPayload{
-				Event:       models.Event{Event: "decoygrenade_started"},
+			eventHandler: &mockEventHandler{expect: got5.OnDecoyStartedPayload{
+				Event:       got5.Event{Event: "decoygrenade_started"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
 				RoundTime:   51434,
-				Player: models.Player{
+				Player: got5.Player{
 					SteamID: "76561198279375306",
 					Name:    "s1mple",
 					UserID:  4,
 					Side:    "ct",
 					IsBot:   false,
 				},
-				Weapon: models.Weapon{
+				Weapon: got5.Weapon{
 					Name: "ak47",
 					ID:   27,
 				},
@@ -1593,13 +1592,13 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "BombPlanted",
-			eventHandler: &mockEventHandler{expect: models.OnBombPlantedPayload{
-				Event:       models.Event{Event: "bomb_planted"},
+			eventHandler: &mockEventHandler{expect: got5.OnBombPlantedPayload{
+				Event:       got5.Event{Event: "bomb_planted"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
 				RoundTime:   51434,
-				Player: models.Player{
+				Player: got5.Player{
 					SteamID: "76561198279375306",
 					Name:    "s1mple",
 					UserID:  4,
@@ -1627,13 +1626,13 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "BombDefused",
-			eventHandler: &mockEventHandler{expect: models.OnBombDefusedPayload{
-				Event:       models.Event{Event: "bomb_defused"},
+			eventHandler: &mockEventHandler{expect: got5.OnBombDefusedPayload{
+				Event:       got5.Event{Event: "bomb_defused"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
 				RoundTime:   51434,
-				Player: models.Player{
+				Player: got5.Player{
 					SteamID: "76561198279375306",
 					Name:    "s1mple",
 					UserID:  4,
@@ -1663,8 +1662,8 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "BombExploded",
-			eventHandler: &mockEventHandler{expect: models.OnBombExplodedPayload{
-				Event:       models.Event{Event: "bomb_exploded"},
+			eventHandler: &mockEventHandler{expect: got5.OnBombExplodedPayload{
+				Event:       got5.Event{Event: "bomb_exploded"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
@@ -1684,10 +1683,10 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "PlayerConnected",
-			eventHandler: &mockEventHandler{expect: models.OnPlayerConnectedPayload{
-				Event:   models.Event{Event: "player_connect"},
+			eventHandler: &mockEventHandler{expect: got5.OnPlayerConnectedPayload{
+				Event:   got5.Event{Event: "player_connect"},
 				MatchID: "14272",
-				Player: models.Player{
+				Player: got5.Player{
 					SteamID: "76561198279375306",
 					Name:    "s1mple",
 					UserID:  4,
@@ -1713,10 +1712,10 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "PlayerDisconnected",
-			eventHandler: &mockEventHandler{expect: models.OnPlayerDisconnectedPayload{
-				Event:   models.Event{Event: "player_disconnect"},
+			eventHandler: &mockEventHandler{expect: got5.OnPlayerDisconnectedPayload{
+				Event:   got5.Event{Event: "player_disconnect"},
 				MatchID: "14272",
-				Player: models.Player{
+				Player: got5.Player{
 					SteamID: "76561198279375306",
 					Name:    "s1mple",
 					UserID:  4,
@@ -1740,13 +1739,13 @@ func TestEventHandleTD(t *testing.T) {
 		},
 		{
 			title: "PlayerSay",
-			eventHandler: &mockEventHandler{expect: models.OnPlayerSayPayload{
-				Event:       models.Event{Event: "player_say"},
+			eventHandler: &mockEventHandler{expect: got5.OnPlayerSayPayload{
+				Event:       got5.Event{Event: "player_say"},
 				MatchID:     "14272",
 				MapNumber:   0,
 				RoundNumber: 13,
 				RoundTime:   51434,
-				Player: models.Player{
+				Player: got5.Player{
 					SteamID: "76561198279375306",
 					Name:    "s1mple",
 					UserID:  4,

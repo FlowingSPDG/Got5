@@ -1,4 +1,4 @@
-package models
+package got5
 
 // https://splewis.github.io/get5/latest/events_and_forwards/#sourcemod-forwards
 

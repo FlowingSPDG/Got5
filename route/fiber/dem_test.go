@@ -12,18 +12,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/FlowingSPDG/Got5/controller"
+	got5 "github.com/FlowingSPDG/Got5"
 	fiberroute "github.com/FlowingSPDG/Got5/route/fiber"
 )
 
-var _ controller.DemoUploader = (*mockDemoUploaderGrant)(nil)
-var _ controller.DemoUploader = (*mockDemoUploaderDenyAll)(nil)
-var _ controller.DemoUploader = (*mockDemoUploaderDenyUpload)(nil)
+var _ got5.DemoUploader = (*mockDemoUploaderGrant)(nil)
+var _ got5.DemoUploader = (*mockDemoUploaderDenyAll)(nil)
+var _ got5.DemoUploader = (*mockDemoUploaderDenyUpload)(nil)
 
 // mockDemoUploaderGrant Grand all access
 type mockDemoUploaderGrant struct{}
 
-// Upload implements controller.DemoUploader
+// Upload implements got5.DemoUploader
 func (*mockDemoUploaderGrant) Upload(ctx context.Context, mid string, filename string, r io.Reader) error {
 	io.Copy(io.Discard, r)
 	return nil
@@ -32,7 +32,7 @@ func (*mockDemoUploaderGrant) Upload(ctx context.Context, mid string, filename s
 // mockDemoUploaderDeny Deny all access
 type mockDemoUploaderDenyAll struct{}
 
-// Upload implements controller.DemoUploader
+// Upload implements got5.DemoUploader
 func (*mockDemoUploaderDenyAll) Upload(ctx context.Context, mid string, filename string, r io.Reader) error {
 	io.Copy(io.Discard, r)
 	return fmt.Errorf("Deny all access")
@@ -41,13 +41,13 @@ func (*mockDemoUploaderDenyAll) Upload(ctx context.Context, mid string, filename
 // mockDemoUploaderDenyUpload Deny all upload
 type mockDemoUploaderDenyUpload struct{}
 
-// Upload implements controller.DemoUploader
+// Upload implements got5.DemoUploader
 func (*mockDemoUploaderDenyUpload) Upload(ctx context.Context, mid string, filename string, r io.Reader) error {
 	io.Copy(io.Discard, r)
 	return fmt.Errorf("Deny upload")
 }
 
-// Verify implements controller.DemoUploader
+// Verify implements got5.DemoUploader
 func (*mockDemoUploaderDenyUpload) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID string, auth string) error {
 	return nil // always true
 }
@@ -57,8 +57,8 @@ func TestDemoUploadTD(t *testing.T) {
 
 	cases := []struct {
 		title      string
-		uploader   controller.DemoUploader
-		auth       controller.Auth
+		uploader   got5.DemoUploader
+		auth       got5.Auth
 		statusCode int
 		// err        error
 		headers map[string]string

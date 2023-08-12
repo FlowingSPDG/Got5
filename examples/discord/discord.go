@@ -8,13 +8,12 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 
-	"github.com/FlowingSPDG/Got5/controller"
-	"github.com/FlowingSPDG/Got5/models"
+	got5 "github.com/FlowingSPDG/Got5"
 )
 
-var _ controller.EventHandler = (*Discord)(nil)
-var _ controller.MatchLoader = (*Discord)(nil)
-var _ controller.DemoUploader = (*Discord)(nil)
+var _ got5.EventHandler = (*Discord)(nil)
+var _ got5.MatchLoader = (*Discord)(nil)
+var _ got5.DemoUploader = (*Discord)(nil)
 
 // ControllerSetting Settings
 type ControllerSetting struct {
@@ -33,16 +32,16 @@ type Discord struct {
 	matches map[string]struct {
 		interaction *discordgo.Interaction // Interaction
 		member      *discordgo.Member      // マッチ作成を実行したユーザー
-		match       models.Match           // GET5自体のマッチ情報
+		match       got5.Match             // GET5自体のマッチ情報
 	} // GET5のマッチID(=interactionID))に対応したマッチ情報
 }
 
-// Hostname implements controller.EventHandler
+// Hostname implements got5.EventHandler
 func (d *Discord) Hostname() string {
 	return d.setting.Hostname
 }
 
-// Close implements controller.EventHandler
+// Close implements got5.EventHandler
 func (d *Discord) Close() error {
 	return d.s.Close()
 }
@@ -93,7 +92,7 @@ func NewDiscord(ctx context.Context, token string, setting ControllerSetting) (*
 		matches: make(map[string]struct {
 			interaction *discordgo.Interaction
 			member      *discordgo.Member
-			match       models.Match
+			match       got5.Match
 		}),
 	}
 
@@ -255,7 +254,7 @@ func NewDiscord(ctx context.Context, token string, setting ControllerSetting) (*
 			if strings.HasPrefix(data.CustomID, "get5_create_") {
 				// m.User, m.Message など、nilになる値があるので注意
 				mf := getCreateMatchModalFormBySubmitted(data)
-				match := models.GetDefaultMatchBO1()
+				match := got5.GetDefaultMatchBO1()
 				match.MatchTitle = fmt.Sprintf("%s : Created by %s", mf.MatchTitle, m.Member.Nick)
 				match.MatchID = m.Interaction.ID
 				match.Team1.Name = mf.Team1Name
@@ -263,7 +262,7 @@ func NewDiscord(ctx context.Context, token string, setting ControllerSetting) (*
 				c.matches[m.Interaction.ID] = struct {
 					interaction *discordgo.Interaction
 					member      *discordgo.Member
-					match       models.Match
+					match       got5.Match
 				}{
 					interaction: m.Interaction,
 					member:      m.Member,

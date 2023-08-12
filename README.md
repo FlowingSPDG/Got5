@@ -16,7 +16,7 @@ Shugo Kawamura - 河村 柊吾
 controller does not have database interface, so you may implement database system by yourself.  
 
 #### EventHandler
-[EventHandler](https://github.com/FlowingSPDG/Got5/blob/75996d44058558ca7453af1c4b4f9e73115924d4/controller/controller.go#L10-L52) interface should handle event coming from get5 [Events & Forwards](https://splewis.github.io/get5/latest/events_and_forwards/) (get5_remote_log_url).  
+[EventHandler](https://github.com/FlowingSPDG/Got5/blob/75996d44058558ca7453af1c4b4f9e73115924d4/controller/got5.go#L10-L52) interface should handle event coming from get5 [Events & Forwards](https://splewis.github.io/get5/latest/events_and_forwards/) (get5_remote_log_url).  
 e.g. You can post Discord message, or save stats to your database.  
 ```go
 // EventHandler EventHandler interface handles read operation by get5 events
@@ -27,46 +27,46 @@ type EventHandler interface {
 	CheckEventAuth(ctx context.Context, mid string, reqAuth string) error
 
 	// GET5 Events
-	HandleOnGameStateChanged(ctx context.Context, p models.OnGameStateChangedPayload) error
-	HandleOnPreLoadMatchConfig(ctx context.Context, p models.OnPreLoadMatchConfigPayload) error
-	HandleOnLoadMatchConfigFailed(ctx context.Context, p models.OnLoadMatchConfigFailedPayload) error
-	HandleOnSeriesInit(ctx context.Context, p models.OnSeriesInitPayload) error
-	HandleOnMapResult(ctx context.Context, p models.OnMapResultPayload) error
-	HandleOnSeriesResult(ctx context.Context, p models.OnSeriesResultPayload) error
-	HandleOnSidePicked(ctx context.Context, p models.OnSidePickedPayload) error
-	HandleOnMapPicked(ctx context.Context, p models.OnMapPickedPayload) error
-	HandleOnMapVetoed(ctx context.Context, p models.OnMapVetoedPayload) error
-	HandleOnBackupRestore(ctx context.Context, p models.OnBackupRestorePayload) error
-	HandleOnDemoFinished(ctx context.Context, p models.OnDemoFinishedPayload) error
-	HandleOnDemoUploadEnded(ctx context.Context, p models.OnDemoUploadEndedPayload) error
-	HandleOnMatchPaused(ctx context.Context, p models.OnMatchPausedPayload) error
-	HandleOnMatchUnpaused(ctx context.Context, p models.OnMatchUnpausedPayload) error
-	HandleOnKnifeRoundStarted(ctx context.Context, p models.OnKnifeRoundStartedPayload) error
-	HandleOnKnifeRoundWon(ctx context.Context, p models.OnKnifeRoundWonPayload) error
-	HandleOnTeamReadyStatusChanged(ctx context.Context, p models.OnTeamReadyStatusChangedPayload) error
-	HandleOnGoingLive(ctx context.Context, p models.OnGoingLivePayload) error
-	HandleOnRoundStart(ctx context.Context, p models.OnRoundStartPayload) error
-	HandleOnRoundEnd(ctx context.Context, p models.OnRoundEndPayload) error
-	HandleOnRoundStatsUpdated(ctx context.Context, p models.OnRoundStatsUpdatedPayload) error
-	HandleOnPlayerBecameMVP(ctx context.Context, p models.OnPlayerBecameMVPPayload) error
-	HandleOnGrenadeThrown(ctx context.Context, p models.OnGrenadeThrownPayload) error
-	HandleOnPlayerDeath(ctx context.Context, p models.OnPlayerDeathPayload) error
-	HandleOnHEGrenadeDetonated(ctx context.Context, p models.OnHEGrenadeDetonatedPayload) error
-	HandleOnMolotovDetonated(ctx context.Context, p models.OnMolotovDetonatedPayload) error
-	HandleOnFlashbangDetonated(ctx context.Context, p models.OnFlashbangDetonatedPayload) error
-	HandleOnSmokeGrenadeDetonated(ctx context.Context, p models.OnSmokeGrenadeDetonatedPayload) error
-	HandleOnDecoyStarted(ctx context.Context, p models.OnDecoyStartedPayload) error
-	HandleOnBombPlanted(ctx context.Context, p models.OnBombPlantedPayload) error
-	HandleOnBombDefused(ctx context.Context, p models.OnBombDefusedPayload) error
-	HandleOnBombExploded(ctx context.Context, p models.OnBombExplodedPayload) error
-	HandleOnPlayerConnected(ctx context.Context, p models.OnPlayerConnectedPayload) error
-	HandleOnPlayerDisconnected(ctx context.Context, p models.OnPlayerDisconnectedPayload) error
-	HandleOnPlayerSay(ctx context.Context, p models.OnPlayerSayPayload) error
+	HandleOnGameStateChanged(ctx context.Context, p got5.OnGameStateChangedPayload) error
+	HandleOnPreLoadMatchConfig(ctx context.Context, p got5.OnPreLoadMatchConfigPayload) error
+	HandleOnLoadMatchConfigFailed(ctx context.Context, p got5.OnLoadMatchConfigFailedPayload) error
+	HandleOnSeriesInit(ctx context.Context, p got5.OnSeriesInitPayload) error
+	HandleOnMapResult(ctx context.Context, p got5.OnMapResultPayload) error
+	HandleOnSeriesResult(ctx context.Context, p got5.OnSeriesResultPayload) error
+	HandleOnSidePicked(ctx context.Context, p got5.OnSidePickedPayload) error
+	HandleOnMapPicked(ctx context.Context, p got5.OnMapPickedPayload) error
+	HandleOnMapVetoed(ctx context.Context, p got5.OnMapVetoedPayload) error
+	HandleOnBackupRestore(ctx context.Context, p got5.OnBackupRestorePayload) error
+	HandleOnDemoFinished(ctx context.Context, p got5.OnDemoFinishedPayload) error
+	HandleOnDemoUploadEnded(ctx context.Context, p got5.OnDemoUploadEndedPayload) error
+	HandleOnMatchPaused(ctx context.Context, p got5.OnMatchPausedPayload) error
+	HandleOnMatchUnpaused(ctx context.Context, p got5.OnMatchUnpausedPayload) error
+	HandleOnKnifeRoundStarted(ctx context.Context, p got5.OnKnifeRoundStartedPayload) error
+	HandleOnKnifeRoundWon(ctx context.Context, p got5.OnKnifeRoundWonPayload) error
+	HandleOnTeamReadyStatusChanged(ctx context.Context, p got5.OnTeamReadyStatusChangedPayload) error
+	HandleOnGoingLive(ctx context.Context, p got5.OnGoingLivePayload) error
+	HandleOnRoundStart(ctx context.Context, p got5.OnRoundStartPayload) error
+	HandleOnRoundEnd(ctx context.Context, p got5.OnRoundEndPayload) error
+	HandleOnRoundStatsUpdated(ctx context.Context, p got5.OnRoundStatsUpdatedPayload) error
+	HandleOnPlayerBecameMVP(ctx context.Context, p got5.OnPlayerBecameMVPPayload) error
+	HandleOnGrenadeThrown(ctx context.Context, p got5.OnGrenadeThrownPayload) error
+	HandleOnPlayerDeath(ctx context.Context, p got5.OnPlayerDeathPayload) error
+	HandleOnHEGrenadeDetonated(ctx context.Context, p got5.OnHEGrenadeDetonatedPayload) error
+	HandleOnMolotovDetonated(ctx context.Context, p got5.OnMolotovDetonatedPayload) error
+	HandleOnFlashbangDetonated(ctx context.Context, p got5.OnFlashbangDetonatedPayload) error
+	HandleOnSmokeGrenadeDetonated(ctx context.Context, p got5.OnSmokeGrenadeDetonatedPayload) error
+	HandleOnDecoyStarted(ctx context.Context, p got5.OnDecoyStartedPayload) error
+	HandleOnBombPlanted(ctx context.Context, p got5.OnBombPlantedPayload) error
+	HandleOnBombDefused(ctx context.Context, p got5.OnBombDefusedPayload) error
+	HandleOnBombExploded(ctx context.Context, p got5.OnBombExplodedPayload) error
+	HandleOnPlayerConnected(ctx context.Context, p got5.OnPlayerConnectedPayload) error
+	HandleOnPlayerDisconnected(ctx context.Context, p got5.OnPlayerDisconnectedPayload) error
+	HandleOnPlayerSay(ctx context.Context, p got5.OnPlayerSayPayload) error
 }
 ```
 
 #### MatchLoader
-[MatchLoader](https://github.com/FlowingSPDG/Got5/blob/75996d44058558ca7453af1c4b4f9e73115924d4/controller/controller.go#L54-L57) interface should handle ``get5_loadmatch_url`` request from game server.  
+[MatchLoader](https://github.com/FlowingSPDG/Got5/blob/75996d44058558ca7453af1c4b4f9e73115924d4/controller/got5.go#L54-L57) interface should handle ``get5_loadmatch_url`` request from game server.  
 You need to respond game server with JSON.  
 https://splewis.github.io/get5/latest/match_schema/  
 ```go
@@ -76,11 +76,11 @@ type MatchLoader interface {
 	CheckMatchAuth(ctx context.Context, mid string, auth string) error
 
 	// Load respond to get5_loadmatch_url
-	Load(ctx context.Context, mid string) (models.G5Match, error)
+	Load(ctx context.Context, mid string) (got5.G5Match, error)
 }
 ```
 
-models.G5Match is interface for generating get5 supported format JSON.  
+got5.G5Match is interface for generating get5 supported format JSON.  
 ```go
 // G5Match 別の構造体にG5Matchインターフェースを実装すれば型が違っても変換してGet5に渡してくれる
 type G5Match interface {
@@ -111,7 +111,7 @@ type Match struct {
 ```
 
 #### DemoUploader
-[DemoUploader](https://github.com/FlowingSPDG/Got5/blob/75996d44058558ca7453af1c4b4f9e73115924d4/controller/controller.go#L59-L62) interface should handle demo upload from game server.  
+[DemoUploader](https://github.com/FlowingSPDG/Got5/blob/75996d44058558ca7453af1c4b4f9e73115924d4/controller/got5.go#L59-L62) interface should handle demo upload from game server.  
 You may want to add auth middleware to prevend unauthorized demo uploads.  
 ```go
 // DemoUploader is for Demo Upload Operation(get5_dem_upload_url)
