@@ -73,20 +73,20 @@ func GetDefaultMatchBO1() Match {
 }
 
 type Spectators struct {
-	Name    string            `json:"name"`
-	Players map[string]string `json:"players"`
+	Name    string            `json:"name,omitempty"`
+	Players map[string]string `json:"players,omitempty"`
 }
 type Team struct {
-	ID          string            `json:"id"`
-	Players     map[string]string `json:"players"`
-	Coaches     map[string]string `json:"coaches"`
-	Name        string            `json:"name"`
-	Tag         string            `json:"tag"`
-	Flag        string            `json:"flag"`
-	Logo        string            `json:"logo"`
-	SeriesScore int               `json:"series_score"`
-	MatchText   string            `json:"matchtext"`
-	FromFile    string            `json:"fromfile"`
+	ID          string            `json:"id,omitempty"`
+	Players     map[string]string `json:"players,omitempty"`
+	Coaches     map[string]string `json:"coaches,omitempty"`
+	Name        string            `json:"name,omitempty"`
+	Tag         string            `json:"tag,omitempty"`
+	Flag        string            `json:"flag,omitempty"`
+	Logo        string            `json:"logo,omitempty"`
+	SeriesScore int               `json:"series_score,omitempty"`
+	MatchText   string            `json:"matchtext,omitempty"`
+	FromFile    string            `json:"fromfile,omitempty"`
 }
 
 // G5Match 別の構造体にG5Matchインターフェースを実装すれば型が違っても変換してGet5に渡してくれる
