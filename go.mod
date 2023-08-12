@@ -4,8 +4,13 @@ go 1.20
 
 require (
 	dagger.io/dagger v0.4.0
+	github.com/aws/aws-sdk-go-v2 v1.17.1
+	github.com/bwmarrin/discordgo v0.26.1
+	github.com/disgoorg/disgo v0.13.22
+	github.com/disgoorg/snowflake/v2 v2.0.1
 	github.com/gin-gonic/gin v1.9.1
 	github.com/gofiber/fiber/v2 v2.39.0
+	github.com/stretchr/testify v1.8.4
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2
 )
 
@@ -15,6 +20,7 @@ require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
+	github.com/aws/smithy-go v1.13.4 // indirect
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
@@ -26,6 +32,9 @@ require (
 	github.com/dagger/dagger v0.3.3 // indirect
 	github.com/dagger/graphql v0.0.0-20221102000338-24d5e47d3b72 // indirect
 	github.com/dagger/graphql-go-tools v0.0.0-20221102001222-e68b44170936 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/disgoorg/json v1.0.0 // indirect
+	github.com/disgoorg/log v1.2.0 // indirect
 	github.com/docker/cli v20.10.17+incompatible // indirect
 	github.com/docker/distribution v2.8.1+incompatible // indirect
 	github.com/docker/docker v20.10.17+incompatible // indirect
@@ -45,6 +54,7 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
+	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.2 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
@@ -66,10 +76,11 @@ require (
 	github.com/opencontainers/image-spec v1.0.3-0.20211202183452-c5a74bcca799 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/rs/zerolog v1.28.0 // indirect
+	github.com/sasha-s/go-csync v0.0.0-20210812194225-61421b77c44b // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/tonistiigi/fsutil v0.0.0-20220115021204-b19f7f9cb274 // indirect
 	github.com/tonistiigi/units v0.0.0-20180711220420-6950e57a87ea // indirect
 	github.com/tonistiigi/vt100 v0.0.0-20210615222946-8066bb97264f // indirect
