@@ -3,29 +3,29 @@ package got5
 // https://splewis.github.io/get5/latest/match_schema/#schema
 
 type Match struct {
-	MatchTitle             string            `json:"match_title"`
-	MatchID                string            `json:"matchid"`
-	ClinchSeries           bool              `json:"clinch_series"`
-	NumMaps                int               `json:"num_maps"`
-	Scrim                  bool              `json:"scrim"`
-	Wingman                bool              `json:"wingman"`
-	PlayersPerTeam         int               `json:"players_per_team"`
-	CoachesPerTeam         int               `json:"coaches_per_team"`
-	CoachesMustReady       bool              `json:"coaches_must_ready"`
-	MinPlayersToReady      int               `json:"min_players_to_ready"`
-	MinSpectatorsToReady   int               `json:"min_spectators_to_ready"`
-	SkipVeto               bool              `json:"skip_veto"`
-	VetoFirst              string            `json:"veto_first"`
-	VetoMode               string            `json:"veto_mode"`
-	SideType               string            `json:"side_type"`
-	MapSides               []string          `json:"map_sides"`
-	Spectators             Spectators        `json:"spectators"`
-	Maplist                []string          `json:"maplist"`
-	FavoredPercentageTeam1 int               `json:"favored_percentage_team1"`
-	FavoredPercentageText  string            `json:"favored_percentage_text"`
-	Team1                  Team              `json:"team1"`
-	Team2                  Team              `json:"team2"`
-	Cvars                  map[string]string `json:"cvars"`
+	MatchTitle             string            `json:"match_title,omitempty"`
+	MatchID                string            `json:"matchid,omitempty"`
+	ClinchSeries           bool              `json:"clinch_series,omitempty"`
+	NumMaps                int               `json:"num_maps,omitempty"`
+	Scrim                  bool              `json:"scrim,omitempty"`
+	Wingman                bool              `json:"wingman,omitempty"`
+	PlayersPerTeam         int               `json:"players_per_team,omitempty"`
+	CoachesPerTeam         int               `json:"coaches_per_team,omitempty"`
+	CoachesMustReady       bool              `json:"coaches_must_ready,omitempty"`
+	MinPlayersToReady      int               `json:"min_players_to_ready,omitempty"`
+	MinSpectatorsToReady   int               `json:"min_spectators_to_ready,omitempty"`
+	SkipVeto               bool              `json:"skip_veto,omitempty"`
+	VetoFirst              string            `json:"veto_first,omitempty"`
+	VetoMode               string            `json:"veto_mode,omitempty"`
+	SideType               string            `json:"side_type,omitempty"`
+	MapSides               []string          `json:"map_sides,omitempty"`
+	Spectators             Spectators        `json:"spectators,omitempty"`
+	Maplist                []string          `json:"maplist,omitempty"`
+	FavoredPercentageTeam1 int               `json:"favored_percentage_team1,omitempty"`
+	FavoredPercentageText  string            `json:"favored_percentage_text,omitempty"`
+	Team1                  Team              `json:"team1,omitempty"`
+	Team2                  Team              `json:"team2,omitempty"`
+	Cvars                  map[string]string `json:"cvars,omitempty"`
 }
 
 func (m Match) ToG5Format() Match {
