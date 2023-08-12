@@ -6,8 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/FlowingSPDG/Got5/controller"
-	"github.com/FlowingSPDG/Got5/models"
+	got5 "github.com/FlowingSPDG/Got5"
 )
 
 func reMarshal(m map[string]any, p any) error {
@@ -22,7 +21,7 @@ func reMarshal(m map[string]any, p any) error {
 }
 
 // OnEventHandler POST on /Get5_OnEvent
-func OnEventHandler(ctrl controller.EventHandler) func(c *fiber.Ctx) error {
+func OnEventHandler(ctrl got5.EventHandler) func(c *fiber.Ctx) error {
 	return (func(c *fiber.Ctx) error {
 		p := make(map[string]any)
 		if err := c.BodyParser(&p); err != nil {
@@ -36,252 +35,252 @@ func OnEventHandler(ctrl controller.EventHandler) func(c *fiber.Ctx) error {
 		}
 		switch ev {
 		case "game_state_changed":
-			ret := models.OnGameStateChangedPayload{}
+			ret := got5.OnGameStateChangedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnGameStateChanged(c.Context(), ret)
 		case "preload_match_config":
-			ret := models.OnPreLoadMatchConfigPayload{}
+			ret := got5.OnPreLoadMatchConfigPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnPreLoadMatchConfig(c.Context(), ret)
 		case "match_config_load_fail":
-			ret := models.OnLoadMatchConfigFailedPayload{}
+			ret := got5.OnLoadMatchConfigFailedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnLoadMatchConfigFailed(c.Context(), ret)
 		case "series_start":
-			ret := models.OnSeriesInitPayload{}
+			ret := got5.OnSeriesInitPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnSeriesInit(c.Context(), ret)
 		case "map_result":
-			ret := models.OnMapResultPayload{}
+			ret := got5.OnMapResultPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnMapResult(c.Context(), ret)
 		case "series_end":
-			ret := models.OnSeriesResultPayload{}
+			ret := got5.OnSeriesResultPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnSeriesResult(c.Context(), ret)
 		case "side_picked":
-			ret := models.OnSidePickedPayload{}
+			ret := got5.OnSidePickedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnSidePicked(c.Context(), ret)
 		case "map_picked":
-			ret := models.OnMapPickedPayload{}
+			ret := got5.OnMapPickedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnMapPicked(c.Context(), ret)
 		case "map_vetoed":
-			ret := models.OnMapVetoedPayload{}
+			ret := got5.OnMapVetoedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnMapVetoed(c.Context(), ret)
 		case "backup_loaded":
-			ret := models.OnBackupRestorePayload{}
+			ret := got5.OnBackupRestorePayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnBackupRestore(c.Context(), ret)
 		case "demo_finished":
-			ret := models.OnDemoFinishedPayload{}
+			ret := got5.OnDemoFinishedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnDemoFinished(c.Context(), ret)
 		case "demo_upload_ended":
-			ret := models.OnDemoUploadEndedPayload{}
+			ret := got5.OnDemoUploadEndedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnDemoUploadEnded(c.Context(), ret)
 		case "game_paused":
-			ret := models.OnMatchPausedPayload{}
+			ret := got5.OnMatchPausedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnMatchPaused(c.Context(), ret)
 		case "game_unpaused":
-			ret := models.OnMatchUnpausedPayload{}
+			ret := got5.OnMatchUnpausedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnMatchUnpaused(c.Context(), ret)
 		case "pause_began":
-			ret := models.OnPauseBeganPayload{}
+			ret := got5.OnPauseBeganPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error())) // TODO: Wrap error code
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnPauseBegan(c.Context(), ret)
 		case "knife_start":
-			ret := models.OnKnifeRoundStartedPayload{}
+			ret := got5.OnKnifeRoundStartedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnKnifeRoundStarted(c.Context(), ret)
 		case "knife_won":
-			ret := models.OnKnifeRoundWonPayload{}
+			ret := got5.OnKnifeRoundWonPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnKnifeRoundWon(c.Context(), ret)
 		case "team_ready_status_changed":
-			ret := models.OnTeamReadyStatusChangedPayload{}
+			ret := got5.OnTeamReadyStatusChangedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnTeamReadyStatusChanged(c.Context(), ret)
 		case "going_live":
-			ret := models.OnGoingLivePayload{}
+			ret := got5.OnGoingLivePayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnGoingLive(c.Context(), ret)
 		case "round_start":
-			ret := models.OnRoundStartPayload{}
+			ret := got5.OnRoundStartPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnRoundStart(c.Context(), ret)
 		case "round_end":
-			ret := models.OnRoundEndPayload{}
+			ret := got5.OnRoundEndPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnRoundEnd(c.Context(), ret)
 		case "stats_updated":
-			ret := models.OnRoundStatsUpdatedPayload{}
+			ret := got5.OnRoundStatsUpdatedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnRoundStatsUpdated(c.Context(), ret)
 		case "round_mvp":
-			ret := models.OnPlayerBecameMVPPayload{}
+			ret := got5.OnPlayerBecameMVPPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnPlayerBecameMVP(c.Context(), ret)
 		case "grenade_thrown":
-			ret := models.OnGrenadeThrownPayload{}
+			ret := got5.OnGrenadeThrownPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnGrenadeThrown(c.Context(), ret)
 		case "player_death":
-			ret := models.OnPlayerDeathPayload{}
+			ret := got5.OnPlayerDeathPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnPlayerDeath(c.Context(), ret)
 		case "hegrenade_detonated":
-			ret := models.OnHEGrenadeDetonatedPayload{}
+			ret := got5.OnHEGrenadeDetonatedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnHEGrenadeDetonated(c.Context(), ret)
 		case "molotov_detonated":
-			ret := models.OnMolotovDetonatedPayload{}
+			ret := got5.OnMolotovDetonatedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnMolotovDetonated(c.Context(), ret)
 		case "flashbang_detonated":
-			ret := models.OnFlashbangDetonatedPayload{}
+			ret := got5.OnFlashbangDetonatedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnFlashbangDetonated(c.Context(), ret)
 		case "smokegrenade_detonated":
-			ret := models.OnSmokeGrenadeDetonatedPayload{}
+			ret := got5.OnSmokeGrenadeDetonatedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnSmokeGrenadeDetonated(c.Context(), ret)
 		case "decoygrenade_started":
-			ret := models.OnDecoyStartedPayload{}
+			ret := got5.OnDecoyStartedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnDecoyStarted(c.Context(), ret)
 		case "bomb_planted":
-			ret := models.OnBombPlantedPayload{}
+			ret := got5.OnBombPlantedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnBombPlanted(c.Context(), ret)
 		case "bomb_defused":
-			ret := models.OnBombDefusedPayload{}
+			ret := got5.OnBombDefusedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnBombDefused(c.Context(), ret)
 		case "bomb_exploded":
-			ret := models.OnBombExplodedPayload{}
+			ret := got5.OnBombExplodedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnBombExploded(c.Context(), ret)
 		case "player_connect":
-			ret := models.OnPlayerConnectedPayload{}
+			ret := got5.OnPlayerConnectedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnPlayerConnected(c.Context(), ret)
 		case "player_disconnect":
-			ret := models.OnPlayerDisconnectedPayload{}
+			ret := got5.OnPlayerDisconnectedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
 			}
 			return ctrl.HandleOnPlayerDisconnected(c.Context(), ret)
 		case "player_say":
-			ret := models.OnPlayerSayPayload{}
+			ret := got5.OnPlayerSayPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.SendString(fmt.Sprintf("Invalid JSON:%s", err.Error()))
 				return c.SendStatus(fiber.StatusBadRequest)
@@ -295,7 +294,7 @@ func OnEventHandler(ctrl controller.EventHandler) func(c *fiber.Ctx) error {
 }
 
 // CheckEventHandlerAuth Check Auth
-func CheckEventHandlerAuth(auth controller.Auth) func(c *fiber.Ctx) error {
+func CheckEventHandlerAuth(auth got5.Auth) func(c *fiber.Ctx) error {
 	return (func(c *fiber.Ctx) error {
 		// NOTICE: get5_remote_log_header_value only supports max 128 characters
 		reqAuth := c.Get("Authorization")

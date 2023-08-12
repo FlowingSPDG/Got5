@@ -4,16 +4,16 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/FlowingSPDG/Got5/controller"
+	got5 "github.com/FlowingSPDG/Got5"
 )
 
 type webhookAuth struct {
 	password string
 }
 
-var _ controller.Auth = (*webhookAuth)(nil)
+var _ got5.Auth = (*webhookAuth)(nil)
 
-// CheckAuth implements controller.EventHandler
+// CheckAuth implements got5.EventHandler
 func (wh *webhookAuth) EventAuth(ctx context.Context, mid string, auth string) error {
 	// Lets say simple password...
 	if auth == wh.password {
@@ -22,18 +22,18 @@ func (wh *webhookAuth) EventAuth(ctx context.Context, mid string, auth string) e
 	return fmt.Errorf("Password mismatch")
 }
 
-// CheckDemoAuth implements controller.JWTAuth
+// CheckDemoAuth implements got5.JWTAuth
 func (*webhookAuth) CheckDemoAuth(ctx context.Context, mid string, filename string, mapNumber int, serverID string, jwt string) error {
 	panic("unimplemented")
 }
 
-// MatchAuth implements controller.JWTAuth
+// MatchAuth implements got5.JWTAuth
 func (*webhookAuth) MatchAuth(ctx context.Context, mid string, jwt string) error {
 	panic("unimplemented")
 }
 
 // NewAuth Get new auth pointer
-func NewAuth(password string) controller.Auth {
+func NewAuth(password string) got5.Auth {
 	return &webhookAuth{
 		password: password,
 	}

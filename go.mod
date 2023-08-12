@@ -3,28 +3,19 @@ module github.com/FlowingSPDG/Got5
 go 1.20
 
 require (
-	cloud.google.com/go/firestore v1.8.0
 	dagger.io/dagger v0.4.0
-	firebase.google.com/go v3.13.0+incompatible
 	github.com/aws/aws-sdk-go-v2 v1.17.1
 	github.com/bwmarrin/discordgo v0.26.1
 	github.com/disgoorg/disgo v0.13.22
 	github.com/disgoorg/snowflake/v2 v2.0.1
 	github.com/gin-gonic/gin v1.9.1
 	github.com/gofiber/fiber/v2 v2.39.0
-	github.com/golang-jwt/jwt/v4 v4.4.2
-	github.com/najeira/randstr v0.1.1
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2
 )
 
 require (
-	cloud.google.com/go v0.105.0 // indirect
-	cloud.google.com/go/compute v1.12.1 // indirect
 	cloud.google.com/go/compute/metadata v0.2.1 // indirect
-	cloud.google.com/go/iam v0.6.0 // indirect
-	cloud.google.com/go/longrunning v0.1.1 // indirect
-	cloud.google.com/go/storage v1.28.0 // indirect
 	github.com/Khan/genqlient v0.5.0 // indirect
 	github.com/Microsoft/go-winio v0.5.2 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
@@ -61,13 +52,8 @@ require (
 	github.com/gofrs/flock v0.8.1 // indirect
 	github.com/gogo/googleapis v1.4.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
-	github.com/google/uuid v1.3.0 // indirect
-	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
-	github.com/googleapis/gax-go/v2 v2.7.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.2 // indirect
@@ -123,8 +109,6 @@ require (
 	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/time v0.0.0-20220722155302-e5dcc9cfc0b9 // indirect
-	google.golang.org/api v0.103.0 // indirect
-	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20221027153422-115e99e71e1c // indirect
 	google.golang.org/grpc v1.50.1 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect

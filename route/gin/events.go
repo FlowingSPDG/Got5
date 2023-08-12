@@ -7,8 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/xerrors"
 
-	"github.com/FlowingSPDG/Got5/controller"
-	"github.com/FlowingSPDG/Got5/models"
+	got5 "github.com/FlowingSPDG/Got5"
 )
 
 func reMarshal(m map[string]any, p any) error {
@@ -23,7 +22,7 @@ func reMarshal(m map[string]any, p any) error {
 }
 
 // OnEventHandler POST on /Get5_OnEvent
-func OnEventHandler(ctrl controller.EventHandler) func(c *gin.Context) {
+func OnEventHandler(ctrl got5.EventHandler) func(c *gin.Context) {
 	return (func(c *gin.Context) {
 		p := make(map[string]any)
 		if err := c.ShouldBindJSON(&p); err != nil {
@@ -37,247 +36,247 @@ func OnEventHandler(ctrl controller.EventHandler) func(c *gin.Context) {
 		}
 		switch ev {
 		case "game_state_changed":
-			ret := models.OnGameStateChangedPayload{}
+			ret := got5.OnGameStateChangedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 			}
 			ctrl.HandleOnGameStateChanged(c, ret)
 		case "preload_match_config":
-			ret := models.OnPreLoadMatchConfigPayload{}
+			ret := got5.OnPreLoadMatchConfigPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 			}
 			ctrl.HandleOnPreLoadMatchConfig(c, ret)
 		case "match_config_load_fail":
-			ret := models.OnLoadMatchConfigFailedPayload{}
+			ret := got5.OnLoadMatchConfigFailedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 			}
 			ctrl.HandleOnLoadMatchConfigFailed(c, ret)
 		case "series_start":
-			ret := models.OnSeriesInitPayload{}
+			ret := got5.OnSeriesInitPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 			}
 			ctrl.HandleOnSeriesInit(c, ret)
 		case "map_result":
-			ret := models.OnMapResultPayload{}
+			ret := got5.OnMapResultPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 			}
 			ctrl.HandleOnMapResult(c, ret)
 		case "series_end":
-			ret := models.OnSeriesResultPayload{}
+			ret := got5.OnSeriesResultPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnSeriesResult(c, ret)
 		case "side_picked":
-			ret := models.OnSidePickedPayload{}
+			ret := got5.OnSidePickedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnSidePicked(c, ret)
 		case "map_picked":
-			ret := models.OnMapPickedPayload{}
+			ret := got5.OnMapPickedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnMapPicked(c, ret)
 		case "map_vetoed":
-			ret := models.OnMapVetoedPayload{}
+			ret := got5.OnMapVetoedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnMapVetoed(c, ret)
 		case "backup_loaded":
-			ret := models.OnBackupRestorePayload{}
+			ret := got5.OnBackupRestorePayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnBackupRestore(c, ret)
 		case "demo_finished":
-			ret := models.OnDemoFinishedPayload{}
+			ret := got5.OnDemoFinishedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnDemoFinished(c, ret)
 		case "demo_upload_ended":
-			ret := models.OnDemoUploadEndedPayload{}
+			ret := got5.OnDemoUploadEndedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnDemoUploadEnded(c, ret)
 		case "game_paused":
-			ret := models.OnMatchPausedPayload{}
+			ret := got5.OnMatchPausedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnMatchPaused(c, ret)
 		case "game_unpaused":
-			ret := models.OnMatchUnpausedPayload{}
+			ret := got5.OnMatchUnpausedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnMatchUnpaused(c, ret)
 		case "pause_began":
-			ret := models.OnPauseBeganPayload{}
+			ret := got5.OnPauseBeganPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnPauseBegan(c, ret)
 		case "knife_start":
-			ret := models.OnKnifeRoundStartedPayload{}
+			ret := got5.OnKnifeRoundStartedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnKnifeRoundStarted(c, ret)
 		case "knife_won":
-			ret := models.OnKnifeRoundWonPayload{}
+			ret := got5.OnKnifeRoundWonPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnKnifeRoundWon(c, ret)
 		case "team_ready_status_changed":
-			ret := models.OnTeamReadyStatusChangedPayload{}
+			ret := got5.OnTeamReadyStatusChangedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnTeamReadyStatusChanged(c, ret)
 		case "going_live":
-			ret := models.OnGoingLivePayload{}
+			ret := got5.OnGoingLivePayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnGoingLive(c, ret)
 		case "round_start":
-			ret := models.OnRoundStartPayload{}
+			ret := got5.OnRoundStartPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnRoundStart(c, ret)
 		case "round_end":
-			ret := models.OnRoundEndPayload{}
+			ret := got5.OnRoundEndPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnRoundEnd(c, ret)
 		case "stats_updated":
-			ret := models.OnRoundStatsUpdatedPayload{}
+			ret := got5.OnRoundStatsUpdatedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnRoundStatsUpdated(c, ret)
 		case "round_mvp":
-			ret := models.OnPlayerBecameMVPPayload{}
+			ret := got5.OnPlayerBecameMVPPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnPlayerBecameMVP(c, ret)
 		case "grenade_thrown":
-			ret := models.OnGrenadeThrownPayload{}
+			ret := got5.OnGrenadeThrownPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnGrenadeThrown(c, ret)
 		case "player_death":
-			ret := models.OnPlayerDeathPayload{}
+			ret := got5.OnPlayerDeathPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnPlayerDeath(c, ret)
 		case "hegrenade_detonated":
-			ret := models.OnHEGrenadeDetonatedPayload{}
+			ret := got5.OnHEGrenadeDetonatedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnHEGrenadeDetonated(c, ret)
 		case "molotov_detonated":
-			ret := models.OnMolotovDetonatedPayload{}
+			ret := got5.OnMolotovDetonatedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnMolotovDetonated(c, ret)
 		case "flashbang_detonated":
-			ret := models.OnFlashbangDetonatedPayload{}
+			ret := got5.OnFlashbangDetonatedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnFlashbangDetonated(c, ret)
 		case "smokegrenade_detonated":
-			ret := models.OnSmokeGrenadeDetonatedPayload{}
+			ret := got5.OnSmokeGrenadeDetonatedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnSmokeGrenadeDetonated(c, ret)
 		case "decoygrenade_started":
-			ret := models.OnDecoyStartedPayload{}
+			ret := got5.OnDecoyStartedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnDecoyStarted(c, ret)
 		case "bomb_planted":
-			ret := models.OnBombPlantedPayload{}
+			ret := got5.OnBombPlantedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnBombPlanted(c, ret)
 		case "bomb_defused":
-			ret := models.OnBombDefusedPayload{}
+			ret := got5.OnBombDefusedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnBombDefused(c, ret)
 		case "bomb_exploded":
-			ret := models.OnBombExplodedPayload{}
+			ret := got5.OnBombExplodedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnBombExploded(c, ret)
 		case "player_connect":
-			ret := models.OnPlayerConnectedPayload{}
+			ret := got5.OnPlayerConnectedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnPlayerConnected(c, ret)
 		case "player_disconnect":
-			ret := models.OnPlayerDisconnectedPayload{}
+			ret := got5.OnPlayerDisconnectedPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
 			}
 			ctrl.HandleOnPlayerDisconnected(c, ret)
 		case "player_say":
-			ret := models.OnPlayerSayPayload{}
+			ret := got5.OnPlayerSayPayload{}
 			if err := reMarshal(p, &ret); err != nil {
 				c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
 				return
@@ -290,7 +289,7 @@ func OnEventHandler(ctrl controller.EventHandler) func(c *gin.Context) {
 }
 
 // CheckEventHandlerAuth Check Auth
-func CheckEventHandlerAuth(auth controller.Auth) func(c *gin.Context) {
+func CheckEventHandlerAuth(auth got5.Auth) func(c *gin.Context) {
 	return (func(c *gin.Context) {
 		// NOTICE: get5_remote_log_header_value only supports max 128 characters
 		reqAuth := c.GetHeader("Authorization")

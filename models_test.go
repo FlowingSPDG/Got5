@@ -1,22 +1,22 @@
-package models_test
+package got5_test
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/FlowingSPDG/Got5/models"
+	got5 "github.com/FlowingSPDG/Got5"
 )
 
 func TestG5Match(t *testing.T) {
 	asserts := assert.New(t)
 	cases := []struct {
 		title string
-		input models.Match
+		input got5.Match
 	}{
 		{
 			title: "マッチのG5インターフェース変換テスト",
-			input: models.Match{
+			input: got5.Match{
 				MatchTitle:           "TEST MATCH",
 				MatchID:              "ZXCVBNM",
 				ClinchSeries:         false,
@@ -29,17 +29,17 @@ func TestG5Match(t *testing.T) {
 				SkipVeto:             false,
 				VetoFirst:            "team1",
 				SideType:             "knife",
-				Spectators:           models.Spectators{},
+				Spectators:           got5.Spectators{},
 				Maplist:              []string{"de_anubis", "de_nuke", "de_inferno", "de_mirage", "de_vertigo", "de_ancient", "de_overpass"},
 				MapSides:             []string{"knife"},
-				Team1:                models.Team{},
-				Team2:                models.Team{},
+				Team1:                got5.Team{},
+				Team2:                got5.Team{},
 				Cvars:                map[string]string{},
 			},
 		},
 		{
 			title: "複雑なマッチのパース",
-			input: models.Match{
+			input: got5.Match{
 				MatchTitle:           "TEST MATCH",
 				MatchID:              "1234567890",
 				ClinchSeries:         true,
@@ -52,7 +52,7 @@ func TestG5Match(t *testing.T) {
 				SkipVeto:             true,
 				VetoFirst:            "team2",
 				SideType:             "knife",
-				Spectators: models.Spectators{
+				Spectators: got5.Spectators{
 					Name: "オブザーバー",
 					Players: map[string]string{
 						"rjzefl": "flowingspdg",
@@ -60,7 +60,7 @@ func TestG5Match(t *testing.T) {
 				},
 				Maplist:  []string{"de_ancient", "de_overpass"},
 				MapSides: []string{"knife"},
-				Team1: models.Team{
+				Team1: got5.Team{
 					Name: "Team1 Test",
 					Tag:  "T1T",
 					Flag: "JP",
@@ -70,7 +70,7 @@ func TestG5Match(t *testing.T) {
 					},
 					Coaches: map[string]string{},
 				},
-				Team2: models.Team{
+				Team2: got5.Team{
 					Name: "",
 					Tag:  "",
 					Flag: "",

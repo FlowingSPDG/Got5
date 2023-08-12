@@ -3,13 +3,12 @@ package ginroute
 import (
 	"net/http"
 
+	got5 "github.com/FlowingSPDG/Got5"
 	"github.com/gin-gonic/gin"
-
-	"github.com/FlowingSPDG/Got5/controller"
 )
 
 // CheckMatchLoaderAuth 認証用ハンドラ
-func CheckMatchLoaderAuth(auth controller.Auth) func(c *gin.Context) {
+func CheckMatchLoaderAuth(auth got5.Auth) func(c *gin.Context) {
 	return (func(c *gin.Context) {
 		mid := c.Param("matchID")
 		reqAuthVal := c.GetHeader("Authorization")
@@ -22,7 +21,7 @@ func CheckMatchLoaderAuth(auth controller.Auth) func(c *gin.Context) {
 }
 
 // LoadMatchHandler GET on get5_loadmatch_url "https://example.com/match_config.json" "Authorization" "Bearer <token>"
-func LoadMatchHandler(loader controller.MatchLoader) func(c *gin.Context) {
+func LoadMatchHandler(loader got5.MatchLoader) func(c *gin.Context) {
 	return (func(c *gin.Context) {
 		// マッチを取得、JSONを組んで返す
 		mid := c.Param("matchID")

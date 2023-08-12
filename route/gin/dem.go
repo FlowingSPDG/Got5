@@ -4,13 +4,12 @@ import (
 	"net/http"
 	"strconv"
 
+	got5 "github.com/FlowingSPDG/Got5"
 	"github.com/gin-gonic/gin"
-
-	"github.com/FlowingSPDG/Got5/controller"
 )
 
 // CheckDemoAuth 認証用ハンドラ
-func CheckDemoAuth(auth controller.Auth) func(c *gin.Context) {
+func CheckDemoAuth(auth got5.Auth) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		// Verifyをかける
 		filename := c.GetHeader("Get5-FileName")
@@ -40,7 +39,7 @@ func CheckDemoAuth(auth controller.Auth) func(c *gin.Context) {
 
 // DemoUploadHandler POST CS:GO dem file.
 // アップロードされたdemファイルを制御するハンドラ
-func DemoUploadHandler(uploader controller.DemoUploader) func(c *gin.Context) {
+func DemoUploadHandler(uploader got5.DemoUploader) func(c *gin.Context) {
 	return (func(c *gin.Context) {
 		// アップロードを実施
 
