@@ -4,8 +4,13 @@ package got5
 // MatchZy: https://shobhit-pathak.github.io/MatchZy/match_setup/#example
 // MatchZy(source): https://github.com/shobhit-pathak/MatchZy/blob/ae597e50756f8ed8380e4cbacec4a4c1eb9013da/MatchManagement.cs#L254
 
-type Match struct {
-	MatchID              int               `json:"matchid,omitempty"`
+// MatchID currently int only
+type MatchID interface {
+	int
+}
+
+type Match[TmatchID MatchID] struct {
+	MatchID              TmatchID          `json:"matchid,omitempty"` // originally string in get5 but MatchZy uses int
 	ClinchSeries         bool              `json:"clinch_series,omitempty"`
 	NumMaps              int               `json:"num_maps,omitempty"`
 	Wingman              bool              `json:"wingman,omitempty"`
@@ -22,13 +27,13 @@ type Match struct {
 	Cvars                map[string]string `json:"cvars,omitempty"`
 }
 
-func (m Match) ToG5Format() Match {
+func (m Match[TMatchID]) ToG5Format() Match[TMatchID] {
 	return m
 }
 
-func GetDefaultMatchBO1() Match {
-	return Match{
-		MatchID:              0,
+func GetDefaultMatchBO1[TMatchID MatchID]() Match[TMatchID] {
+	return Match[TMatchID]{
+		MatchID:              *new(TMatchID),
 		ClinchSeries:         true,
 		NumMaps:              1,
 		PlayersPerTeam:       5,
@@ -62,6 +67,6 @@ type Team struct {
 }
 
 // G5Match 別の構造体にG5Matchインターフェースを実装すれば型が違っても変換してGet5に渡してくれる
-type G5Match interface {
-	ToG5Format() Match
+type G5Match[TMatchID MatchID] interface {
+	ToG5Format() Match[TMatchID]
 }
