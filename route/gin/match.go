@@ -9,7 +9,7 @@ import (
 )
 
 // CheckMatchLoaderAuth 認証用ハンドラ
-func CheckMatchLoaderAuth[TMatchID got5.MatchID](auth got5.Auth[TMatchID]) func(c *gin.Context) {
+func CheckMatchLoaderAuth(auth got5.Auth) func(c *gin.Context) {
 	return (func(c *gin.Context) {
 		matchID := c.Param("matchID")
 		reqAuthVal := c.GetHeader("Authorization")
@@ -19,7 +19,7 @@ func CheckMatchLoaderAuth[TMatchID got5.MatchID](auth got5.Auth[TMatchID]) func(
 			c.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
-		if err := auth.MatchAuth(c, TMatchID(mid), reqAuthVal); err != nil {
+		if err := auth.MatchAuth(c, mid, reqAuthVal); err != nil {
 			c.AbortWithError(http.StatusUnauthorized, err) // カスタムエラーを返したい
 			return
 		}
@@ -28,7 +28,7 @@ func CheckMatchLoaderAuth[TMatchID got5.MatchID](auth got5.Auth[TMatchID]) func(
 }
 
 // LoadMatchHandler GET on get5_loadmatch_url "https://example.com/match_config.json" "Authorization" "Bearer <token>"
-func LoadMatchHandler[TMatchID got5.MatchID](loader got5.MatchLoader[TMatchID]) func(c *gin.Context) {
+func LoadMatchHandler(loader got5.MatchLoader) func(c *gin.Context) {
 	return (func(c *gin.Context) {
 		// マッチを取得、JSONを組んで返す
 		matchID := c.Param("matchID")
@@ -38,12 +38,12 @@ func LoadMatchHandler[TMatchID got5.MatchID](loader got5.MatchLoader[TMatchID]) 
 			return
 		}
 
-		m, err := loader.Load(c, TMatchID(mid))
+		m, err := loader.Load(c, mid)
 		if err != nil {
 			// TODO:エラーハンドリングをする
 			c.AbortWithError(http.StatusNotFound, err)
 			return
 		}
-		c.JSON(http.StatusOK, m.ToG5Format())
+		c.JSON(http.StatusOK, m)
 	})
 }

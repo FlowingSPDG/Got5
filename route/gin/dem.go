@@ -9,7 +9,7 @@ import (
 )
 
 // CheckDemoAuth 認証用ハンドラ
-func CheckDemoAuth[TMatchID int](auth got5.Auth[TMatchID]) func(c *gin.Context) {
+func CheckDemoAuth(auth got5.Auth) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		// Verifyをかける
 		filename := c.GetHeader("Get5-FileName")
@@ -34,7 +34,7 @@ func CheckDemoAuth[TMatchID int](auth got5.Auth[TMatchID]) func(c *gin.Context) 
 		serverID := c.GetHeader("Get5-ServerId")
 
 		reqAuth := c.GetHeader("Authorization")
-		if err := auth.CheckDemoAuth(c, TMatchID(mid), filename, mapNum, serverID, reqAuth); err != nil {
+		if err := auth.CheckDemoAuth(c, int(mid), filename, mapNum, serverID, reqAuth); err != nil {
 			c.AbortWithError(http.StatusUnauthorized, err) // カスタムエラーを返したい
 			return
 		}
@@ -44,7 +44,7 @@ func CheckDemoAuth[TMatchID int](auth got5.Auth[TMatchID]) func(c *gin.Context) 
 
 // DemoUploadHandler POST CS:GO dem file.
 // アップロードされたdemファイルを制御するハンドラ
-func DemoUploadHandler[TMatchID int](uploader got5.DemoUploader[TMatchID]) func(c *gin.Context) {
+func DemoUploadHandler(uploader got5.DemoUploader) func(c *gin.Context) {
 	return (func(c *gin.Context) {
 		// アップロードを実施
 
@@ -57,7 +57,7 @@ func DemoUploadHandler[TMatchID int](uploader got5.DemoUploader[TMatchID]) func(
 			return
 		}
 
-		if err := uploader.Upload(c, TMatchID(mid), filename, c.Request.Body); err != nil {
+		if err := uploader.Upload(c, int(mid), filename, c.Request.Body); err != nil {
 			c.String(http.StatusInternalServerError, err.Error()) // カスタムエラーを返したい
 		}
 		c.String(http.StatusOK, "OK")
