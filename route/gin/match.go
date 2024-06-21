@@ -9,17 +9,17 @@ import (
 )
 
 // CheckMatchLoaderAuth 認証用ハンドラ
-func CheckMatchLoaderAuth(auth got5.Auth) func(c *gin.Context) {
+func CheckMatchLoaderAuth(auth got5.Auth, headerKey string) func(c *gin.Context) {
 	return (func(c *gin.Context) {
 		matchID := c.Param("matchID")
-		reqAuthVal := c.GetHeader("Authorization")
+		headerValue := c.GetHeader(headerKey)
 
 		mid, err := strconv.Atoi(matchID)
 		if err != nil {
 			c.AbortWithError(http.StatusBadRequest, err)
 			return
 		}
-		if err := auth.MatchAuth(c, mid, reqAuthVal); err != nil {
+		if err := auth.MatchAuth(c, mid, headerValue); err != nil {
 			c.AbortWithError(http.StatusUnauthorized, err) // カスタムエラーを返したい
 			return
 		}
