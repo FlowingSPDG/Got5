@@ -31,7 +31,7 @@ func OnEventHandler(ctrl got5.EventHandler) func(c *gin.Context) {
 		}
 		ev, ok := (p["event"]).(string)
 		if !ok {
-			c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
+			c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON(event name)")) // TODO: Wrap error code
 			return
 		}
 		switch ev {
