@@ -31,7 +31,7 @@ func OnEventHandler(ctrl got5.EventHandler) func(c *gin.Context) {
 		}
 		ev, ok := (p["event"]).(string)
 		if !ok {
-			c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON")) // TODO: Wrap error code
+			c.AbortWithError(http.StatusBadRequest, xerrors.New("Invalid JSON(event name)")) // TODO: Wrap error code
 			return
 		}
 		switch ev {
@@ -289,12 +289,10 @@ func OnEventHandler(ctrl got5.EventHandler) func(c *gin.Context) {
 }
 
 // CheckEventHandlerAuth Check Auth
-func CheckEventHandlerAuth(auth got5.Auth) func(c *gin.Context) {
+func CheckEventHandlerAuth(auth got5.Auth, headerKey string) func(c *gin.Context) {
 	return (func(c *gin.Context) {
-		// NOTICE: get5_remote_log_header_value only supports max 128 characters
-		reqAuth := c.GetHeader("Authorization")
-		serverID := c.GetHeader("Get5-ServerId")
-		if err := auth.EventAuth(c, serverID, reqAuth); err != nil {
+		headerValue := c.GetHeader(headerKey)
+		if err := auth.EventAuth(c, headerValue); err != nil {
 			c.AbortWithError(http.StatusUnauthorized, err) // カスタムエラーを返したい
 			return
 		}

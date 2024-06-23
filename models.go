@@ -35,8 +35,8 @@ type OnLoadMatchConfigFailedPayload struct {
 // OnSeriesInitPayload Fired when a series is started after loading a match config.
 type OnSeriesInitPayload struct {
 	Event
-	MatchID string `json:"matchid"`
-	NumMaps int    `json:"num_maps"`
+	MatchID int `json:"matchid,string"`
+	NumMaps int `json:"num_maps"`
 	Team1   struct {
 		ID   string `json:"id"`
 		Name string `json:"name"`
@@ -50,7 +50,7 @@ type OnSeriesInitPayload struct {
 // OnMapResultPayload Fired when the map ends.
 type OnMapResultPayload struct {
 	Event
-	MatchID   string        `json:"matchid"`
+	MatchID   int           `json:"matchid,string"`
 	MapNumber int           `json:"map_number"`
 	Team1     Get5StatsTeam `json:"team1"`
 	Team2     Get5StatsTeam `json:"team2"`
@@ -112,7 +112,7 @@ type Get5StatsPlayer struct {
 // OnSeriesResultPayload Fired when a series is over. winner indicates team and side 0 if there was no winner in cases of a draw or if the series was forcefully canceled.
 type OnSeriesResultPayload struct {
 	Event
-	MatchID          string `json:"matchid"`
+	MatchID          int    `json:"matchid,string"`
 	Team1SeriesScore int    `json:"team1_series_score"`
 	Team2SeriesScore int    `json:"team2_series_score"`
 	Winner           Winner `json:"winner"`
@@ -122,7 +122,7 @@ type OnSeriesResultPayload struct {
 // OnSidePickedPayload Fired when a side is picked by a team.
 type OnSidePickedPayload struct {
 	Event
-	MatchID   string `json:"matchid"`
+	MatchID   int    `json:"matchid,string"`
 	Team      string `json:"team"`
 	MapName   string `json:"map_name"`
 	Side      string `json:"side"`
@@ -132,7 +132,7 @@ type OnSidePickedPayload struct {
 // OnMapPickedPayload Fired when a team picks a map.
 type OnMapPickedPayload struct {
 	Event
-	MatchID   string `json:"matchid"`
+	MatchID   int    `json:"matchid,string"`
 	Team      string `json:"team"`
 	MapName   string `json:"map_name"`
 	MapNumber int    `json:"map_number"`
@@ -141,7 +141,7 @@ type OnMapPickedPayload struct {
 // OnMapVetoedPayload Fired when a team vetos a map.
 type OnMapVetoedPayload struct {
 	Event
-	MatchID string `json:"matchid"`
+	MatchID int    `json:"matchid,string"`
 	Team    string `json:"team"`
 	MapName string `json:"map_name"`
 }
@@ -149,7 +149,7 @@ type OnMapVetoedPayload struct {
 // OnBackupRestorePayload Fired when a round is restored from a backup. Note that the map and round numbers indicate the round being restored to, not the round the backup was requested during.
 type OnBackupRestorePayload struct {
 	Event
-	MatchID     string `json:"matchid"`
+	MatchID     int    `json:"matchid,string"`
 	MapNumber   int    `json:"map_number"`
 	RoundNumber int    `json:"round_number"`
 	Filename    string `json:"filename"`
@@ -158,7 +158,7 @@ type OnBackupRestorePayload struct {
 // OnDemoFinishedPayload Fired when the GOTV recording has ended. This event does not fire if no demo was recorded.
 type OnDemoFinishedPayload struct {
 	Event
-	MatchID   string `json:"matchid"`
+	MatchID   int    `json:"matchid,string"`
 	MapNumber int    `json:"map_number"`
 	Filename  string `json:"filename"`
 }
@@ -166,7 +166,7 @@ type OnDemoFinishedPayload struct {
 // OnDemoUploadEndedPayload Fired when the request to upload a demo ends, regardless if it succeeds or fails. If you upload demos, you should not shut down a server until this event has fired.
 type OnDemoUploadEndedPayload struct {
 	Event
-	MatchID   string `json:"matchid"`
+	MatchID   int    `json:"matchid,string"`
 	MapNumber int    `json:"map_number"`
 	Filename  string `json:"filename"`
 	Success   bool   `json:"success"`
@@ -177,7 +177,7 @@ type OnDemoUploadEndedPayload struct {
 // OnMatchPausedPayload Fired when the match is paused.
 type OnMatchPausedPayload struct {
 	Event
-	MatchID   string `json:"matchid"`
+	MatchID   int    `json:"matchid,string"`
 	MapNumber int    `json:"map_number"`
 	Team      string `json:"team"`
 	PauseType string `json:"pause_type"`
@@ -186,7 +186,7 @@ type OnMatchPausedPayload struct {
 // OnMatchUnpausedPayload Fired when the match is unpaused.
 type OnMatchUnpausedPayload struct {
 	Event
-	MatchID   string `json:"matchid"`
+	MatchID   int    `json:"matchid,string"`
 	MapNumber int    `json:"map_number"`
 	Team      string `json:"team"`
 	PauseType string `json:"pause_type"`
@@ -194,7 +194,7 @@ type OnMatchUnpausedPayload struct {
 
 type OnPauseBeganPayload struct {
 	Event
-	MatchID   string `json:"matchid"`
+	MatchID   int    `json:"matchid,string"`
 	MapNumber int    `json:"map_number"`
 	Team      string `json:"team"`
 	PauseType string `json:"pause_type"`
@@ -203,14 +203,14 @@ type OnPauseBeganPayload struct {
 // OnKnifeRoundStartedPayload Fired when the knife round starts.
 type OnKnifeRoundStartedPayload struct {
 	Event
-	MatchID   string `json:"matchid"`
-	MapNumber int    `json:"map_number"`
+	MatchID   int `json:"matchid,string"`
+	MapNumber int `json:"map_number"`
 }
 
 // OnKnifeRoundWonPayload Fired when the knife round is over and the teams have elected to swap or stay. side represents the chosen side of the winning team, not the side that won the knife round.
 type OnKnifeRoundWonPayload struct {
 	Event
-	MatchID   string `json:"matchid"`
+	MatchID   int    `json:"matchid,string"`
 	MapNumber int    `json:"map_number"`
 	Team      string `json:"team"`
 	Side      string `json:"side"`
@@ -220,7 +220,7 @@ type OnKnifeRoundWonPayload struct {
 // OnTeamReadyStatusChangedPayload Fired when a team's ready status changes.
 type OnTeamReadyStatusChangedPayload struct {
 	Event
-	MatchID   string  `json:"matchid"`
+	MatchID   int     `json:"matchid,string"`
 	Team      *string `json:"team"` // nullable
 	Ready     bool    `json:"ready"`
 	GameState string  `json:"game_state"`
@@ -229,22 +229,22 @@ type OnTeamReadyStatusChangedPayload struct {
 // OnGoingLivePayload Fired when a map is going live.
 type OnGoingLivePayload struct {
 	Event
-	MatchID   string `json:"matchid"`
-	MapNumber int    `json:"map_number"`
+	MatchID   int `json:"matchid,string"`
+	MapNumber int `json:"map_number"`
 }
 
 // OnRoundStartPayload Fired when a round starts (when freezetime begins).
 type OnRoundStartPayload struct {
 	Event
-	MatchID     string `json:"matchid"`
-	MapNumber   int    `json:"map_number"`
-	RoundNumber int    `json:"round_number"`
+	MatchID     int `json:"matchid,string"`
+	MapNumber   int `json:"map_number"`
+	RoundNumber int `json:"round_number"`
 }
 
 // OnRoundEndPayload Fired when a round ends - when the result is in; not when the round stops. Game activity can occur after this.
 type OnRoundEndPayload struct {
 	Event
-	MatchID     string        `json:"matchid"`
+	MatchID     int           `json:"matchid,string"`
 	MapNumber   int           `json:"map_number"`
 	RoundNumber int           `json:"round_number"`
 	RoundTime   int           `json:"round_time"`
@@ -263,15 +263,15 @@ type Winner struct {
 // OnRoundStatsUpdatedPayload Fired after the stats update on round end.
 type OnRoundStatsUpdatedPayload struct {
 	Event
-	MatchID     string `json:"matchid"`
-	MapNumber   int    `json:"map_number"`
-	RoundNumber int    `json:"round_number"`
+	MatchID     int `json:"matchid,string"`
+	MapNumber   int `json:"map_number"`
+	RoundNumber int `json:"round_number"`
 }
 
 // OnPlayerBecameMVPPayload Fired when a player is elected the MVP of the round.
 type OnPlayerBecameMVPPayload struct {
 	Event
-	MatchID     string `json:"matchid"`
+	MatchID     int    `json:"matchid,string"`
 	MapNumber   int    `json:"map_number"`
 	RoundNumber int    `json:"round_number"`
 	Player      Player `json:"player"`
@@ -290,7 +290,7 @@ type Player struct {
 // OnGrenadeThrownPayload Fired whenever a grenade is thrown by a player. The weapon property reflects the grenade used.
 type OnGrenadeThrownPayload struct {
 	Event
-	MatchID     string `json:"matchid"`
+	MatchID     int    `json:"matchid,string"`
 	MapNumber   int    `json:"map_number"`
 	RoundNumber int    `json:"round_number"`
 	RoundTime   int    `json:"round_time"`
@@ -307,7 +307,7 @@ type Weapon struct {
 // OnPlayerDeathPayload Fired when a player dies.
 type OnPlayerDeathPayload struct {
 	Event
-	MatchID       string    `json:"matchid"`
+	MatchID       int       `json:"matchid,string"`
 	MapNumber     int       `json:"map_number"`
 	RoundNumber   int       `json:"round_number"`
 	RoundTime     int       `json:"round_time"`
@@ -344,7 +344,7 @@ type Assist struct {
 // OnHEGrenadeDetonatedPayload Fired when an HE grenade detonates. player describes who threw the HE and victims who were affected. weapon is always an HE grenade.
 type OnHEGrenadeDetonatedPayload struct {
 	Event
-	MatchID          string   `json:"matchid"`
+	MatchID          int      `json:"matchid,string"`
 	MapNumber        int      `json:"map_number"`
 	RoundNumber      int      `json:"round_number"`
 	RoundTime        int      `json:"round_time"`
@@ -365,7 +365,7 @@ type Victim struct {
 // OnMolotovDetonatedPayload Fired when a molotov grenade expires. player describes who threw the molotov and victims who were affected. weapon is always a molotov grenade. Note that round_time reflects the time at which the grenade detonated (started burning).
 type OnMolotovDetonatedPayload struct {
 	Event
-	MatchID          string   `json:"matchid"`
+	MatchID          int      `json:"matchid,string"`
 	MapNumber        int      `json:"map_number"`
 	RoundNumber      int      `json:"round_number"`
 	RoundTime        int      `json:"round_time"`
@@ -379,7 +379,7 @@ type OnMolotovDetonatedPayload struct {
 // OnFlashbangDetonatedPayload Fired when a flash bang grenade detonates. player describes who threw the flash bang and victims who were affected. weapon is always a flash bang grenade.
 type OnFlashbangDetonatedPayload struct {
 	Event
-	MatchID     string   `json:"matchid"`
+	MatchID     int      `json:"matchid,string"`
 	MapNumber   int      `json:"map_number"`
 	RoundNumber int      `json:"round_number"`
 	RoundTime   int      `json:"round_time"`
@@ -391,7 +391,7 @@ type OnFlashbangDetonatedPayload struct {
 // OnSmokeGrenadeDetonatedPayload Fired when an smoke grenade expires. player describes who threw the grenade. weapon is always a smoke grenade.
 type OnSmokeGrenadeDetonatedPayload struct {
 	Event
-	MatchID             string `json:"matchid"`
+	MatchID             int    `json:"matchid,string"`
 	MapNumber           int    `json:"map_number"`
 	RoundNumber         int    `json:"round_number"`
 	RoundTime           int    `json:"round_time"`
@@ -403,7 +403,7 @@ type OnSmokeGrenadeDetonatedPayload struct {
 // OnDecoyStartedPayload Fired when a decoy starts making noise. player describes who threw the grenade. weapon is always a decoy grenade.
 type OnDecoyStartedPayload struct {
 	Event
-	MatchID     string `json:"matchid"`
+	MatchID     int    `json:"matchid,string"`
 	MapNumber   int    `json:"map_number"`
 	RoundNumber int    `json:"round_number"`
 	RoundTime   int    `json:"round_time"`
@@ -414,7 +414,7 @@ type OnDecoyStartedPayload struct {
 // OnBombPlantedPayload Fired when the bomb is planted. player describes who planted the bomb.
 type OnBombPlantedPayload struct {
 	Event
-	MatchID     string `json:"matchid"`
+	MatchID     int    `json:"matchid,string"`
 	MapNumber   int    `json:"map_number"`
 	RoundNumber int    `json:"round_number"`
 	RoundTime   int    `json:"round_time"`
@@ -425,7 +425,7 @@ type OnBombPlantedPayload struct {
 // OnBombDefusedPayload Fired when the bomb is defused. player describes who defused the bomb.
 type OnBombDefusedPayload struct {
 	Event
-	MatchID           string `json:"matchid"`
+	MatchID           int    `json:"matchid,string"`
 	MapNumber         int    `json:"map_number"`
 	RoundNumber       int    `json:"round_number"`
 	RoundTime         int    `json:"round_time"`
@@ -437,7 +437,7 @@ type OnBombDefusedPayload struct {
 // OnBombExplodedPayload Fired when the bomb explodes.
 type OnBombExplodedPayload struct {
 	Event
-	MatchID     string `json:"matchid"`
+	MatchID     int    `json:"matchid,string"`
 	MapNumber   int    `json:"map_number"`
 	RoundNumber int    `json:"round_number"`
 	RoundTime   int    `json:"round_time"`
@@ -447,7 +447,7 @@ type OnBombExplodedPayload struct {
 // OnPlayerConnectedPayload Fired when a player connects to the server.
 type OnPlayerConnectedPayload struct {
 	Event
-	MatchID   string `json:"matchid"`
+	MatchID   int    `json:"matchid,string"`
 	Player    Player `json:"player"`
 	IPAddress string `json:"ip_address"`
 }
@@ -455,14 +455,14 @@ type OnPlayerConnectedPayload struct {
 // OnPlayerDisconnectedPayload Fired when a player disconnects from the server.
 type OnPlayerDisconnectedPayload struct {
 	Event
-	MatchID string `json:"matchid"`
+	MatchID int    `json:"matchid,string"`
 	Player  Player `json:"player"`
 }
 
 // OnPlayerSayPayload Fired when a player types in chat.
 type OnPlayerSayPayload struct {
 	Event
-	MatchID     string `json:"matchid"`
+	MatchID     int    `json:"matchid,string"`
 	MapNumber   int    `json:"map_number"`
 	RoundNumber int    `json:"round_number"`
 	RoundTime   int    `json:"round_time"`
