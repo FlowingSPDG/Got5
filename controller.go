@@ -9,7 +9,7 @@ import (
 type Auth interface {
 	EventAuth(ctx context.Context, auth string) error
 	MatchAuth(ctx context.Context, mid int, auth string) error
-	CheckDemoAuth(ctx context.Context, mid int, filename string, mapNumber int, serverID string, auth string) error
+	CheckDemoAuth(ctx context.Context, mid int, filename string, mapNumber int, auth string) error
 }
 
 // EventHandler EventHandler interface handles read operation by get5 events
@@ -63,5 +63,5 @@ type MatchLoader interface {
 
 // DemoUploader is for Demo Upload Operation(get5_dem_upload_url)
 type DemoUploader interface {
-	Upload(ctx context.Context, mid int, filename string, mapNumber int, r io.Reader) error // demoファイルの登録処理
+	Upload(ctx context.Context, mid int, filename string, mapNumber int, r io.ReadCloser) error // demoファイルの登録処理
 }

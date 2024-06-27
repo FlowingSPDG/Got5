@@ -12,8 +12,8 @@ import (
 func CheckDemoAuth(auth got5.Auth) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		// Verifyをかける
-		filename := c.GetHeader("Get5-FileName")
-		matchID := c.GetHeader("Get5-MatchId")
+		filename := c.GetHeader("MatchZy-FileName")
+		matchID := c.GetHeader("MatchZy-MatchId")
 
 		mid, err := strconv.Atoi(matchID)
 		if err != nil {
@@ -21,7 +21,7 @@ func CheckDemoAuth(auth got5.Auth) func(c *gin.Context) {
 			return
 		}
 
-		mapNumStr := c.GetHeader("Get5-MapNumber")
+		mapNumStr := c.GetHeader("MatchZy-MapNumber")
 		mapNum := 0
 		if mapNumStr != "" {
 			mapNum, err = strconv.Atoi(mapNumStr)
@@ -31,10 +31,8 @@ func CheckDemoAuth(auth got5.Auth) func(c *gin.Context) {
 			}
 		}
 
-		serverID := c.GetHeader("Get5-ServerId")
-
 		reqAuth := c.GetHeader("Authorization")
-		if err := auth.CheckDemoAuth(c, int(mid), filename, mapNum, serverID, reqAuth); err != nil {
+		if err := auth.CheckDemoAuth(c, mid, filename, mapNum, reqAuth); err != nil {
 			c.AbortWithError(http.StatusUnauthorized, err) // カスタムエラーを返したい
 			return
 		}
@@ -47,8 +45,6 @@ func CheckDemoAuth(auth got5.Auth) func(c *gin.Context) {
 func DemoUploadHandler(uploader got5.DemoUploader) func(c *gin.Context) {
 	return (func(c *gin.Context) {
 		// アップロードを実施
-
-		// old headers: Get5-FileName, Get5-MatchId, Get5-MapNumber.
 
 		filename := c.GetHeader("MatchZy-FileName")
 		matchID := c.GetHeader("MatchZy-MatchId")
