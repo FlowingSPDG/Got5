@@ -5,10 +5,10 @@ package got5
 // MatchZy(source): https://github.com/shobhit-pathak/MatchZy/blob/ae597e50756f8ed8380e4cbacec4a4c1eb9013da/MatchManagement.cs#L254
 
 type Match struct {
-	MatchID              *int              `json:"matchid,omitempty"` // originally string in get5 but MatchZy uses int
+	MatchID              *int              `json:"matchid,omitempty"`
 	ClinchSeries         *bool             `json:"clinch_series,omitempty"`
 	NumMaps              int               `json:"num_maps"`
-	Wingman              bool              `json:"wingman,omitempty"`
+	Wingman              *bool             `json:"wingman,omitempty"`
 	PlayersPerTeam       *int              `json:"players_per_team,omitempty"`
 	MinPlayersToReady    *int              `json:"min_players_to_ready,omitempty"`
 	MinSpectatorsToReady *int              `json:"min_spectators_to_ready,omitempty"`
