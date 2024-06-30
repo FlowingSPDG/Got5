@@ -7,7 +7,7 @@ package got5
 type Match struct {
 	MatchID              *int              `json:"matchid,omitempty"` // originally string in get5 but MatchZy uses int
 	ClinchSeries         *bool             `json:"clinch_series,omitempty"`
-	NumMaps              int               `json:"num_maps,omitempty"`
+	NumMaps              int               `json:"num_maps"`
 	Wingman              bool              `json:"wingman,omitempty"`
 	PlayersPerTeam       *int              `json:"players_per_team,omitempty"`
 	MinPlayersToReady    *int              `json:"min_players_to_ready,omitempty"`
@@ -16,9 +16,9 @@ type Match struct {
 	VetoMode             []string          `json:"veto_mode,omitempty"`
 	MapSides             []string          `json:"map_sides,omitempty"`
 	Spectators           *Spectators       `json:"spectators,omitempty"`
-	Maplist              []string          `json:"maplist,omitempty"`
-	Team1                *Team             `json:"team1,omitempty"`
-	Team2                *Team             `json:"team2,omitempty"`
+	Maplist              []string          `json:"maplist"`
+	Team1                *Team             `json:"team1"`
+	Team2                *Team             `json:"team2"`
 	Cvars                map[string]string `json:"cvars,omitempty"`
 }
 
